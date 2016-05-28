@@ -97,3 +97,6 @@ image_minifier:
   optimizationLevel: 2
   pngquant: false
   progressive: false
+
+tag_generator:
+  per_page: 10
