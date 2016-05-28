@@ -1,0 +1,128 @@
+---
+title: Hexo和Github搭建Blog
+date: 2016-04-17 10:19:42
+tags:
+---
+
+![](/uploads/github_hexo.png)
+## Hexo
+
+[Hexo](https://hexo.io/zh-cn/)是一个很简洁好用的静态Blog框架，第一次看到是在[始终](http://liam0205.me/)的博客，当时觉得主题很漂亮，速度也还不错，在页面底下看到了`Hexo`，于是就去看了一下介绍，结果发现好简单啊。加上去年写了一学期`Latex`，觉得`Markdown`肯定只会更简单，于是就按照这个[教程](http://wsgzao.github.io/post/hexo-guide/)也搭了一个，于是这篇日志基本就参(zhao)考(chao)这篇教程写了。
+
+## 准备工作
+教程用的windows，我用的Mac，其实差不多，Mac还简单一些，正好给了我个机会证明这篇日志~~是原创~~不全是照抄的。
+
+### Homebrew
+
+Mac下缺的东西都可以用[Homwbrew](http://brew.sh/)来装，很方便。打开就是安装命令。
+
+### Node.js
+~~~
+brew install npm
+~~~
+
+### hexo
+然后就可以安装`hexo`了
+
+~~~
+npm install hexo-cli -g
+npm install hexo --save
+~~~
+
+## Hexo配置
+
+### 初始化
+执行以下命令
+
+~~~
+#安装 Hexo 完成后，请执行下列命令，Hexo 将会在指定文件夹中新建所需要的文件。
+$ hexo init <folder>
+$ cd <folder>
+$ npm install
+
+#新建完成后，指定文件夹的目录如下
+.
+├── _config.yml
+├── package.json
+├── scaffolds
+├── scripts
+├── source
+|      ├── _drafts
+|      └── _posts
+└── themes
+~~~
+
+### 安装插件
+这个我是按照教程来的，但是有几个明显用不到的就可以不装了，比如git之外的几个`deployer`， 还有好几个`generator`。
+
+~~~
+npm install hexo-generator-index --save
+npm install hexo-generator-archive --save
+npm install hexo-generator-category --save
+npm install hexo-generator-tag --save
+npm install hexo-server --save
+npm install hexo-deployer-git --save
+npm install hexo-deployer-heroku --save
+npm install hexo-deployer-rsync --save
+npm install hexo-deployer-openshift --save
+npm install hexo-renderer-marked@0.2 --save
+npm install hexo-renderer-stylus@0.2 --save
+npm install hexo-generator-feed@1 --save
+npm install hexo-generator-sitemap@1 --save
+~~~
+
+### 预览
+~~~
+hexo g #生成public静态文件
+hexo s #本地发布预览效果
+INFO  Start processing
+INFO  Hexo is running at http://0.0.0.0:4000/. Press Ctrl+C to stop.
+~~~
+本地做的所有更改都会实时的更新，可以随时看到刚刚所做的修改，非常方便，平时也可以另外开一个进程一直跑，然后再修改。
+
+### 新文章和新页面
+~~~
+hexo new "文章标题"
+hexo new page "关于"
+~~~
+这两个命令其实都是生成的`Markdown`文件，如果想要修改文章或者编辑页面，编辑相应的`.md`文件就可以了。
+
+## Github配置和自动部署
+[Github Pages](https://pages.github.com/)是一个Github开发的给用户托管静态网页的功能，自由度和稳定性都非常高，十分良心。
+
+### github
+1. 新建项目，名字必须和用户名一致，格式为`username.github.io`；
+2. 稍等几分钟之后就能访问静态主页了`http://username.github.io`；
+3. 编辑`_config.yml`
+
+	~~~
+	deploy:
+	  type: git
+	  repo: <repository url>
+	  branch: [branch]
+	  message: [message]
+	~~~
+4. 命令`hexo d`就会自动把`public`里的文件全部同步到github上，并且访问主页就能看到所做的修改。
+
+### 域名设置
+
+1. 在`public`目录下创建`CNAME`文件，里面填写自己的域名；
+2. 给自己的域名添加CNAME记录，推荐[DNSPod](https://www.dnspod.cn/)，配置页有详细的介绍；
+3. 将`CNAME`文件同步到Github上，很快就能通过自己的域名访问网站了。
+
+## Hexo主题设置
+目前用的是[Next](http://theme-next.iissnan.com/getting-started.html#activate-next-theme)，链接有详细的安装和设置教程。
+
+参考其中头像的设置，可以用类似的方法设置favicon，平时在文章中插入图像的链接也是一样的。
+
+## 关于Markdown编辑器
+
+其实我一直用`Sublime Text`写代码，我相信它也一定能够写`Markdown`，不过我估计它不支持所见即所得，所以我也没有去配置它。
+
+目前我用的是`MacDown`，基本我能想到的它都支持，包括代码高亮，而且效果基本和Hexo生成的一样，目前看来是我用过的最好的`Markdown`编辑器，唯一的遗憾在于不支持文档管理，不过这个功能有没有都有一定道理。
+
+目前发现的和`Hexo`的区别有：
+
+1. `Hexo`文件前面有一块配置区域`Macdown`解析不了；
+2. 插入图片的文件路径不一致；
+3. \#开头的标题要空格，不然`Hexo`不会解析成标题，而`Macdown`没有这个问题。
