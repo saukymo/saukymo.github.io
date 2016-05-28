@@ -216,12 +216,27 @@ function run() {
 注意修改为自己的远程仓库名和相应的分支名。
 
 此时，运行`hexo d`后的结果如下：
+
 ~~~sh
+$ hexo d
 INFO  Deploying: git
 INFO  Clearing .deploy_git folder...
 INFO  Copying files from public folder...
-On branch master
-nothing to commi
+[master d747a0d] Site updated: 2016-05-29 01:22:33
+ 5 files changed, 7 insertions(+), 13 deletions(-)
+To git@github.com:saukymo/saukymo.github.io.git
+   bb4cdbd..d747a0d  HEAD -> master
+Branch master set up to track remote branch master from git@github.com:saukymo/saukymo.github.io.git.
+INFO  Deploy done: git
+======================Auto Backup Begin===========================
+Already on 'source'
+M	"source/_posts/Hexo\345\222\214Github\346\220\255\345\273\272Blog.md"
+M	themes/next
+[source 1786b36] From auto backup script's commit
+ 1 file changed, 5 insertions(+)
+To git@github.com:saukymo/saukymo.github.io.git
+   49ab33a..1786b36  source -> source
+==================Auto Backup Complete============================
 ~~~
 
 
