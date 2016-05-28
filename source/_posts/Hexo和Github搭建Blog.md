@@ -144,6 +144,7 @@ mathjax:
 
 ## 备份源文件
 
+来源：[Tips for Hexo configuration](http://www.yuthon.com/2016/04/11/Tips-for-Hexo-configuration/)
 之前采用新建一个repo的方法备份文件，然后发现使用`hexo d`的时候，会部署所有的文件，然后也没有找到办法恢复。
 
 其实，只需要新建一个分支就可以备份源文件了
@@ -157,7 +158,66 @@ $ git remote add origin git@github.com:saukymo/saukymo.github.io.git
 $ git push origin source
 ~~~
 
+## 部署后自动备份源文件
+来源: [自动备份Hexo博客源文件](http://notes.wanghao.work/2015-07-06-%E8%87%AA%E5%8A%A8%E5%A4%87%E4%BB%BDHexo%E5%8D%9A%E5%AE%A2%E6%BA%90%E6%96%87%E4%BB%B6.html)
 
+安装`shelljs`
+
+~~~sh
+$ npm install --save shelljs
+~~~
+
+在`Hexo`根目录的`scripts`文件夹下新建一个js文件，文件名随意取， 如果没有`scripts`目录，请新建一个。
+
+然后在脚本中，写入以下内容：
+
+~~~js
+require('shelljs/global');
+
+try {
+	hexo.on('deployAfter', function() { //当deploy完成后执行备份
+		run();
+	});
+} catch (e) {
+	console.log("产生了一个错误<(￣3￣)> !，错误详情为：" + e.toString());
+}
+
+function run() {
+	if (!which('git')) {
+		echo('Sorry, this script requires git');
+		exit(1);
+	} else {
+		echo("======================Auto Backup Begin===========================");
+		cd('~/Documents/mkdef');    //此处修改为Hexo根目录路径
+		if (exec('git checkout source').code !== 0){
+			echo('Error: Git checkout branch source failed');
+			exit(1);
+		}
+		if (exec('git add --all').code !== 0) {
+			echo('Error: Git add failed');
+			exit(1);
+
+		}
+		if (exec('git commit -am "From auto backup script\'s commit"').code !== 0) {
+			echo('Error: Git commit failed');
+			exit(1);
+
+		}
+		if (exec('git push origin source').code !== 0) {
+			echo('Error: Git push failed');
+			exit(1);
+
+		}
+		echo("==================Auto Backup Complete============================")
+	}
+}
+~~~
+
+注意修改为自己的远程仓库名和相应的分支名。
+
+此时，运行`hexo d`后的结果如下：
+~~~sh
+~~~
 
 
 
