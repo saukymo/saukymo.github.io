@@ -217,6 +217,11 @@ function run() {
 
 此时，运行`hexo d`后的结果如下：
 ~~~sh
+INFO  Deploying: git
+INFO  Clearing .deploy_git folder...
+INFO  Copying files from public folder...
+On branch master
+nothing to commi
 ~~~
 
 
