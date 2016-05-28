@@ -1,7 +1,7 @@
 ---
 title: Hexo和Github搭建Blog
 date: 2016-04-17 10:19:42
-tags: hexo
+tags: [Hexo, github, MathJax]
 ---
 
 ![](/uploads/github_hexo.png)
