@@ -239,6 +239,14 @@ To git@github.com:saukymo/saukymo.github.io.git
 ==================Auto Backup Complete============================
 ~~~
 
+## 压缩静态资源
+安装[hexo-all-minifier](https://github.com/unhealthy/hexo-all-minifier)
+
+~~~sh
+$ npm install hexo-all-minifier --save
+~~~
+
+然后 `hexo g`时就会自动压缩静态资源
 
 
 
