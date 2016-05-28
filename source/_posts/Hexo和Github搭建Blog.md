@@ -17,16 +17,16 @@ tags:
 Mac下缺的东西都可以用[Homwbrew](http://brew.sh/)来装，很方便。打开就是安装命令。
 
 ### Node.js
-~~~
-brew install npm
+~~~sh
+$ brew install npm
 ~~~
 
 ### hexo
 然后就可以安装`hexo`了
 
-~~~
-npm install hexo-cli -g
-npm install hexo --save
+~~~sh
+$ npm install hexo-cli -g
+$ npm install hexo --save
 ~~~
 
 ## Hexo配置
@@ -34,13 +34,13 @@ npm install hexo --save
 ### 初始化
 执行以下命令
 
-~~~
-#安装 Hexo 完成后，请执行下列命令，Hexo 将会在指定文件夹中新建所需要的文件。
+~~~sh
+# 安装 Hexo 完成后，请执行下列命令，Hexo 将会在指定文件夹中新建所需要的文件。
 $ hexo init <folder>
 $ cd <folder>
 $ npm install
 
-#新建完成后，指定文件夹的目录如下
+# 新建完成后，指定文件夹的目录如下
 .
 ├── _config.yml
 ├── package.json
@@ -55,26 +55,26 @@ $ npm install
 ### 安装插件
 这个我是按照教程来的，但是有几个明显用不到的就可以不装了，比如git之外的几个`deployer`， 还有好几个`generator`。
 
-~~~
-npm install hexo-generator-index --save
-npm install hexo-generator-archive --save
-npm install hexo-generator-category --save
-npm install hexo-generator-tag --save
-npm install hexo-server --save
-npm install hexo-deployer-git --save
-npm install hexo-deployer-heroku --save
-npm install hexo-deployer-rsync --save
-npm install hexo-deployer-openshift --save
-npm install hexo-renderer-marked@0.2 --save
-npm install hexo-renderer-stylus@0.2 --save
-npm install hexo-generator-feed@1 --save
-npm install hexo-generator-sitemap@1 --save
+~~~sh
+$ npm install hexo-generator-index --save
+$ npm install hexo-generator-archive --save
+$ npm install hexo-generator-category --save
+$ npm install hexo-generator-tag --save
+$ npm install hexo-server --save
+$ npm install hexo-deployer-git --save
+$ npm install hexo-deployer-heroku --save
+$ npm install hexo-deployer-rsync --save
+$ npm install hexo-deployer-openshift --save
+$ npm install hexo-renderer-marked@0.2 --save
+$ npm install hexo-renderer-stylus@0.2 --save
+$ npm install hexo-generator-feed@1 --save
+$ npm install hexo-generator-sitemap@1 --save
 ~~~
 
 ### 预览
-~~~
-hexo g #生成public静态文件
-hexo s #本地发布预览效果
+~~~sh
+$ hexo g #生成public静态文件
+$ hexo s #本地发布预览效果
 INFO  Start processing
 INFO  Hexo is running at http://0.0.0.0:4000/. Press Ctrl+C to stop.
 ~~~
@@ -126,3 +126,39 @@ hexo new page "关于"
 1. `Hexo`文件前面有一块配置区域`Macdown`解析不了；
 2. 插入图片的文件路径不一致；
 3. \#开头的标题要空格，不然`Hexo`不会解析成标题，而`Macdown`没有这个问题。
+4. 父标题和子标题的\#数目要连续，不然生成的目录可能会有bug。
+5. 使用`MathJax`的时候，\_前面要加`\`，不然解析不正确
+
+## 使用MathJax
+
+参考[Next的官方文档](http://theme-next.iissnan.com/third-party-services.html#others)
+
+编辑 主题配置文件， 将 `Mathjax` 下的 enable 设定为 true 即可。 cdn 用于指定 `MathJax` 的脚本地址，默认是 `MathJax` 官方提供的 CDN 地址。
+
+~~~sh
+# MathJax Support
+mathjax:
+  enable: true
+  cdn: //cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+~~~
+
+## 备份源文件
+
+之前采用新建一个repo的方法备份文件，然后发现使用`hexo d`的时候，会部署所有的文件，然后也没有找到办法恢复。
+
+其实，只需要新建一个分支就可以备份源文件了
+
+~~~sh
+$ git init
+$ git checkout -b source
+$ git add .
+$ git commit -m "init"
+$ git remote add origin git@github.com:saukymo/saukymo.github.io.git
+$ git push origin source
+~~~
+
+
+
+
+
+
