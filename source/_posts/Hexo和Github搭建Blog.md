@@ -1,7 +1,7 @@
 ---
 title: Hexo和Github搭建Blog
 date: 2016-04-17 10:19:42
-tags: [Hexo, github, MathJax, Next]
+tags: [Hexo, github, MathJax, Next, Pandoc]
 ---
 
 ![](/uploads/github_hexo.png)
@@ -249,5 +249,25 @@ $ npm install hexo-all-minifier --save
 
 然后 `hexo g`时就会自动压缩静态资源
 
+## 使用pandoc解析
+[pandoc](http://pandoc.org/)是一个比markdown更加强大的解析工具，使用它可以避免`MathJax`和`markdown`冲突的问题，而且二者的语法也大同小异。
 
+首先安装`pandoc`：
 
+~~~sh
+brew install pandoc
+~~~
+
+然后用`npm`安装`hexo-renderer-pandoc`：
+
+~~~sh
+npm install hexo-renderer-pandoc --save
+~~~
+
+这里我不知道怎么设置`Hexo`使用哪一个解析器，所以我直接删掉了另一个解析器`hexo-renderer-marked`
+
+此时，新生成的页面里，所有的公式应该都不需要转义下划线了。
+
+但是，`pandoc`对表格的支持没有`markdown`那么智能，`-`的数目和表格的宽度严格相关，两端也需要用`|`闭合，才能正常显示。坏处自然是设置更加麻烦了，好处则是有利于微调。不过暂时还不清楚什么时候表格里的内容会溢出，什么时候会自动换行。
+
+据说`pandoc`可以用来写论文，之后可以尝试一下。

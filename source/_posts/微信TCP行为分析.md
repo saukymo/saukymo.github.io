@@ -20,18 +20,18 @@ tags: [tcp, wireshark, wechat, Plotly]
 
 抓包的结果记录如下：
 
-功能 | 发送者ip和端口 | 接收者ip和端口 | TCP选项 | 文件名
-----| -------------| ------------- | ------| -----
-发送文字|192.168.2.2.53671|223.167.105.117.443|mss 1460,nop,wscale 5,nop,nop,TS val 459787696 ecr 0,sackOK,eol|wechat\_send\_text
-发送图片|192.168.2.2.53673|125.39.132.125.443|mss 1460,nop,wscale 5,nop,nop,TS val 458540380 ecr 0,sackOK,eol|wechat\_send\_picture
-发送小视频|192.168.2.2.53680|125.39.171.17.443|mss 1460,nop,wscale 5,nop,nop,TS val 458953493 ecr 0,sackOK,eol|wechat\_send\_video
-接收文字|223.167.105.117.443|192.168.2.2.53671|mss 1460,nop,wscale 5,nop,nop,TS val 459286337 ecr 0,sackOK,eol|wechat\_receive\_text
-接收图片|125.39.132.125.443|192.168.2.2.53698|mss 1460,nop,wscale 5,nop,nop,TS val 459286337 ecr 0,sackOK,eol|wechat\_receive\_picture
-接收小视频|125.39.171.17.443|192.168.2.2.53764|mss 1460,nop,wscale 5,nop,nop,TS val 460156224 ecr 0,sackOK,eol|wechat\_receive\_video
-朋友圈发图文|192.168.2.2.65283|123.151.79.111.8080|mss 1460,nop,wscale 5,nop,nop,TS val 896590244 ecr 0,sackOK,eol|friend\_cycle\_picture
-朋友圈发视频|192.168.2.2.65293|123.151.79.111.8080|mss 1460,nop,wscale 5,nop,nop,TS val 896497923 ecr 0,sackOK,eol|friend\_cycle\_video
-朋友圈收图文|123.126.121.175.http|192.168.2.2.54055|mss 1460,nop,wscale 5,nop,nop,TS val 896835785 ecr 0,sackOK,eol|friend\_cycle\_download\_picture
-朋友圈收视频|124.161.14.78.http|192.168.2.2.65378|mss 1460,nop,wscale 5,nop,nop,TS val 896835785 ecr 0,sackOK,eol|friend\_cycle\_download\_video
+|功能 | 发送者ip和端口 | 接收者ip和端口 | TCP选项 | 文件名|
+|-------------| -------------------- | -------------------- | ------------------| -------------------------|
+|发送文字|192.168.2.2.53671|223.167.105.117.443|mss 1460,nop,wscale 5,nop,nop,TS val 459787696 ecr 0,sackOK,eol|wechat\_send\_text|
+|发送图片|192.168.2.2.53673|125.39.132.125.443|mss 1460,nop,wscale 5,nop,nop,TS val 458540380 ecr 0,sackOK,eol|wechat\_send\_picture|
+|发送小视频|192.168.2.2.53680|125.39.171.17.443|mss 1460,nop,wscale 5,nop,nop,TS val 458953493 ecr 0,sackOK,eol|wechat\_send\_video|
+|接收文字|223.167.105.117.443|192.168.2.2.53671|mss 1460,nop,wscale 5,nop,nop,TS val 459286337 ecr 0,sackOK,eol|wechat\_receive\_text|
+|接收图片|125.39.132.125.443|192.168.2.2.53698|mss 1460,nop,wscale 5,nop,nop,TS val 459286337 ecr 0,sackOK,eol|wechat\_receive\_picture|
+|接收小视频|125.39.171.17.443|192.168.2.2.53764|mss 1460,nop,wscale 5,nop,nop,TS val 460156224 ecr 0,sackOK,eol|wechat\_receive\_video|
+|朋友圈发图文|192.168.2.2.65283|123.151.79.111.8080|mss 1460,nop,wscale 5,nop,nop,TS val 896590244 ecr 0,sackOK,eol|friend\_cycle\_picture|
+|朋友圈发视频|192.168.2.2.65293|123.151.79.111.8080|mss 1460,nop,wscale 5,nop,nop,TS val 896497923 ecr 0,sackOK,eol|friend\_cycle\_video|
+|朋友圈收图文|123.126.121.175.http|192.168.2.2.54055|mss 1460,nop,wscale 5,nop,nop,TS val 896835785 ecr 0,sackOK,eol|friend\_cycle\_download\_picture|
+|朋友圈收视频|124.161.14.78.http|192.168.2.2.65378|mss 1460,nop,wscale 5,nop,nop,TS val 896835785 ecr 0,sackOK,eol|friend\_cycle\_download\_video|
 
 #### tcpdump过滤脚本
 由于tapo分析时需要设置服务器ip，所以这里暂时只过滤出于测试机器相关的记录即可，测试机器的ip为192.168.2.2
@@ -87,16 +87,16 @@ done
 
 其他参数记录如下：
 
-功能 | 丢包率 | 乱序率 
-----| ------| -----
-发送图片| 0.000000 | 
-发送小视频|0.000000 |
-接收图片|  | 0.164835
-接收小视频| | 0.112540 
-朋友圈发图文|0.000000  |
-朋友圈发视频|0.004049 |
-朋友圈收图文| | 0.027027
-朋友圈收视频| |0.040092
+| 功能 | 丢包率 | 乱序率 | 
+| ----| ------| -----| 
+| 发送图片| 0.000000 | | 
+| 发送小视频|0.000000 || 
+| 接收图片|  | 0.164835| 
+| 接收小视频| | 0.112540 | 
+| 朋友圈发图文|0.000000  || 
+| 朋友圈发视频|0.004049 || 
+| 朋友圈收图文| | 0.027027| 
+| 朋友圈收视频| |0.040092| 
 
 
 
