@@ -1,7 +1,7 @@
 ---
 title: pypy加速抓取Sina后复权数据
 date: 2016-04-14 14:07:36
-tags:
+tags: [pypy, python, multiprocessing, 爬虫]
 ---
 
 ## pypy

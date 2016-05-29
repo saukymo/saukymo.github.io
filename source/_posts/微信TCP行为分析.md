@@ -1,7 +1,7 @@
 ---
 title: 微信TCP行为分析
 date: 2016-05-19 14:36:48
-tags:
+tags: [tcp, wireshark, wechat]
 ---
 
 #### 环境设置
