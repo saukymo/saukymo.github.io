@@ -1,7 +1,7 @@
 ---
 title: Odes（二）页面设计与实现
 date: 2016-06-20 13:46:52
-tags: [Python, nginx, html, bootstrap, Javascript, Jquery, CSS]
+tags: [Python, html, bootstrap, Javascript, Jquery, CSS]
 ---
 
 ## 整体结构
