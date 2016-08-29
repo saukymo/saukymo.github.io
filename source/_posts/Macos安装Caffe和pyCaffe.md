@@ -44,6 +44,15 @@ brew install hdf5 opencv
 ### OpenCV
 Caffe仅仅使用了图片读写、缩放等基本操作。
 
+## 安装pyCaffe其他依赖包
+
+~~~shell
+pip install scikit-image
+pip install scipy
+pip install matplotlib
+pip install protobuf
+~~~
+
 ## 编译源码
 
 首先，使用默认的配置文件作为我们编译过程的基础配置：
@@ -69,15 +78,6 @@ make runtest
 
 ~~~shell
 make pycaffe 
-~~~
-
-## 安装pyCaffe其他依赖包
-
-~~~shell
-pip install scikit-image
-pip install scipy
-pip install matplotlib
-pip install protobuf
 ~~~
 
 ## 小结
