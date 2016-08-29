@@ -64,10 +64,20 @@ make runtest
 
 其中，`make all -j8`中的数字代表并行编译的线程，依据机器的真实情况修改，可以极大地提高编译的速度。
 
-最后编译pyCaffe即可
+
+最后编译pyCaffe即可，需要修改makefile.config里的python和numpy目录
 
 ~~~shell
 make pycaffe 
+~~~
+
+## 安装pyCaffe其他依赖包
+
+~~~shell
+pip install scikit-image
+pip install scipy
+pip install matplotlib
+pip install protobuf
 ~~~
 
 ## 小结
