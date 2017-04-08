@@ -1,0 +1,764 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="常微分方程," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="前言由于复习系统优化理论，需要解常微分方程，然而数分早就还给陈克应老师了，于是在询问老师之后，推荐我看这本书&amp;lt;&amp;lt;常微分方程教程-丁同仁&amp;gt;&amp;gt;，所以就整理了一下这部分笔记。
+由于数学基础实在太差，所以忽略所有的细节条件，计算过程中也可能会有大量不严谨的地方，不纠结这些细节。
+恰当方程定义考虑如下形式的微分方程：
+$$P(x,y) dx + Q(x,y)dy = 0$$
+如果存在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常微分方程-初等积分法">
+<meta property="og:url" content="http://blog.mkdef.com/2016/05/28/常微分方程-初等积分法/index.html">
+<meta property="og:site_name" content="Coder">
+<meta property="og:description" content="前言由于复习系统优化理论，需要解常微分方程，然而数分早就还给陈克应老师了，于是在询问老师之后，推荐我看这本书&amp;lt;&amp;lt;常微分方程教程-丁同仁&amp;gt;&amp;gt;，所以就整理了一下这部分笔记。
+由于数学基础实在太差，所以忽略所有的细节条件，计算过程中也可能会有大量不严谨的地方，不纠结这些细节。
+恰当方程定义考虑如下形式的微分方程：
+$$P(x,y) dx + Q(x,y)dy = 0$$
+如果存在">
+<meta property="og:updated_time" content="2016-11-26T09:44:53.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="常微分方程-初等积分法">
+<meta name="twitter:description" content="前言由于复习系统优化理论，需要解常微分方程，然而数分早就还给陈克应老师了，于是在询问老师之后，推荐我看这本书&amp;lt;&amp;lt;常微分方程教程-丁同仁&amp;gt;&amp;gt;，所以就整理了一下这部分笔记。
+由于数学基础实在太差，所以忽略所有的细节条件，计算过程中也可能会有大量不严谨的地方，不纠结这些细节。
+恰当方程定义考虑如下形式的微分方程：
+$$P(x,y) dx + Q(x,y)dy = 0$$
+如果存在">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.mkdef.com/2016/05/28/常微分方程-初等积分法/"/>
+
+
+
+
+
+  <title> 常微分方程-初等积分法 | Coder </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coder</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Trying the best, expecting the worst.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blog.mkdef.com/2016/05/28/常微分方程-初等积分法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无生">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coder">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                常微分方程-初等积分法
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-28T19:58:35+08:00">
+                2016-05-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>由于复习系统优化理论，需要解常微分方程，然而数分早就还给<a href="http://www.math.sjtu.edu.cn/faculty/show.php?id=42" target="_blank" rel="external">陈克应老师</a>了，于是在询问老师之后，推荐我看这本书&lt;&lt;常微分方程教程-丁同仁&gt;&gt;，所以就整理了一下这部分笔记。</p>
+<p>由于数学基础实在太差，所以忽略所有的细节条件，计算过程中也可能会有大量不严谨的地方，不纠结这些细节。</p>
+<h2 id="恰当方程"><a href="#恰当方程" class="headerlink" title="恰当方程"></a>恰当方程</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>考虑如下形式的微分方程：</p>
+<p>$$P(x,y) dx + Q(x,y)dy = 0$$</p>
+<p>如果存在一个函数$\phi (x, y)$满足：</p>
+<p>$$d\phi(x, y) = P(x, y)dx + Q(x,y)dy$$</p>
+<p>则称原微分方程为<strong>恰当方程</strong></p>
+<p>那么就有3个问题：</p>
+<ol>
+<li>如何判定一个是不是恰当方程？</li>
+<li>如果是，如何求解？</li>
+<li>如果不是，能否转换？</li>
+</ol>
+<p>接下来的几节就是对这3个问题的回答。</p>
+<h2 id="恰当方程的判定"><a href="#恰当方程的判定" class="headerlink" title="恰当方程的判定"></a>恰当方程的判定</h2><p>充要条件如下：</p>
+<p>$$\frac{\alpha P(x,y)}{\alpha y} = \frac{\alpha Q(x, y)}{\alpha x}$$</p>
+<h2 id="恰当方程的求解"><a href="#恰当方程的求解" class="headerlink" title="恰当方程的求解"></a>恰当方程的求解</h2><p>通解为：</p>
+<p>$$\int^{x}<em>{x</em>{0}}P(x,y)dx + \int^{y}<em>{y</em>{0}}Q(x_{0}, y)dy = C$$</p>
+<p>或者</p>
+<p>$$\int^{x}<em>{x</em>{0}}P(x,y<em>{0})dx + \int^{y}</em>{y_{0}}Q(x, y)dy = C$$</p>
+<p>剩下的小结是几类特殊形式的方程转换为恰当方程求解</p>
+<h2 id="变量分离的方程"><a href="#变量分离的方程" class="headerlink" title="变量分离的方程"></a>变量分离的方程</h2><p>如果方程具有以下形式：</p>
+<p>$$X(x)Y<em>{1}(y) + X</em>{1}(x)Y(y)dy = 0$$</p>
+<p>则可以等式两边同时除以$X<em>{1}(x)Y</em>{1}(y)$，得到：</p>
+<p>$$\frac{X(x)}{X<em>{1}(x)}dx + \frac{Y(y)}{Y</em>{1}(y)}dy = 0$$</p>
+<p>因此，可以得到它的通解为：</p>
+<p>$$\int\frac{X(x)}{X<em>{1}(x)}dx + \int\frac{Y(y)}{Y</em>{1}(y)}dy = C$$</p>
+<p>除此之外，所有令$X<em>{1}(x)Y</em>{1}(y) = 0$的解也都是原微分方程的解。</p>
+<h2 id="一阶线性微分方程"><a href="#一阶线性微分方程" class="headerlink" title="一阶线性微分方程"></a>一阶线性微分方程</h2><p>如果方程具有以下形式：</p>
+<p>$$\frac{dy}{dx} + p(x)y = q(x)$$</p>
+<p>若$q(x) = 0$，则为<strong>齐次线性方程</strong>，否则为<strong>非齐次线性方程</strong></p>
+<h3 id="齐次线性方程"><a href="#齐次线性方程" class="headerlink" title="齐次线性方程"></a>齐次线性方程</h3><p>$$dy + p(x)ydx = 0$$</p>
+<p>等式两边同时除以y，可得</p>
+<p>$$\frac{1}{y}dy + p(x)dx = 0$$</p>
+<p>$$y = Ce^{-\int p(x) dx}$$</p>
+<h3 id="非齐次线性方程"><a href="#非齐次线性方程" class="headerlink" title="非齐次线性方程"></a>非齐次线性方程</h3><p>等式两边同时乘以$e^{\int p(x)dx}$得：</p>
+<p>$$e^{\int p(x)dx}dy + e^{\int p(x)dx}p(x)ydx = e^{\int p(x)dx}q(x)dx$$</p>
+<p>$$d(e^{\int p(x)dx}y) = d\int q(x) e^{\int p(x)dx} dx$$</p>
+<p>解得</p>
+<p>$$y = e^{-\int p(x)dx}(C + \int q(x) e^{\int p(x)dx}dx)$$</p>
+<p>这个方法称为<strong>积分因子法</strong></p>
+<h2 id="几个特殊的初等变换法"><a href="#几个特殊的初等变换法" class="headerlink" title="几个特殊的初等变换法"></a>几个特殊的初等变换法</h2><h3 id="齐次方程-不是齐次线性方程"><a href="#齐次方程-不是齐次线性方程" class="headerlink" title="齐次方程(不是齐次线性方程)"></a>齐次方程(不是齐次线性方程)</h3><p>若</p>
+<p>$$P(x, y)dx + Q(x, y)dy = 0$$</p>
+<p>中$P(x, y), Q(x, y)$是$x, y$的同次齐次函数，即：</p>
+<p>$$P(tx, ty) = t^{m}P(x, y)$$</p>
+<p>$$Q(tx, ty) = t^{m}Q(x, y)$$</p>
+<p>令 $$y = \mu x$$， 则有：</p>
+<p>$$P(x,y) = x^{m}P(1, \mu)$$</p>
+<p>$$Q(x, y) = x^{m}Q(1, \mu)$$</p>
+<p>原方程可化为：</p>
+<p>$$x^{m}[P(1, \mu) + \mu Q(1, \mu)]dx + x^{m + 1}Q(1, \mu)d\mu = 0$$</p>
+<p>这是一个变量分离方程。</p>
+<h3 id="伯努利方程"><a href="#伯努利方程" class="headerlink" title="伯努利方程"></a>伯努利方程</h3><p>$$\frac{dy}{dx} + p(x)y = q(x)y^{n}$$</p>
+<p>两边同时乘以 $(1 - n)y^{-n}$ 可得：</p>
+<p>$$(1 - n) y^{-n}\frac{dy}{dx} + (1 - n)y^{-n}p(x)y = (1- n)y^{-n}q(x)y^{n}$$</p>
+<p>令$z = y^{-n}$</p>
+<p>$$\frac{dz}{dx} + (1 - n)p(x)z = (1-n)q(x)$$</p>
+<p>这是关于$z$的一阶线性方程</p>
+<h3 id="里卡蒂方程"><a href="#里卡蒂方程" class="headerlink" title="里卡蒂方程"></a>里卡蒂方程</h3><p>略</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/常微分方程/" rel="tag"># 常微分方程</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/19/微信TCP行为分析/" rel="next" title="微信TCP行为分析">
+                <i class="fa fa-chevron-left"></i> 微信TCP行为分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/30/Sublime-Text3-配置/" rel="prev" title="Sublime Text3 配置">
+                Sublime Text3 配置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="无生" />
+          <p class="site-author-name" itemprop="name">无生</p>
+           
+              <p class="site-description motion-element" itemprop="description">Trying the best, expecting the worst.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">48</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#恰当方程"><span class="nav-number">2.</span> <span class="nav-text">恰当方程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义"><span class="nav-number">2.1.</span> <span class="nav-text">定义</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#恰当方程的判定"><span class="nav-number">3.</span> <span class="nav-text">恰当方程的判定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#恰当方程的求解"><span class="nav-number">4.</span> <span class="nav-text">恰当方程的求解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变量分离的方程"><span class="nav-number">5.</span> <span class="nav-text">变量分离的方程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一阶线性微分方程"><span class="nav-number">6.</span> <span class="nav-text">一阶线性微分方程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#齐次线性方程"><span class="nav-number">6.1.</span> <span class="nav-text">齐次线性方程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非齐次线性方程"><span class="nav-number">6.2.</span> <span class="nav-text">非齐次线性方程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#几个特殊的初等变换法"><span class="nav-number">7.</span> <span class="nav-text">几个特殊的初等变换法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#齐次方程-不是齐次线性方程"><span class="nav-number">7.1.</span> <span class="nav-text">齐次方程(不是齐次线性方程)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#伯努利方程"><span class="nav-number">7.2.</span> <span class="nav-text">伯努利方程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#里卡蒂方程"><span class="nav-number">7.3.</span> <span class="nav-text">里卡蒂方程</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">无生</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

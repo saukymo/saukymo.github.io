@@ -1,0 +1,767 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Git,Github,Code review," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Git &amp;amp; Github 介绍Git首先是一个版本控制系统，它可以持续的追踪你的文件变化情况，从而通过Git，你可以将编辑过的文件恢复到之前的状态，也可以方便查看编辑前后文件内容的差异。
+同时，Git也是一个分布式的版本控制系统，对于用户来说，主要体现在允许多个用户协同开发，同时修改代码库。
+Github则是一个可以托管代码的平台，同时提供了Web的管理界面和一系列相关的开发服务和功能，功">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git 简明指南">
+<meta property="og:url" content="http://blog.mkdef.com/2016/08/29/Git-简明指南/index.html">
+<meta property="og:site_name" content="Coder">
+<meta property="og:description" content="Git &amp;amp; Github 介绍Git首先是一个版本控制系统，它可以持续的追踪你的文件变化情况，从而通过Git，你可以将编辑过的文件恢复到之前的状态，也可以方便查看编辑前后文件内容的差异。
+同时，Git也是一个分布式的版本控制系统，对于用户来说，主要体现在允许多个用户协同开发，同时修改代码库。
+Github则是一个可以托管代码的平台，同时提供了Web的管理界面和一系列相关的开发服务和功能，功">
+<meta property="og:image" content="http://blog.mkdef.com/uploads/trees.png">
+<meta property="og:image" content="http://blog.mkdef.com/uploads/branches.png">
+<meta property="og:updated_time" content="2016-11-26T09:44:53.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Git 简明指南">
+<meta name="twitter:description" content="Git &amp;amp; Github 介绍Git首先是一个版本控制系统，它可以持续的追踪你的文件变化情况，从而通过Git，你可以将编辑过的文件恢复到之前的状态，也可以方便查看编辑前后文件内容的差异。
+同时，Git也是一个分布式的版本控制系统，对于用户来说，主要体现在允许多个用户协同开发，同时修改代码库。
+Github则是一个可以托管代码的平台，同时提供了Web的管理界面和一系列相关的开发服务和功能，功">
+<meta name="twitter:image" content="http://blog.mkdef.com/uploads/trees.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.mkdef.com/2016/08/29/Git-简明指南/"/>
+
+
+
+
+
+  <title> Git 简明指南 | Coder </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coder</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Trying the best, expecting the worst.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blog.mkdef.com/2016/08/29/Git-简明指南/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无生">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coder">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Git 简明指南
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-29T14:05:57+08:00">
+                2016-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Git-amp-Github-介绍"><a href="#Git-amp-Github-介绍" class="headerlink" title="Git &amp; Github 介绍"></a>Git &amp; Github 介绍</h2><p>Git首先是一个版本控制系统，它可以持续的追踪你的文件变化情况，从而通过Git，你可以将编辑过的文件恢复到之前的状态，也可以方便查看编辑前后文件内容的差异。</p>
+<p>同时，Git也是一个分布式的版本控制系统，对于用户来说，主要体现在允许多个用户协同开发，同时修改代码库。</p>
+<p>Github则是一个可以托管代码的平台，同时提供了Web的管理界面和一系列相关的开发服务和功能，功能稳定速度较快，所以在其上托管的项目非常之多，所以用来作为我们的项目托管平台应该是最好的选择。</p>
+<h2 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h2><p>有各种各样的工具可以实现Git的功能，但是由于我们主要采用Github作为托管平台，首先推荐的就是Github自己的图形界面工具：<br><a href="https://desktop.github.com/" target="_blank" rel="external">Github Desktop</a></p>
+<p>命令行下只要安装Git就可以了。</p>
+<p>事实上，目前大部分的IDE都自带或者通过插件实现了Git的所有功能，像：IntelliJ的所有IDE(包括Android Studio)，Visual Studio， Sublime Text等等。</p>
+<p>具体的使用方法请自行谷歌。其实只要掌握了基本的Git命令，各种工具其实都大同小异。</p>
+<h2 id="Git基本概念"><a href="#Git基本概念" class="headerlink" title="Git基本概念"></a>Git基本概念</h2><p>首先每个都有一个远端服务器仓库，所有的代码都会最终被提交到这里。开发环境中每个开发者都会有一个本地的代码仓库，由于新的代码通常是被开发者首先添加到本地代码仓库中，然后在提交到远端服务器上，所以本地代码的版本通常都要比远端服务器新。但是，如果有其他开发者提交了新的代码到远端服务器，那么这个时候Git就会告诉你，你本地的代码落后于远端服务器版本了，那么你可以选择是否下载最新的版本。</p>
+<p>除了开发环境，一个完整的环节应该还包括测试和生产环境，这两个环境的代码都应该对应于远端服务器中的某一个比较完善的版本，远远落后于服务器上的最新版本。且通常只下载代码，不提交代码，也就是它不会对服务器上的版本做任何的改变。这两个环境与我们的项目都关系不大。</p>
+<h2 id="新建或者下载一个本地仓库"><a href="#新建或者下载一个本地仓库" class="headerlink" title="新建或者下载一个本地仓库"></a>新建或者下载一个本地仓库</h2><p>如果你已经有了一个本地项目，想要使用Git进行版本控制(哪怕你只是新建了一个空的文件夹，还没有任何代码也可以)，这个时候你只需要使用命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git init</div></pre></td></tr></table></figure>
+<p>就可以创建一个新的Git仓库了。</p>
+<p>如果你的项目已经有了一个远程的项目仓库(例如我们的代码库是：<a href="git@github.com:yubozu/Parkinson_Health.git">git@github.com:saukymo/Parkinson_Health.git</a>)，那么我们只需要复制一份远端代码库到本地就可以了，使用命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone git@github.com:yubozu/Parkinson_Health.git</div></pre></td></tr></table></figure>
+<p>此时，默认下载的最新版本的代码，当然你也可以选择下载某一特定版本的代码，这里不多说。</p>
+<h2 id="本地仓库"><a href="#本地仓库" class="headerlink" title="本地仓库"></a>本地仓库</h2><p>本地仓库由三个部分组成，首先是你的工作目录，里面是你的实际项目文件，例如代码、配置等等，第二个是暂存区(stage)，它像是一个缓存区域，你可以随时将修改过的文件添加到暂存区里来，对于这些文件的<em>最新</em>改动都会被记录下来，你可以随时查看它们和之前的区别(diff)。最后一个就是你的版本树(HEAD)了，你需要将暂存区里的改动提交到这里来(commit)，此时就好像给你的项目照了一个快照，目前所有的状态都被保存到了版本树的最前面了。</p>
+<p>需要注意的是，暂存区和版本树都是用户不可见的(通常保存在项目根目录的<code>.git</code>文件夹中)，所以你可以放心的修改你的代码而不会影响到git的功能。<br><img src="/uploads/trees.png" alt=""></p>
+<h2 id="一般工作流程"><a href="#一般工作流程" class="headerlink" title="一般工作流程"></a>一般工作流程</h2><p>首先，我们直接在修改本地工作目录的代码即可，开发过程与平时完全一样。当你完成一个阶段的开发(或者开发完一个小的功能，或者到了一定时间需要休息一下)时，这时就需要通过Git来提交你之前做的修改了。</p>
+<h3 id="git-status"><a href="#git-status" class="headerlink" title="git status"></a>git status</h3><p>首先你需要查看一下本地文件的状态。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git status</div></pre></td></tr></table></figure>
+<p>这时你将看到你的项目文件中，有哪些被添加到了暂存区中，有哪些还没有(通常是新增加的文件，因为一般来说，一个文件只要被添加到暂存区中一次，它就会一直在暂存区中，不用每次都添加进来)。</p>
+<h3 id="git-diff"><a href="#git-diff" class="headerlink" title="git diff"></a>git diff</h3><p>然后你可以通过</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git diff</div></pre></td></tr></table></figure>
+<p>来查看你对这些文件做了哪些修改，改动都是放在一起显示的，红色的代表以前的状态，绿色代表现在的状态。由于这些改动都是你刚刚进行的，所以应该有比较深的印象，这时你应该简单的浏览一遍，回顾一下你做了哪些改动，有没有遗漏(例如 TODO)或者多余的修改(例如 调试时多余的输出等)。</p>
+<p><code>diff</code>过程命令行下不是很方便，这时候通过IDE自带的比对工具会方便一些。</p>
+<h3 id="git-commit"><a href="#git-commit" class="headerlink" title="git commit"></a>git commit</h3><p>确认无误后，你就可以提交你的代码了，使用命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git commit</div></pre></td></tr></table></figure>
+<p><code>commit</code>的时候需要填写你本次提交做了哪些修改，这样之后自己和别人查看时能很快了解这次提交做了哪些修改。</p>
+<p>以上做的所有步骤都是在本地进行的，改动的也只是你的本地代码仓库。如果你仅仅需要一个版本控制功能，那么到这一步就可以了，但是我们的项目是托管在远端服务器上的，所以我们还需要将本地的修改提交到远端服务器上，这样其他人也就能获得和使用我们的代码了。</p>
+<p>如果改动不多，我们也可以用一条命令完成提交(commit)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git commit -m &quot;This is an example commit comment.&quot;</div></pre></td></tr></table></figure>
+<h3 id="git-push"><a href="#git-push" class="headerlink" title="git push"></a>git push</h3><p>使用命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git push</div></pre></td></tr></table></figure>
+<p>这条命令就会将你之前在本地代码仓库进行的所有提交(commit)一次性全部添加到远程代码仓库上去。</p>
+<h2 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h2><p>本篇教程不会写关于冲突的处理，但需要了解的是，当两个甚至多个人对同一块代码进行改动的时候，会出现冲突的情况。如果大家一直都在一起改，那么每次提交都会有冲突的可能，这样显然是效率很低的。所以，为了尽量使不同开发者之间的开发不互相影响，Git有一个分支的概念。</p>
+<p><img src="/uploads/branches.png" alt=""></p>
+<p>当你新建仓库的时候，默认是在”master”分支上的，你可以新建一个新的分支，在新的分支上进行开发，此时这个新分支只有你一个人在开发，是完全独立于其他开发人员的，当开发完成后，再将它们合并(merge)到主分支上(可以是master，也可以是任何约定好的分支)。这样，只有在最后合并(merge)的时候才需要处理冲突的情况。</p>
+<h3 id="新建分支"><a href="#新建分支" class="headerlink" title="新建分支"></a>新建分支</h3><p>通过以下命令可以新建一个名字为<code>new_branch</code>的branch，在你第一次提交(push)代码到远端服务器上之前，这个分支不会被其他人看到。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git branch new_branch</div></pre></td></tr></table></figure>
+<h3 id="列出和切换分支"><a href="#列出和切换分支" class="headerlink" title="列出和切换分支"></a>列出和切换分支</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git branch -l</div><div class="line">git checkout new_branch</div></pre></td></tr></table></figure>
+<p>第一个命令可以列出本地代码有哪些分支，第二个命令可以切换到任意一个分支。</p>
+<h3 id="提交分支到远端服务器"><a href="#提交分支到远端服务器" class="headerlink" title="提交分支到远端服务器"></a>提交分支到远端服务器</h3><p>当你在这个分支上的修改完成后，你可以先按照前面的一般工作流程进行操作，当你第一次输入<code>git push</code>后，git会告诉你说这个分支在远端服务器没有对应的分支。此时你可以使用:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git push origin new_branch</div></pre></td></tr></table></figure>
+<p>来设置这个分支对应的远端分支(分支采用相同的名字)，之后再提交更改的时候，直接使用<code>git push</code>即可。</p>
+<h3 id="合并代码"><a href="#合并代码" class="headerlink" title="合并代码"></a>合并代码</h3><p>当你的功能开发完成之后，可以到Github网站上去提交一个合并申请(pull request)，此时其他成员就会收到你的申请，他们也可以看到你这次更新所做的所有修改。</p>
+<p>此时，不管你有没有权限进行服务器端的合并(merge)操作，都建议你留一些时间(1~2天)给其他开发者，让他们来审核你的代码(Code review)。这个过程不仅能提高项目的代码质量，也是一个很好的学习编程的方式。所以，也建议你在看到其他人的合并申请(pull request)时，主动的去review他们的代码，并留下自己的comments。</p>
+<h3 id="删除分支"><a href="#删除分支" class="headerlink" title="删除分支"></a>删除分支</h3><p>由于我们采用基于分支的开发流程，<code>pull request</code>被合并之后，会自动删除分支，所以一般不需要这个命令，但有时候我们可能会不小心新建一个分支，那么就可以用下面这个命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git branch -d new_branch</div></pre></td></tr></table></figure>
+<h2 id="更新与合并"><a href="#更新与合并" class="headerlink" title="更新与合并"></a>更新与合并</h2><p>如果你要与其他人合作开发，在你每次开始工作前，都应该检查其他人是否有提交新的代码，如果有的话，你应该先将他们的代码下载下来。使用命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git pull</div></pre></td></tr></table></figure>
+<p>此时，会将远端的最新代码覆盖到本地，那么这里有个潜在的可能会要处理冲突。</p>
+<p>但是，按照我们的开发流程，我们不会提交代码到master分支，其他分支都是自己所独有的。所以理论上这个操作仅仅是更新代码到最新的版本，而不需要处理冲突。</p>
+<h2 id="回滚代码"><a href="#回滚代码" class="headerlink" title="回滚代码"></a>回滚代码</h2><p>希望你永远不需要用到这个部分的功能。当你需要回到之前的某个版本时，使用命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git reset --hard</div></pre></td></tr></table></figure>
+<p>此时所有没有提交的改动都会还原到上一次提交的地方。</p>
+<p>再往前的回滚一般不会用到。</p>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>基于Git的开发是现在最基本的开发流程，不管是用来管理个人项目，还是协同开发都是非常好用的，希望大家都能很快的掌握。学习过程肯定是很痛苦的，但是熟悉和习惯之后这些额外的操作其实代价非常小，甚至可以将commit操作当做保存操作一样频繁的使用。</p>
+<p>其实这个流程对于我们这样的小团队来说，略微有一点点复杂了，但是这个流程最重要的地方其实是进行Code review。这个流程给每个人Review团队中其他人代码的机会，正如前文所说，这个过程既提高了代码质量，也提高了自己的编程水平。目前这个Review的过程不是必须的，但是希望大家都能积极的参与进来。</p>
+<p>最后，这个指南肯定会有各种各样的错误和疏(sheng)漏(lue)，如果有遇到任何的问题，我们可以一起解决。如果有任何的建议，我们也可以再讨论，做出改进。</p>
+<p>最后的最后，希望大家能够善于利用搜索引擎来解决编程方面的问题。如果可以报销的话，可以为大家提供谷(fan)歌(qiang)的解决方案。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="http://rogerdudler.github.io/git-guide/index.html" target="_blank" rel="external">设计很棒的Git教程</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag"># Git</a>
+          
+            <a href="/tags/Github/" rel="tag"># Github</a>
+          
+            <a href="/tags/Code-review/" rel="tag"># Code review</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/19/Macos安装Caffe和pyCaffe/" rel="next" title="Macos安装Caffe和pyCaffe">
+                <i class="fa fa-chevron-left"></i> Macos安装Caffe和pyCaffe
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/26/建立自己的ngrok服务/" rel="prev" title="建立自己的ngrok服务">
+                建立自己的ngrok服务 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="无生" />
+          <p class="site-author-name" itemprop="name">无生</p>
+           
+              <p class="site-description motion-element" itemprop="description">Trying the best, expecting the worst.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">48</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git-amp-Github-介绍"><span class="nav-number">1.</span> <span class="nav-text">Git & Github 介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载安装"><span class="nav-number">2.</span> <span class="nav-text">下载安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git基本概念"><span class="nav-number">3.</span> <span class="nav-text">Git基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新建或者下载一个本地仓库"><span class="nav-number">4.</span> <span class="nav-text">新建或者下载一个本地仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本地仓库"><span class="nav-number">5.</span> <span class="nav-text">本地仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一般工作流程"><span class="nav-number">6.</span> <span class="nav-text">一般工作流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#git-status"><span class="nav-number">6.1.</span> <span class="nav-text">git status</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-diff"><span class="nav-number">6.2.</span> <span class="nav-text">git diff</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-commit"><span class="nav-number">6.3.</span> <span class="nav-text">git commit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-push"><span class="nav-number">6.4.</span> <span class="nav-text">git push</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分支"><span class="nav-number">7.</span> <span class="nav-text">分支</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#新建分支"><span class="nav-number">7.1.</span> <span class="nav-text">新建分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列出和切换分支"><span class="nav-number">7.2.</span> <span class="nav-text">列出和切换分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提交分支到远端服务器"><span class="nav-number">7.3.</span> <span class="nav-text">提交分支到远端服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#合并代码"><span class="nav-number">7.4.</span> <span class="nav-text">合并代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除分支"><span class="nav-number">7.5.</span> <span class="nav-text">删除分支</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新与合并"><span class="nav-number">8.</span> <span class="nav-text">更新与合并</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#回滚代码"><span class="nav-number">9.</span> <span class="nav-text">回滚代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写在最后"><span class="nav-number">10.</span> <span class="nav-text">写在最后</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">11.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">无生</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

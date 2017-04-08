@@ -1,0 +1,743 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python,诗经,html,bootstrap,Javascript,Jquery,CSS," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="整体结构网站按照之前在Everstring常用的前后端结构，后端只提供api，前端一个html从后端请求数据然后展示，用nginx讲两者的流量区分开来。本来前端需要gulp配置一通流水线工具的，但是折腾了一天也没有弄出个样子来，干脆放弃这些高端玩意，先把东西用最原始最简单的方法做出来，有需求了才有动力换新的方法。
+后端实现由于目前只有一个展示诗文正文的一个页面，所以api非常简单。一开始的版本如下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Odes（二）页面设计与实现">
+<meta property="og:url" content="http://blog.mkdef.com/2016/06/20/Odes（二）页面设计与实现/index.html">
+<meta property="og:site_name" content="Coder">
+<meta property="og:description" content="整体结构网站按照之前在Everstring常用的前后端结构，后端只提供api，前端一个html从后端请求数据然后展示，用nginx讲两者的流量区分开来。本来前端需要gulp配置一通流水线工具的，但是折腾了一天也没有弄出个样子来，干脆放弃这些高端玩意，先把东西用最原始最简单的方法做出来，有需求了才有动力换新的方法。
+后端实现由于目前只有一个展示诗文正文的一个页面，所以api非常简单。一开始的版本如下">
+<meta property="og:updated_time" content="2016-11-26T09:44:53.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Odes（二）页面设计与实现">
+<meta name="twitter:description" content="整体结构网站按照之前在Everstring常用的前后端结构，后端只提供api，前端一个html从后端请求数据然后展示，用nginx讲两者的流量区分开来。本来前端需要gulp配置一通流水线工具的，但是折腾了一天也没有弄出个样子来，干脆放弃这些高端玩意，先把东西用最原始最简单的方法做出来，有需求了才有动力换新的方法。
+后端实现由于目前只有一个展示诗文正文的一个页面，所以api非常简单。一开始的版本如下">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.mkdef.com/2016/06/20/Odes（二）页面设计与实现/"/>
+
+
+
+
+
+  <title> Odes（二）页面设计与实现 | Coder </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coder</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Trying the best, expecting the worst.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blog.mkdef.com/2016/06/20/Odes（二）页面设计与实现/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无生">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coder">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Odes（二）页面设计与实现
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-20T13:46:52+08:00">
+                2016-06-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="整体结构"><a href="#整体结构" class="headerlink" title="整体结构"></a>整体结构</h2><p>网站按照之前在Everstring常用的前后端结构，后端只提供api，前端一个html从后端请求数据然后展示，用nginx讲两者的流量区分开来。本来前端需要<code>gulp</code>配置一通流水线工具的，但是折腾了一天也没有弄出个样子来，干脆放弃这些高端玩意，先把东西用最原始最简单的方法做出来，有需求了才有动力换新的方法。</p>
+<h2 id="后端实现"><a href="#后端实现" class="headerlink" title="后端实现"></a>后端实现</h2><p>由于目前只有一个展示诗文正文的一个页面，所以api非常简单。一开始的版本如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@app.route("/odes-api/&lt;int:id&gt;")</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_ode_by_id</span><span class="params">(id)</span>:</span></div><div class="line">	script = <span class="string">"""</span></div><div class="line">		WITH s AS (SELECT * FROM odes where id = %s) SELECT row_to_json(s) FROM s;</div><div class="line">	"""</div><div class="line">	cu.execute(script, (id,))</div><div class="line">	res = cu.fetchall()</div><div class="line">	<span class="keyword">if</span> res <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">		<span class="keyword">raise</span> ValueError</div><div class="line">	<span class="keyword">else</span>:</div><div class="line">		<span class="keyword">return</span> jsonify(res[<span class="number">0</span>])</div></pre></td></tr></table></figure>
+<p>请求一个id的数据，把对应诗文的内容和相关的一些数据全部传输过去。这里错误处理暂时没有实现。</p>
+<p>后来为了实现上一篇和下一篇的功能，考虑了一番决定还是通过这一个api把相邻两个诗文的数据一并传输过去，对应的sql语句为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">WITH s AS (SELECT * FROM odes where id in (%s, %s, %s)) SELECT array_to_json(array_agg(row_to_json(s))) FROM s;</div></pre></td></tr></table></figure>
+<p>这样一来，问题就在于前端如何知道哪个数据是自己的，哪个数据是相邻页面的，于是手工调整顺序，将请求的数据放在中间。于是丑陋的代码实现如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (id == <span class="number">1</span>):</div><div class="line">	res[<span class="number">0</span>][<span class="number">0</span>], res[<span class="number">0</span>][<span class="number">1</span>], res[<span class="number">0</span>][<span class="number">2</span>] = res[<span class="number">0</span>][<span class="number">2</span>], res[<span class="number">0</span>][<span class="number">0</span>], res[<span class="number">0</span>][<span class="number">1</span>]</div><div class="line"><span class="keyword">if</span> (id == MAXID):</div><div class="line">	res[<span class="number">0</span>][<span class="number">0</span>], res[<span class="number">0</span>][<span class="number">1</span>], res[<span class="number">0</span>][<span class="number">2</span>] = res[<span class="number">0</span>][<span class="number">1</span>], res[<span class="number">0</span>][<span class="number">2</span>], res[<span class="number">0</span>][<span class="number">0</span>]</div></pre></td></tr></table></figure>
+<p>但是这样会出现几个问题，第一个是顺序是由postgres默认决定的，程序没有做校验，也没有办法校验（各个数据一致，没有字段标识区别开），正确结果依赖于各个部分默契合作，这样显然是不合理的。第二个是传输查询的内容过多，然而很多信息是毫无必要的，减慢了页面的加载速度。所以重新设计如下：第一，不采用循环的方式，第一篇没有上一篇，最后一篇没有下一篇(一方面处理逻辑要简单很多，更主要的是这个功能确实无所谓)。第二，分两次查询，因为查询是在服务器本地进行的，查询两次代价并不大，第二次仅仅查询相邻篇章的标题。代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">WITH s AS (SELECT title FROM odes where id in (%s, %s)) SELECT array_to_json(array_agg(row_to_json(s))) FROM s;</div></pre></td></tr></table></figure>
+<p>然后把结果插入到请求的数据中去：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">res[<span class="number">0</span>][<span class="string">"pre_title"</span>] = navi[<span class="number">0</span>][<span class="number">0</span>].get(<span class="string">'title'</span>) <span class="keyword">if</span> id &gt; <span class="number">1</span> <span class="keyword">else</span> <span class="keyword">None</span></div><div class="line">res[<span class="number">0</span>][<span class="string">"next_title"</span>] = navi[<span class="number">0</span>][<span class="number">-1</span>].get(<span class="string">'title'</span>) <span class="keyword">if</span> id &lt; MAXID <span class="keyword">else</span> <span class="keyword">None</span></div></pre></td></tr></table></figure>
+<p>其中<code>res</code>是第一次查询的结果，<code>navi</code>是第二次查询的结果。这样就显式的声明了前后文的标题，也就不会出现顺序的错误了，而且大大减少了传输的数据。</p>
+<h2 id="前端实现"><a href="#前端实现" class="headerlink" title="前端实现"></a>前端实现</h2><p>目前只实现了原文的展示功能，整个页面分为如下几个部分：</p>
+<pre><code>1. 顶部导航条，导航条目前有两个部分：左上角的Brand和右上角的随机浏览按钮。之后左上角还想加上搜索框。
+2. 上下翻页栏。
+3. 目录结构显示，这个功能实现了，但是不知道放在哪里比较好看，所以被我注释掉了。
+4. 标题和正文。
+</code></pre><h3 id="顶部导航条"><a href="#顶部导航条" class="headerlink" title="顶部导航条"></a>顶部导航条</h3><p>html代码如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">nav</span> <span class="attr">class</span>=<span class="string">"navbar navbar-default navbar-fixed-top"</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></div><div class="line">           <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">"navbar-brand"</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">id</span>=<span class="string">"brand"</span> <span class="attr">src</span>=<span class="string">"favicon.png"</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span> </div><div class="line">           <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">"nav navbar-nav navbar-right"</span>&gt;</span></div><div class="line">               <span class="tag">&lt;<span class="name">li</span>&gt;</span></div><div class="line">                   <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"random_ode"</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">class</span>=<span class="string">"btn-lg"</span>&gt;</span></div><div class="line">                       <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"glyphicon glyphicon-random"</span> <span class="attr">aria-hidden</span>=<span class="string">"true"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line">                   <span class="tag">&lt;/<span class="name">a</span>&gt;</span></div><div class="line">               <span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">           <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></div><div class="line">       <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">   <span class="tag">&lt;/<span class="name">nav</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>就是bootstrap的默认组件而已，稍微值得一提的是随机数的产生：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getRandomInt</span>(<span class="params">x</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * x) + <span class="number">1</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>应该是可以产生1到x之间的任意整数的，包括x。</p>
+<h3 id="上下翻页"><a href="#上下翻页" class="headerlink" title="上下翻页"></a>上下翻页</h3><p>就是两个简单的超链接，一个推到左上角，一个推到右上角。左右的篇章id通过api请求得到，这个之前已经提到过。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"navigate"</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">'pull-left'</span>&gt;</span></div><div class="line">           <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"left_ode"</span> <span class="attr">class</span>=<span class="string">"navigate"</span>&gt;</span></div><div class="line">           <span class="tag">&lt;/<span class="name">a</span>&gt;</span></div><div class="line">       <span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"pull-right"</span>&gt;</span></div><div class="line">           <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"right_ode"</span> <span class="attr">class</span>=<span class="string">"navigate"</span>&gt;</span></div><div class="line">           <span class="tag">&lt;/<span class="name">a</span>&gt;</span></div><div class="line">       <span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line">   <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="正文部分"><a href="#正文部分" class="headerlink" title="正文部分"></a>正文部分</h3><p>正文部分分为标题和内容两个部分，值得一提的<code>css</code>部分。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"ode"</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"title"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span>     </div><div class="line">       <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"fulltext"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">   <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>由于我觉得诗经这种长短参差不齐的诗句，全部左对齐会好看一些，但是又希望标题能够居中，并且和正文对齐。所以需要它的宽度和内容自适应。解决方法是将它设置为<code>inline-block</code>。<br>另外，在上传时，内容中就包含了换行符，以此来保证诗文显示出来的格式正确(为了限制长度，手工调整过一次，不过调整得非常不仔细，所以可能会出现内容连贯，但是被我强行换行的情况。)，所以需要能够自动显示出换行符。解决方法是<code>pre</code>。<br>于是，完整的css设置如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">#ode&#123;</div><div class="line">	text-align: center;</div><div class="line">	font-family: Helvetica, Tahoma, Arial, STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif;</div><div class="line">&#125;</div><div class="line"></div><div class="line">#title&#123;</div><div class="line">	font-size: 3.5em;</div><div class="line">	margin: 5% auto;</div><div class="line">&#125;</div><div class="line"></div><div class="line">#fulltext&#123;</div><div class="line">	font-size: 2.5em;</div><div class="line">	margin: auto;</div><div class="line">	text-align: left;</div><div class="line">	white-space:pre;</div><div class="line">	display:inline-block; </div><div class="line">	*display:inline; </div><div class="line">	*zoom:1; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="部分JavaScript功能代码"><a href="#部分JavaScript功能代码" class="headerlink" title="部分JavaScript功能代码"></a>部分JavaScript功能代码</h2><h3 id="获取页面参数"><a href="#获取页面参数" class="headerlink" title="获取页面参数"></a>获取页面参数</h3><p>由于浏览器得到的只是一个html文件，所以它得不到请求的参数，需要从<code>url</code>手工解析出来。解析的<code>javascript</code>代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> getUrlParameter = <span class="function"><span class="keyword">function</span> <span class="title">getUrlParameter</span>(<span class="params">sParam</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> sPageURL = <span class="built_in">decodeURIComponent</span>(<span class="built_in">window</span>.location.search.substring(<span class="number">1</span>)),</div><div class="line">        sURLVariables = sPageURL.split(<span class="string">'&amp;'</span>),</div><div class="line">        sParameterName,</div><div class="line">        i;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; sURLVariables.length; i++) &#123;</div><div class="line">        sParameterName = sURLVariables[i].split(<span class="string">'='</span>);</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (sParameterName[<span class="number">0</span>] === sParam) &#123;</div><div class="line">            <span class="keyword">return</span> sParameterName[<span class="number">1</span>] === <span class="literal">undefined</span> ? <span class="literal">true</span> : sParameterName[<span class="number">1</span>];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">page_id = getUrlParameter(<span class="string">'id'</span>);</div><div class="line"><span class="keyword">if</span> (!page_id) &#123;</div><div class="line">	page_id = <span class="number">1</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>下面的一小段代码是如果没有解析到参数，默认显示第一篇，这样就可以通过最简单的域名访问到网站了：<a href="http://odes.mkdef.com" target="_blank" rel="external">odes.mkdef.com</a></p>
+<h3 id="字符串替换"><a href="#字符串替换" class="headerlink" title="字符串替换"></a>字符串替换</h3><p>由于<code>lodash</code>使用的时候需要一些额外的工作，为了简单抄了一段实现字符串替换功能的代码，效果不错。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">String</span>.prototype.replaceAll = <span class="function"><span class="keyword">function</span>(<span class="params">search, replacement</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> target = <span class="keyword">this</span>;</div><div class="line">    <span class="keyword">return</span> target.replace(<span class="keyword">new</span> <span class="built_in">RegExp</span>(search, <span class="string">'g'</span>), replacement);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>我写前端的经验真的非常匮乏，所以这些实现仅仅保证了看起来是设想的那样子，至于是不是最优，会不会有其他潜在的缺点就不得而知了，至少目前还没有暴露出来。这篇文章仅仅当作给自己的一份前端笔记好了。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/诗经/" rel="tag"># 诗经</a>
+          
+            <a href="/tags/html/" rel="tag"># html</a>
+          
+            <a href="/tags/bootstrap/" rel="tag"># bootstrap</a>
+          
+            <a href="/tags/Javascript/" rel="tag"># Javascript</a>
+          
+            <a href="/tags/Jquery/" rel="tag"># Jquery</a>
+          
+            <a href="/tags/CSS/" rel="tag"># CSS</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/16/Odes（一）爬取全文/" rel="next" title="Odes（一）爬取全文">
+                <i class="fa fa-chevron-left"></i> Odes（一）爬取全文
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/18/网站压力测试工具/" rel="prev" title="网站压力测试工具pyWebTest">
+                网站压力测试工具pyWebTest <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="无生" />
+          <p class="site-author-name" itemprop="name">无生</p>
+           
+              <p class="site-description motion-element" itemprop="description">Trying the best, expecting the worst.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">48</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#整体结构"><span class="nav-number">1.</span> <span class="nav-text">整体结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后端实现"><span class="nav-number">2.</span> <span class="nav-text">后端实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前端实现"><span class="nav-number">3.</span> <span class="nav-text">前端实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#顶部导航条"><span class="nav-number">3.1.</span> <span class="nav-text">顶部导航条</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上下翻页"><span class="nav-number">3.2.</span> <span class="nav-text">上下翻页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正文部分"><span class="nav-number">3.3.</span> <span class="nav-text">正文部分</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部分JavaScript功能代码"><span class="nav-number">4.</span> <span class="nav-text">部分JavaScript功能代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取页面参数"><span class="nav-number">4.1.</span> <span class="nav-text">获取页面参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串替换"><span class="nav-number">4.2.</span> <span class="nav-text">字符串替换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">5.</span> <span class="nav-text">小结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">无生</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

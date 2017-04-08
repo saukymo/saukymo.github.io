@@ -1,0 +1,759 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python,Thread,PyPy," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="项目介绍pyWebTest是一个性能和负载测试工具，采用纯python编写，可以并发地对目标网站生成请求，测试响应时间和吞吐量，并生成完整的测试报告。
+通过简单地修改测试部分的代码，可以很快的实现对远程API的压力测试，事实上，可以通过编写测试脚本，实现很多复杂的测试计划。
+测试报告通过标准输出给出。(文件和网页形式的报告功能没有实现)
+使用说明下载和安装pyWebTest可以通过Git下载完整的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网站压力测试工具pyWebTest">
+<meta property="og:url" content="http://blog.mkdef.com/2016/07/18/网站压力测试工具/index.html">
+<meta property="og:site_name" content="Coder">
+<meta property="og:description" content="项目介绍pyWebTest是一个性能和负载测试工具，采用纯python编写，可以并发地对目标网站生成请求，测试响应时间和吞吐量，并生成完整的测试报告。
+通过简单地修改测试部分的代码，可以很快的实现对远程API的压力测试，事实上，可以通过编写测试脚本，实现很多复杂的测试计划。
+测试报告通过标准输出给出。(文件和网页形式的报告功能没有实现)
+使用说明下载和安装pyWebTest可以通过Git下载完整的">
+<meta property="og:updated_time" content="2016-11-26T09:44:53.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="网站压力测试工具pyWebTest">
+<meta name="twitter:description" content="项目介绍pyWebTest是一个性能和负载测试工具，采用纯python编写，可以并发地对目标网站生成请求，测试响应时间和吞吐量，并生成完整的测试报告。
+通过简单地修改测试部分的代码，可以很快的实现对远程API的压力测试，事实上，可以通过编写测试脚本，实现很多复杂的测试计划。
+测试报告通过标准输出给出。(文件和网页形式的报告功能没有实现)
+使用说明下载和安装pyWebTest可以通过Git下载完整的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.mkdef.com/2016/07/18/网站压力测试工具/"/>
+
+
+
+
+
+  <title> 网站压力测试工具pyWebTest | Coder </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coder</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Trying the best, expecting the worst.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blog.mkdef.com/2016/07/18/网站压力测试工具/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无生">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coder">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                网站压力测试工具pyWebTest
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-18T23:55:39+08:00">
+                2016-07-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="项目介绍"><a href="#项目介绍" class="headerlink" title="项目介绍"></a>项目介绍</h2><p>pyWebTest是一个性能和负载测试工具，采用纯python编写，可以并发地对目标网站生成请求，测试响应时间和吞吐量，并生成完整的测试报告。</p>
+<p>通过简单地修改测试部分的代码，可以很快的实现对远程API的压力测试，事实上，可以通过编写测试脚本，实现很多复杂的测试计划。</p>
+<p>测试报告通过标准输出给出。(文件和网页形式的报告功能没有实现)</p>
+<h2 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h2><h3 id="下载和安装"><a href="#下载和安装" class="headerlink" title="下载和安装"></a>下载和安装</h3><p>pyWebTest可以通过Git下载完整的源代码，并且不需要额外的设置就可以直接运行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ git clone git@github.com:saukymo/pyWebTest.git</div><div class="line">$ cd pyWebTest</div><div class="line">$ python main.py -h</div></pre></td></tr></table></figure>
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><p>通过<code>-h</code>参数可以看到简单的参数介绍，一共有4个可选参数，<code>-a</code>是并发进程数，默认模拟两个用户请求网；，<code>-d</code>是测试时间，超过时间测试中止，设定时间之后的请求会被忽略，默认持续10秒；<code>-i</code>是统计时对数据采用的分段数，默认将整个测试分成10段统计；<code>-r</code>是启动进程的时间，所有的并发将在启动时间内均匀的开始，平稳地增加，启动时间到达后，达到预先设定的并发进程数，默认为0秒，即一开始就达到最大负载进行测试。<code>-u</code>是测试的目标网站，不能省略。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ python main.py -h</div><div class="line">usage: main.py [-h] [-a [A]] [-d [D]] [-i [I]] [-r [R]] -u U</div><div class="line"></div><div class="line">optional arguments:</div><div class="line">  -h, --help  show this help message and exit</div><div class="line">  -a [A]      number of agents</div><div class="line">  -d [D]      test duration in seconds</div><div class="line">  -i [I]      number of time-seriels interval</div><div class="line">  -r [R]      rampup in seconds</div><div class="line">  -u U        test target url</div></pre></td></tr></table></figure>
+<h3 id="测试和报告样例"><a href="#测试和报告样例" class="headerlink" title="测试和报告样例"></a>测试和报告样例</h3><p>样例测试选择百度作为测试对象，一共产生20个用户模拟请求，测试一共持续30秒，统计分成10段，即3秒统计分析一次。启动时间10秒，即每0.5秒增加一个新的用户。测试的报告如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line">python main.py -a 20 -d 30 -i 10 -r 10 -u http://www.baidu.com</div><div class="line"></div><div class="line">===Summary===</div><div class="line">transactions: 1788 hits</div><div class="line">errors: 0</div><div class="line">runtime: 30 secs</div><div class="line">rampup: 10 secs</div><div class="line">time-series interval: 3.000 secs</div><div class="line"></div><div class="line">test start: 2016-07-19 00:18:13</div><div class="line">test finish: 2016-07-19 00:18:43</div><div class="line"></div><div class="line">===All Transactions===</div><div class="line">Response Time Summary (secs):</div><div class="line">  count	    avg	    min	  50pct	  80pct	  90pct	    max	  stdev</div><div class="line">   1773	  0.283	  0.123	  0.293	  0.351	  0.396	  0.509	  0.076</div><div class="line"></div><div class="line">Interval Details (secs):</div><div class="line">interval	  count	    avg	    min	  50pct	  80pct	  90pct	    max	  stdev</div><div class="line">       0	     65	  0.155	  0.123	  0.160	  0.167	  0.169	  0.191	  0.015</div><div class="line">       1	    171	  0.164	  0.124	  0.163	  0.173	  0.193	  0.254	  0.022</div><div class="line">       2	    194	  0.230	  0.124	  0.245	  0.252	  0.258	  0.349	  0.040</div><div class="line">       3	    192	  0.306	  0.222	  0.299	  0.352	  0.400	  0.458	  0.055</div><div class="line">       4	    196	  0.308	  0.231	  0.299	  0.352	  0.396	  0.509	  0.056</div><div class="line">       5	    193	  0.313	  0.242	  0.300	  0.354	  0.399	  0.452	  0.054</div><div class="line">       6	    190	  0.312	  0.242	  0.300	  0.352	  0.399	  0.506	  0.058</div><div class="line">       7	    190	  0.314	  0.243	  0.302	  0.355	  0.402	  0.509	  0.058</div><div class="line">       8	    192	  0.313	  0.240	  0.301	  0.357	  0.403	  0.506	  0.061</div><div class="line">       9	    190	  0.316	  0.241	  0.299	  0.359	  0.405	  0.508	  0.069</div><div class="line"></div><div class="line">===Agent Details===</div><div class="line">Agent	Starttime	Requests	Errors	Bytes received	Avg Response Time(secs)	Avg throughput(req/sec)</div><div class="line">    0	     0.00	     118	     0	      11705655	                  0.256	                  3.904</div><div class="line">    1	     0.50	     113	     0	      11211349	                  0.263	                  3.801</div><div class="line">    2	     1.00	     112	     0	      11110130	                  0.259	                  3.859</div><div class="line">    3	     1.50	     109	     0	      10812108	                  0.263	                  3.805</div><div class="line">    4	     2.00	     107	     0	      10613035	                  0.263	                  3.802</div><div class="line">    5	     2.50	     100	     0	       9920078	                  0.276	                  3.627</div><div class="line">    6	     3.00	     100	     0	       9920273	                  0.272	                  3.680</div><div class="line">    7	     3.51	      95	     0	       9425688	                  0.281	                  3.555</div><div class="line">    8	     4.01	      94	     0	       9324440	                  0.278	                  3.599</div><div class="line">    9	     4.51	      89	     0	       8828827	                  0.287	                  3.488</div><div class="line">   10	     5.01	      86	     0	       8531848	                  0.291	                  3.438</div><div class="line">   11	     5.51	      82	     0	       8133568	                  0.299	                  3.345</div><div class="line">   12	     6.01	      83	     0	       8233050	                  0.290	                  3.442</div><div class="line">   13	     6.51	      79	     0	       7837821	                  0.298	                  3.359</div><div class="line">   14	     7.01	      76	     0	       7538452	                  0.306	                  3.270</div><div class="line">   15	     7.51	      75	     0	       7438603	                  0.302	                  3.314</div><div class="line">   16	     8.01	      70	     0	       6944360	                  0.316	                  3.165</div><div class="line">   17	     8.51	      72	     0	       7141987	                  0.301	                  3.316</div><div class="line">   18	     9.01	      67	     0	       6645907	                  0.314	                  3.181</div><div class="line">   19	     9.51	      66	     0	       6547565	                  0.311	                  3.217</div></pre></td></tr></table></figure>
+<h2 id="项目模块和实现"><a href="#项目模块和实现" class="headerlink" title="项目模块和实现"></a>项目模块和实现</h2><h3 id="运行参数分析"><a href="#运行参数分析" class="headerlink" title="运行参数分析"></a>运行参数分析</h3><p>参数分析采用python的<code>argparse</code>模块，通过这个模块，可以很简单的增加可以设置的参数，可以设置参数类型，并且自动生成帮助文档。代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">arg_parser = argparse.ArgumentParser()</div><div class="line"></div><div class="line">arg_parser.add_argument(<span class="string">'-a'</span>, nargs=<span class="string">'?'</span>, help=<span class="string">'number of agents'</span>, default=<span class="number">2</span>)</div><div class="line">arg_parser.add_argument(<span class="string">'-d'</span>, nargs=<span class="string">'?'</span>, help=<span class="string">'test duration in seconds'</span>, default=<span class="number">10</span>)</div><div class="line">arg_parser.add_argument(<span class="string">'-i'</span>, nargs=<span class="string">'?'</span>, help=<span class="string">'number of time-seriels interval'</span>, default=<span class="number">10</span>)</div><div class="line">arg_parser.add_argument(<span class="string">'-r'</span>, nargs=<span class="string">'?'</span>, help=<span class="string">'rampup in seconds'</span>, default=<span class="number">0.0</span>)</div><div class="line">arg_parser.add_argument(<span class="string">'-u'</span>, help=<span class="string">'test target url'</span>, required=<span class="keyword">True</span>) </div><div class="line">args = vars(arg_parser.parse_args())</div></pre></td></tr></table></figure>
+<p><code>args</code>就是一个包含所有参数的字典了，例如通过<code>args.get(&#39;i&#39;)</code>就可以获取用户运行时设置的参数i了。</p>
+<h3 id="进程间通信"><a href="#进程间通信" class="headerlink" title="进程间通信"></a>进程间通信</h3><p>虽然经过测试发现，多线程与多进程版本差别不大，所以最后改用多线程完成了整个项目，但在一开始还是使用的多进程版本。那么每个进程进行测试的结果就需要通过进程间通信的方式共享出来。这里采用生产者消费者模式的<code>Queue</code>来实现。</p>
+<p>首先需要定义一个<code>QueueReader</code>类来充当消费者的形式，并在测试开始前开启这个进程，并且设置<code>daemon</code>属性为<code>True</code>，这样这个进程就会随着主进程结束一起结束。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">queue = multiprocessing.Queue()</div><div class="line">queue_reader = QueueReader(queue)</div><div class="line">queue_reader.daemon = <span class="keyword">True</span></div><div class="line">queue_reader.start()</div></pre></td></tr></table></figure>
+<p>在每个测试进程中，将结果通过<code>Queue.put</code>方法将结果放到队列中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">self.queue.put(fields)</div></pre></td></tr></table></figure>
+<p>队列满时，会产生<code>Queue.Full</code>错误，测试进程挂起，等待队列被消耗，队列空时，产生<code>Queue.Empty</code>错误，读取进程等待一小段时间(这里设置为0.05秒)</p>
+<h3 id="测试进程管理"><a href="#测试进程管理" class="headerlink" title="测试进程管理"></a>测试进程管理</h3><p>首先，将每个进程的预先设置好，然后启动一个全局的计时器，之后再依次开始每个进程的测试。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">threads = []</div><div class="line"><span class="keyword">for</span> idx <span class="keyword">in</span> range(self.num_threads):</div><div class="line">    agent = Agent(self.queue, idx, self.run_time)</div><div class="line">    agent.daemon = <span class="keyword">True</span></div><div class="line">    threads.append(agent)</div><div class="line"></div><div class="line"><span class="keyword">for</span> idx, agent <span class="keyword">in</span> enumerate(threads):</div><div class="line">    spacing = <span class="number">1.0</span> * self.rampup / self.num_threads</div><div class="line">    <span class="keyword">if</span> idx &gt; <span class="number">0</span>:</div><div class="line">        time.sleep(spacing)</div><div class="line">    agent.start()</div><div class="line"></div><div class="line"><span class="keyword">for</span> agent <span class="keyword">in</span> threads:</div><div class="line">    agent.join()</div></pre></td></tr></table></figure>
+<p>其中，<code>rampup</code>的功能是在第二个循环中实现的，首先计算每个进程的平均启动时间，然后等待足够的时间后再启动一个新的进程即可。</p>
+<h3 id="测试进程实现"><a href="#测试进程实现" class="headerlink" title="测试进程实现"></a>测试进程实现</h3><p>测试进程的部分其实很简单，其中真正的请求部分只有三行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">connect = urllib2.urlopen(url)</div><div class="line">content = connect.read()</div><div class="line">resp_data = len(content)</div></pre></td></tr></table></figure>
+<p>通过修改这个部分的代码，可以实现对API的请求测试，也可以实现各种复杂的测试计划。</p>
+<p>整个测试进程的框架如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">elapsed_time = <span class="number">0</span></div><div class="line"></div><div class="line"><span class="keyword">while</span> elapsed_time &lt; self.run_time:</div><div class="line">    error = <span class="string">''</span></div><div class="line">    start = time.time()</div><div class="line"></div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        <span class="comment"># 测试部分代码</span></div><div class="line">    <span class="keyword">except</span> Exception, e:</div><div class="line">        error = str(e)</div><div class="line"></div><div class="line">    run_time = time.time() - start</div><div class="line">    elapsed_time = time.time() - UNION_START_TIME</div><div class="line"></div><div class="line">    <span class="comment"># 测试结果field统计，然后将结果放到Queue中</span></div><div class="line">    Queue.put(field)</div></pre></td></tr></table></figure>
+<h3 id="测试结果的统计"><a href="#测试结果的统计" class="headerlink" title="测试结果的统计"></a>测试结果的统计</h3><p>统计分两个部分进行。一个是从每个进程的角度分析，统计每个进程的平均响应时间和吞吐量。这个在每个进程完成所有测试之后统计即可，在设置了<code>rampup</code>参数时，这个统计可以看出测试机器的性能对结果的影响，例如在进程较少时，平均响应时间较短，进程较多时，平均响应时间较长。</p>
+<p>另外一个则是从时间分段的角度进行分析，统计不同阶段的响应时间及其分布情况，这个需要记录所有的测试结果之后，根据测试的时间分组统计。这个统计可以看出目标网站的性能情况，看出不同阶段，请求进程数不同时，目标网站的响应时间变化。</p>
+<p>由于这部分代码零散的分布在测试的各个阶段，所以就不贴代码了。</p>
+<p>如果目标网站的响应时间较长，而测试时间较短，可能出现某个时间成功响应次数为0的情况，这个时候统计函数会出错，所以需要给它们都加上一个特殊判断，这里采用装饰器的方法判断：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">validator</span><span class="params">(func)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_func</span><span class="params">(*args, **kargs)</span>:</span></div><div class="line">        <span class="keyword">if</span> len(args[<span class="number">0</span>]) == <span class="number">0</span>:</div><div class="line">            <span class="keyword">return</span> <span class="number">0.0</span></div><div class="line">        <span class="keyword">return</span> func(*args, **kargs)</div><div class="line">    <span class="keyword">return</span> _func</div><div class="line"></div><div class="line"><span class="meta">@validator</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">minarg</span><span class="params">(seq)</span>:</span></div><div class="line">    <span class="keyword">return</span> min(seq)</div><div class="line"></div><div class="line"><span class="meta">@validator</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">maxarg</span><span class="params">(seq)</span>:</span></div><div class="line">    <span class="keyword">return</span> max(seq)</div><div class="line"></div><div class="line"><span class="meta">@validator</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">average</span><span class="params">(seq)</span>:</span></div><div class="line">    avg = (float(sum(seq)) / len(seq))</div><div class="line">    <span class="keyword">return</span> avg</div><div class="line"></div><div class="line"><span class="meta">@validator</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">standard_dev</span><span class="params">(seq)</span>:</span></div><div class="line">    avg = average(seq)</div><div class="line">    sdsq = sum([(i - avg) ** <span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> seq])</div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        stdev = (sdsq / (len(seq) - <span class="number">1</span>)) ** <span class="number">.5</span></div><div class="line">    <span class="keyword">except</span> ZeroDivisionError:</div><div class="line">        stdev = <span class="number">0</span></div><div class="line">    <span class="keyword">return</span> stdev</div><div class="line"></div><div class="line"><span class="meta">@validator</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">percentile</span><span class="params">(seq, percentile)</span>:</span></div><div class="line">    i = int(len(seq) * (percentile / <span class="number">100.0</span>))</div><div class="line">    seq.sort()</div><div class="line">    <span class="keyword">return</span> seq[i]</div></pre></td></tr></table></figure>
+<h3 id="测试报告生成"><a href="#测试报告生成" class="headerlink" title="测试报告生成"></a>测试报告生成</h3><p>由于没有简单的重定向方法，新增加一个报告生成的方式需要大量重复代码，所以只完成了标准输出的方式。</p>
+<p>报告分为三个部分：</p>
+<ol>
+<li>测试总体概览，包括测试的时间、参数等等；</li>
+<li>时间分段的响应时间统计；</li>
+<li>测试进程的响应时间统计；</li>
+</ol>
+<p>输出部分的代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">print</span> <span class="string">"\n===Summary==="</span></div><div class="line"><span class="keyword">print</span> <span class="string">"transactions: %d hits"</span> % (queue_reader.trans_count)</div><div class="line"><span class="keyword">print</span> <span class="string">"errors: %d"</span> % (queue_reader.error_count)</div><div class="line"><span class="keyword">print</span> <span class="string">"runtime: %d secs"</span> % (test_duration)</div><div class="line"><span class="keyword">print</span> <span class="string">"rampup: %d secs"</span> % (int(args.get(<span class="string">'r'</span>)))</div><div class="line"><span class="keyword">print</span> <span class="string">"time-series interval: %0.3f secs"</span> % (interval_time)</div><div class="line"><span class="keyword">print</span> <span class="string">""</span></div><div class="line"></div><div class="line"><span class="keyword">print</span> <span class="string">"test start: %s"</span> % (datetime.fromtimestamp(test_start_timestamp).strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>))</div><div class="line"><span class="keyword">print</span> <span class="string">"test finish: %s"</span> % (datetime.fromtimestamp(test_end_timestamp).strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>))</div><div class="line"><span class="keyword">print</span> <span class="string">"\n===All Transactions==="</span></div><div class="line"><span class="keyword">print</span> <span class="string">"Response Time Summary (secs):"</span></div><div class="line"><span class="keyword">print</span> <span class="string">"%7s\t%7s\t%7s\t%7s\t%7s\t%7s\t%7s\t%7s"</span> % (<span class="string">"count"</span>, <span class="string">"avg"</span>, <span class="string">"min"</span>, <span class="string">"50pct"</span>, <span class="string">"80pct"</span>, <span class="string">"90pct"</span>, <span class="string">"max"</span>, <span class="string">"stdev"</span>)</div><div class="line"><span class="keyword">print</span> <span class="string">"%7d\t%7.3f\t%7.3f\t%7.3f\t%7.3f\t%7.3f\t%7.3f\t%7.3f\n"</span> % (len(all_run_time), average(all_run_time), minarg(all_run_time), percentile(all_run_time, <span class="number">50</span>),\</div><div class="line"> percentile(all_run_time, <span class="number">80</span>), percentile(all_run_time, <span class="number">90</span>), maxarg(all_run_time), standard_dev(all_run_time))</div><div class="line"></div><div class="line"><span class="keyword">print</span> <span class="string">"Interval Details (secs):"</span></div><div class="line"><span class="keyword">print</span> <span class="string">"%8s\t%7s\t%7s\t%7s\t%7s\t%7s\t%7s\t%7s\t%7s"</span> % (<span class="string">"interval"</span>, <span class="string">"count"</span>, <span class="string">"avg"</span>, <span class="string">"min"</span>, <span class="string">"50pct"</span>, <span class="string">"80pct"</span>, <span class="string">"90pct"</span>, <span class="string">"max"</span>, <span class="string">"stdev"</span>)</div><div class="line"><span class="keyword">for</span> interval_num <span class="keyword">in</span> range(interval):</div><div class="line">    interval_list = interval_run_time[interval_num]</div><div class="line">    <span class="keyword">print</span> <span class="string">"%8d\t%7d\t%7.3f\t%7.3f\t%7.3f\t%7.3f\t%7.3f\t%7.3f\t%7.3f"</span> % (interval_num, len(interval_list), average(interval_list), minarg(interval_list), percentile(interval_list, <span class="number">50</span>),\</div><div class="line"> percentile(interval_list, <span class="number">80</span>), percentile(interval_list, <span class="number">90</span>), maxarg(interval_list), standard_dev(interval_list))</div><div class="line"></div><div class="line"><span class="keyword">print</span> <span class="string">"\n===Agent Details==="</span></div><div class="line"><span class="keyword">print</span> <span class="string">"Agent\tStarttime\tRequests\tErrors\tBytes received\tAvg Response Time(secs)\tAvg throughput(req/sec)"</span></div><div class="line"><span class="keyword">for</span> agent_detail <span class="keyword">in</span> ag.details:</div><div class="line">    <span class="keyword">print</span> agent_detail</div></pre></td></tr></table></figure>
+<h2 id="性能优化和提速"><a href="#性能优化和提速" class="headerlink" title="性能优化和提速"></a>性能优化和提速</h2><p><code>Python</code>本身的效率不是很高，这一点有可能会对测试结果产生影响。另外，由于默认的<code>Python</code>解释器存在<code>GIL</code>的问题，在多线程的情况下会出现严重的性能问题。所以需要一些方法来提高整个测试程序的运行速度。</p>
+<p>需要注意的是，默认的测试代码比较简单，对计算能力要求不高，属于<code>IO密集型</code>的任务，任务的瓶颈在于网速，所以要求不高时，默认的<code>Python</code>完全能够胜任。</p>
+<h3 id="采用PyPy提速"><a href="#采用PyPy提速" class="headerlink" title="采用PyPy提速"></a>采用PyPy提速</h3><p><code>PyPy</code>是一个独立的解析器， 通过即时编译(JIT,Just-in-time)代码避免逐行解释执行来提升运行速度。由于我们的项目采用纯<code>Python</code>编写实现，所以可以简单的通过替换使用<code>PyPy</code>的解释器来达到提速的效果。</p>
+<p>首先下载最新版本的<code>PyPy</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget https://bitbucket.org/pypy/pypy/downloads/pypy2-v5.3.1-linux64.tar.bz2</div></pre></td></tr></table></figure>
+<p>解压后，用新的解释器来执行程序即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/path/to/pypy/bin/pypy main.py -h</div></pre></td></tr></table></figure>
+<p>但是这样仍然存在<code>GIL</code>的问题，可以通过使用<code>pypy-stm</code>版本来解决这个问题，安装和使用的方法与普通版的一样。</p>
+<h3 id="不同版本的解释器测试结果比较"><a href="#不同版本的解释器测试结果比较" class="headerlink" title="不同版本的解释器测试结果比较"></a>不同版本的解释器测试结果比较</h3><p>测试目标网站还是<code>www.baidu.com</code>。测试参数为20个并发进程，持续30秒，无启动时间。统计分为10段。测试使用的命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ python main.py -a 20 -d 30 -i 10 -u http://www.baidu.com</div><div class="line">$ pypy-stm/bin/pypy-stm main.py  -a 20 -d 30 -i 10 -u http://www.baidu.com</div><div class="line">$ pypy/bin/pypy main.py  -a 10 -d 30 -i 10 -u http://www.baidu.com</div></pre></td></tr></table></figure>
+<p>在测试时间内，三个版本分别完成的请求数为1938，2033，1828次。</p>
+<p>三个版本相差不多，而且由于测试时间较短，而新建进程开销较大，所以<code>pypy</code>的速度甚至慢于原版<code>Python</code>，而<code>pypy-stm</code>版本速度最快。</p>
+<h2 id="存在的问题"><a href="#存在的问题" class="headerlink" title="存在的问题"></a>存在的问题</h2><p>这个程序在我的<code>Macbook pro</code>上的结果比较奇怪，当进程数增加时，平均响应时间会显著减少，多次测试和分析之后发现应该是性能原因导致的，但是系统资源并没有被完全利用。而同样的代码在阿里云的<code>Ubuntu</code>服务器上运行正常，猜测是由于系统的多进程API差异导致的。目前没有发现解决方法。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/Thread/" rel="tag"># Thread</a>
+          
+            <a href="/tags/PyPy/" rel="tag"># PyPy</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/20/Odes（二）页面设计与实现/" rel="next" title="Odes（二）页面设计与实现">
+                <i class="fa fa-chevron-left"></i> Odes（二）页面设计与实现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/02/Ivita里使用Mysql的一些小技巧/" rel="prev" title="Ivita里使用Mysql的一些小技巧">
+                Ivita里使用Mysql的一些小技巧 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="无生" />
+          <p class="site-author-name" itemprop="name">无生</p>
+           
+              <p class="site-description motion-element" itemprop="description">Trying the best, expecting the worst.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">48</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#项目介绍"><span class="nav-number">1.</span> <span class="nav-text">项目介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用说明"><span class="nav-number">2.</span> <span class="nav-text">使用说明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载和安装"><span class="nav-number">2.1.</span> <span class="nav-text">下载和安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用方法"><span class="nav-number">2.2.</span> <span class="nav-text">使用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试和报告样例"><span class="nav-number">2.3.</span> <span class="nav-text">测试和报告样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目模块和实现"><span class="nav-number">3.</span> <span class="nav-text">项目模块和实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#运行参数分析"><span class="nav-number">3.1.</span> <span class="nav-text">运行参数分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程间通信"><span class="nav-number">3.2.</span> <span class="nav-text">进程间通信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试进程管理"><span class="nav-number">3.3.</span> <span class="nav-text">测试进程管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试进程实现"><span class="nav-number">3.4.</span> <span class="nav-text">测试进程实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试结果的统计"><span class="nav-number">3.5.</span> <span class="nav-text">测试结果的统计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试报告生成"><span class="nav-number">3.6.</span> <span class="nav-text">测试报告生成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能优化和提速"><span class="nav-number">4.</span> <span class="nav-text">性能优化和提速</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#采用PyPy提速"><span class="nav-number">4.1.</span> <span class="nav-text">采用PyPy提速</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不同版本的解释器测试结果比较"><span class="nav-number">4.2.</span> <span class="nav-text">不同版本的解释器测试结果比较</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存在的问题"><span class="nav-number">5.</span> <span class="nav-text">存在的问题</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">无生</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
