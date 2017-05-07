@@ -106,7 +106,7 @@ hexo new page "关于"
 
 ### 域名设置
 
-1. 在`public`目录下创建`CNAME`文件，里面填写自己的域名；
+1. 在`source`目录下创建`CNAME`文件，里面填写自己的域名；
 2. 给自己的域名添加CNAME记录，推荐[DNSPod](https://www.dnspod.cn/)，配置页有详细的介绍；
 3. 将`CNAME`文件同步到Github上，很快就能通过自己的域名访问网站了。
 
@@ -271,3 +271,7 @@ npm install hexo-renderer-pandoc --save
 但是，`pandoc`对表格的支持没有`markdown`那么智能，`-`的数目和表格的宽度严格相关，两端也需要用`|`闭合，才能正常显示。坏处自然是设置更加麻烦了，好处则是有利于微调。不过暂时还不清楚什么时候表格里的内容会溢出，什么时候会自动换行。
 
 据说`pandoc`可以用来写论文，之后可以尝试一下。
+
+## 设置侧边栏头像
+
+参考[Next wiki](https://github.com/iissnan/hexo-theme-next/wiki/%E8%AE%BE%E7%BD%AE%E4%BE%A7%E8%BE%B9%E6%A0%8F%E5%A4%B4%E5%83%8F)
