@@ -260,6 +260,144 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blog.mkdef.com/2017/04/10/基于travis和docker的持续集成/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无生">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coder">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/04/10/基于travis和docker的持续集成/" itemprop="url">
+                  基于travis和docker的持续集成
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-10T18:41:27+08:00">
+                2017-04-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>本文主要是记录一下最近在两个小项目odes和kraken中使用的持续集成技术。</p>
+<h2 id="所使用的基础组件"><a href="#所使用的基础组件" class="headerlink" title="所使用的基础组件"></a>所使用的基础组件</h2><p>代码托管在Github上，使用github集成的Travis CI自动触发CI流程。在CI中自动build新的image上传到Docker Hub。然后通过sshpass远程登录server触发部署脚本。部署脚本pull新的image然后部署。</p>
+<h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><p>由于项目都是基于python的，所以dockerfile比较简单：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">FROM ubuntu:latest</div><div class="line">MAINTAINER Shaobo Liu &lt;shaobo@mkdef.com&gt;</div><div class="line">LABEL Description=&quot;This image is used to flask-kraken&quot;</div><div class="line">RUN apt-get update -y</div><div class="line">RUN apt-get install -y python3-pip python3-dev build-essential</div><div class="line">COPY src /app</div><div class="line">COPY requirements.txt /app</div><div class="line">WORKDIR /app</div><div class="line">RUN pip3 install -r requirements.txt</div><div class="line">ENTRYPOINT [&quot;python3&quot;]</div><div class="line">CMD [&quot;app.py&quot;]</div></pre></td></tr></table></figure></p>
+<p>分解一下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">FROM ubuntu:latest</div><div class="line">MAINTAINER Shaobo Liu &lt;shaobo@mkdef.com&gt;</div><div class="line">LABEL Description=&quot;This image is used to flask-kraken&quot;</div></pre></td></tr></table></figure></p>
+<p>首先申明使用的基础镜像，然后写上大名表示我是维护这个镜像的作者和这个镜像的用途。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">RUN apt-get update -y</div><div class="line">RUN apt-get install -y python3-pip python3-dev build-essential</div></pre></td></tr></table></figure>
+<p>安装python3，如果有其他的工具或者lib，也要写在这里。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">COPY src /app</div><div class="line">COPY requirements.txt /app</div><div class="line">WORKDIR /app</div><div class="line">RUN pip3 install -r requirements.txt</div></pre></td></tr></table></figure>
+<p>复制源代码到docker里，然后切换工作目录，安装三方依赖。 有时候这里需要安装一些系统级的依赖，比如lxml或者psycopg2之类的，就需要加到前面<code>apt-get install</code>里去。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ENTRYPOINT [&quot;python3&quot;]</div><div class="line">CMD [&quot;app.py&quot;]</div></pre></td></tr></table></figure>
+<p>最后是需要执行的命令。根据docker的userguide，一个image最好只干一件事。</p>
+<h2 id="Travis-CI"><a href="#Travis-CI" class="headerlink" title="Travis CI"></a>Travis CI</h2><p>在项目根目录添加<code>.travis.yml</code>来定义CI流程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">sudo: required</div><div class="line"></div><div class="line">language: python</div><div class="line"></div><div class="line">services:</div><div class="line">  - docker</div><div class="line"></div><div class="line">python:</div><div class="line">    - &quot;3.5&quot;</div><div class="line"></div><div class="line">before_install:</div><div class="line">  - sudo apt-get update</div><div class="line">  - sudo apt-get install sshpass</div><div class="line"></div><div class="line">install: &quot;pip install -r requirements.txt&quot;</div><div class="line"></div><div class="line">script: </div><div class="line">  - python --version</div><div class="line"></div><div class="line">after_success:</div><div class="line">  - docker login -u=&quot;$DOCKER_USERNAME&quot; -p=&quot;$DOCKER_PASSWORD&quot;</div><div class="line">  - docker build -t shaobol/kraken:$TRAVIS_BRANCH-$TRAVIS_BUILD_ID . </div><div class="line">  - docker push shaobol/kraken:$TRAVIS_BRANCH-$TRAVIS_BUILD_ID;</div><div class="line">  - sshpass -p $VPS_PASSWORD ssh -o stricthostkeychecking=no root@45.32.137.234 &quot;sudo /home/saukymo/kraken/deploy.sh $TRAVIS_BRANCH-$TRAVIS_BUILD_ID&quot;</div></pre></td></tr></table></figure></p>
+<p>这里就不一一分解了，具体可以参考Travis的官方文档。</p>
+<p>主要介绍一下这个部分和其他部分是怎么联动的。首先Travis和Github是有集成服务的，在<code>Setting -&gt; integrations &amp; services</code>里选择添加Travis就可以了。然后在Travis上就可以设置相应的CI流程了，默认是master有新的commit就会自动触发一次CI。</p>
+<p>每次CI结束后的结果可以通过<a href="https://travis-ci.org/saukymo/odes.svg?branch=master" target="_blank" rel="external">badge</a>查看。</p>
+<p>重点在于测试完成后build和push docker image的过程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">after_success:</div><div class="line">  - docker login -u=&quot;$DOCKER_USERNAME&quot; -p=&quot;$DOCKER_PASSWORD&quot;</div><div class="line">  - docker build -t shaobol/kraken:$TRAVIS_BRANCH-$TRAVIS_BUILD_ID . </div><div class="line">  - docker push shaobol/kraken:$TRAVIS_BRANCH-$TRAVIS_BUILD_ID;</div></pre></td></tr></table></figure></p>
+<p>敏感信息这里全部通过Travis的Environment Variables。这样可以避免因为公开而泄露。</p>
+<p>如果需要将一些敏感信息传递到image里面去，可以通过<code>--build-arg</code>参数传递进去，然后保存为环境变量，参考<a href="https://docs.docker.com/engine/reference/builder/#label" target="_blank" rel="external">reference</a></p>
+<p>最后通过<code>sshpass</code>执行部署脚本，这一步也可以使用<code>ansible</code>代替。</p>
+<h2 id="docker-部署脚本"><a href="#docker-部署脚本" class="headerlink" title="docker 部署脚本"></a>docker 部署脚本</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line"></div><div class="line">docker pull shaobol/odes:$1</div><div class="line"></div><div class="line">if docker ps -a | grep -q odes; then</div><div class="line">    docker rm -f odes</div><div class="line">fi</div><div class="line"></div><div class="line">docker run -d --name odes -p 9000:9000 --link postgres:postgres shaobol/odes:$1</div></pre></td></tr></table></figure>
+<p>脚本很简单，接收CI传过来的参数(image tag)，pull新的image，然后干掉之前的container，run一个新的。这样就完成了update整个过程。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://blog.mkdef.com/2017/04/08/在Gitlab-CI中设置kubectl实现自动部署/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -872,156 +1010,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://blog.mkdef.com/2016/08/18/vps-shadowsocks-switchOmega科学上网/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="无生">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Coder">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/18/vps-shadowsocks-switchOmega科学上网/" itemprop="url">
-                  vps + shadowsocks + switchOmega科学上网
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-18T14:55:11+08:00">
-                2016-08-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>之前用了一段时间的<code>Lantern</code>，虽然很好用，但是流量消耗得太快，跑了一天就超过了80%。正好早上登上了<code>budgetvm</code>的vps整了下数据库，所以就想顺便再把代理捣鼓一下。</p>
-<p><img src="/uploads/shadowsocks.png" alt=""></p>
-<h2 id="经过"><a href="#经过" class="headerlink" title="经过"></a>经过</h2><p>借着<code>Lantern</code>剩下的一点流量，没费多少功夫就搜到了神器<a href="https://github.com/shadowsocks/shadowsocks" target="_blank" rel="external">shadowsocks</a>，但是很遗憾，似乎作者停止更新了。不过好在wiki还是完整的，开始按照wiki折腾了很久，不得要领。遂请教胡神，胡神很给力的给了给了一套教程<a href="https://github.com/sjtug/kxsw/wiki" target="_blank" rel="external">Get Through the Firewall in Scientific Method</a>。按照教程捣鼓了一番，还是不得要领。最后在胡神亲自带领下，终于成功翻墙，于是写下这篇笔记记录一下方法。</p>
-<p>基本按照这个图来</p>
-<pre><code>+-------------------------------------+
-|       Server A(大陆以外)             |
-|    运行shadowsocks-python服务端      |
-| 对外提供的SS IP为ip1，端口为port1      |
-+--------------+----------------------+
-           |
-           |
-           |
-+--------------+-------------------------------------------+
-|     本机                                                 |
-| 运行shadowsocks-python客户端 + switchOmega socks5代理     |
-+----------------------------------------------------------+
-</code></pre><p>本来为了方便使用，应该是在墙内设置一个Server B，然后在B上运行<code>shadowsocks</code>客户端，同时添加<code>cow</code>的二级代理，转成<code>http</code>代理，然后就方便使用了，但是测试了半天没有成功，改用上面的这种简化的方法。缺点在于本机需要运行客户端才可以开启代理。不过都设置好之后也还算方便。</p>
-<h2 id="服务器端-墙外VPS-安装和配置"><a href="#服务器端-墙外VPS-安装和配置" class="headerlink" title="服务器端(墙外VPS)安装和配置"></a>服务器端(墙外VPS)安装和配置</h2><p>首先安装<code>shadowsocks</code>，因为绑定1000以下端口和后台运行都是需要<code>sudo</code>权限的，所以需要直接在系统库中安装会比较方便一点。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo pip install shadowsocks</div></pre></td></tr></table></figure>
-<p>安装完之后就可以直接运行<code>ssserver</code>命令了。<br>首先写服务端的配置文件<code>shadowsocks.json</code>：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">        <span class="attr">"server"</span>:<span class="string">"▇▇.▇▇.▇▇.▇▇"</span>,</div><div class="line">        <span class="attr">"server_port"</span>:<span class="number">9000</span>,</div><div class="line">        <span class="attr">"password"</span>:<span class="string">"FUCKXXX"</span>,</div><div class="line">        <span class="attr">"timeout"</span>:<span class="number">300</span>,</div><div class="line">        <span class="attr">"method"</span>:<span class="string">"aes-256-cfb"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>然后运行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssserver -c shadowsocks.json</div></pre></td></tr></table></figure>
-<p>或者后台运行，可能需要<code>sudo</code>权限</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssserver -c shadowsocks.json -d start</div></pre></td></tr></table></figure>
-<p>这个时候服务器端的配置就完成了。</p>
-<h2 id="客户端-本机或国内VPS-配置"><a href="#客户端-本机或国内VPS-配置" class="headerlink" title="客户端(本机或国内VPS)配置"></a>客户端(本机或国内VPS)配置</h2><p>安装和运行方式同上，只有配置文件略有不同</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">        <span class="attr">"server"</span>:<span class="string">"▇▇.▇▇.▇▇.▇▇"</span>,</div><div class="line">        <span class="attr">"server_port"</span>:<span class="number">9000</span>,</div><div class="line">        <span class="attr">"local_address"</span>:<span class="string">"127.0.0.1"</span>,</div><div class="line">        <span class="attr">"local_port"</span>:<span class="number">443</span>,</div><div class="line">        <span class="attr">"password"</span>:<span class="string">"FUCKXXX"</span>,</div><div class="line">        <span class="attr">"timeout"</span>:<span class="number">300</span>,</div><div class="line">        <span class="attr">"method"</span>:<span class="string">"aes-256-cfb"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这样一来，本机就有了一个ip为<code>127.0.0.1</code>，端口为<code>443</code>的<code>socks5</code>代理了。</p>
-<h2 id="SwitchOmega配置"><a href="#SwitchOmega配置" class="headerlink" title="SwitchOmega配置"></a>SwitchOmega配置</h2><p><code>SwitchOmega</code>需要先翻墙在<code>Chrome</code>商店进行安装，安装完之后添加刚才设置好的<code>socks5</code>代理即可。</p>
-<p>但是<code>SwitchOmega</code>还需要设置自动代理，这样可以直接访问国内的网站而不用代理。打开插件的设置页面，选择<code>auto switch</code>，在<code>Rule list</code>中选择<code>AutoProxy</code>，然后在网址填入<code>https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt</code>。点下载配置即可。</p>
-<p>此时应该可以顺利翻墙了。</p>
-<h2 id="DNS污染"><a href="#DNS污染" class="headerlink" title="DNS污染"></a>DNS污染</h2><p>这个概念我还没有搞清楚，也没有去折腾相关的解决方案，使用了胡神给的一个据说没有被污染的DNS，然后就能成功访问<code>Google</code>了。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1071,7 +1059,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-count">18</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1084,7 +1072,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">48</span>
+                <span class="site-state-item-count">50</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

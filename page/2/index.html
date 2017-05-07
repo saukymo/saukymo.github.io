@@ -260,6 +260,156 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blog.mkdef.com/2016/08/18/vps-shadowsocks-switchOmega科学上网/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="无生">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coder">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/08/18/vps-shadowsocks-switchOmega科学上网/" itemprop="url">
+                  vps + shadowsocks + switchOmega科学上网
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-18T14:55:11+08:00">
+                2016-08-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>之前用了一段时间的<code>Lantern</code>，虽然很好用，但是流量消耗得太快，跑了一天就超过了80%。正好早上登上了<code>budgetvm</code>的vps整了下数据库，所以就想顺便再把代理捣鼓一下。</p>
+<p><img src="/uploads/shadowsocks.png" alt=""></p>
+<h2 id="经过"><a href="#经过" class="headerlink" title="经过"></a>经过</h2><p>借着<code>Lantern</code>剩下的一点流量，没费多少功夫就搜到了神器<a href="https://github.com/shadowsocks/shadowsocks" target="_blank" rel="external">shadowsocks</a>，但是很遗憾，似乎作者停止更新了。不过好在wiki还是完整的，开始按照wiki折腾了很久，不得要领。遂请教胡神，胡神很给力的给了给了一套教程<a href="https://github.com/sjtug/kxsw/wiki" target="_blank" rel="external">Get Through the Firewall in Scientific Method</a>。按照教程捣鼓了一番，还是不得要领。最后在胡神亲自带领下，终于成功翻墙，于是写下这篇笔记记录一下方法。</p>
+<p>基本按照这个图来</p>
+<pre><code>+-------------------------------------+
+|       Server A(大陆以外)             |
+|    运行shadowsocks-python服务端      |
+| 对外提供的SS IP为ip1，端口为port1      |
++--------------+----------------------+
+           |
+           |
+           |
++--------------+-------------------------------------------+
+|     本机                                                 |
+| 运行shadowsocks-python客户端 + switchOmega socks5代理     |
++----------------------------------------------------------+
+</code></pre><p>本来为了方便使用，应该是在墙内设置一个Server B，然后在B上运行<code>shadowsocks</code>客户端，同时添加<code>cow</code>的二级代理，转成<code>http</code>代理，然后就方便使用了，但是测试了半天没有成功，改用上面的这种简化的方法。缺点在于本机需要运行客户端才可以开启代理。不过都设置好之后也还算方便。</p>
+<h2 id="服务器端-墙外VPS-安装和配置"><a href="#服务器端-墙外VPS-安装和配置" class="headerlink" title="服务器端(墙外VPS)安装和配置"></a>服务器端(墙外VPS)安装和配置</h2><p>首先安装<code>shadowsocks</code>，因为绑定1000以下端口和后台运行都是需要<code>sudo</code>权限的，所以需要直接在系统库中安装会比较方便一点。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo pip install shadowsocks</div></pre></td></tr></table></figure>
+<p>安装完之后就可以直接运行<code>ssserver</code>命令了。<br>首先写服务端的配置文件<code>shadowsocks.json</code>：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">        <span class="attr">"server"</span>:<span class="string">"▇▇.▇▇.▇▇.▇▇"</span>,</div><div class="line">        <span class="attr">"server_port"</span>:<span class="number">9000</span>,</div><div class="line">        <span class="attr">"password"</span>:<span class="string">"FUCKXXX"</span>,</div><div class="line">        <span class="attr">"timeout"</span>:<span class="number">300</span>,</div><div class="line">        <span class="attr">"method"</span>:<span class="string">"aes-256-cfb"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后运行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssserver -c shadowsocks.json</div></pre></td></tr></table></figure>
+<p>或者后台运行，可能需要<code>sudo</code>权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssserver -c shadowsocks.json -d start</div></pre></td></tr></table></figure>
+<p>这个时候服务器端的配置就完成了。</p>
+<h2 id="客户端-本机或国内VPS-配置"><a href="#客户端-本机或国内VPS-配置" class="headerlink" title="客户端(本机或国内VPS)配置"></a>客户端(本机或国内VPS)配置</h2><p>安装和运行方式同上，只有配置文件略有不同</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">        <span class="attr">"server"</span>:<span class="string">"▇▇.▇▇.▇▇.▇▇"</span>,</div><div class="line">        <span class="attr">"server_port"</span>:<span class="number">9000</span>,</div><div class="line">        <span class="attr">"local_address"</span>:<span class="string">"127.0.0.1"</span>,</div><div class="line">        <span class="attr">"local_port"</span>:<span class="number">443</span>,</div><div class="line">        <span class="attr">"password"</span>:<span class="string">"FUCKXXX"</span>,</div><div class="line">        <span class="attr">"timeout"</span>:<span class="number">300</span>,</div><div class="line">        <span class="attr">"method"</span>:<span class="string">"aes-256-cfb"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样一来，本机就有了一个ip为<code>127.0.0.1</code>，端口为<code>443</code>的<code>socks5</code>代理了。</p>
+<h2 id="SwitchOmega配置"><a href="#SwitchOmega配置" class="headerlink" title="SwitchOmega配置"></a>SwitchOmega配置</h2><p><code>SwitchOmega</code>需要先翻墙在<code>Chrome</code>商店进行安装，安装完之后添加刚才设置好的<code>socks5</code>代理即可。</p>
+<p>但是<code>SwitchOmega</code>还需要设置自动代理，这样可以直接访问国内的网站而不用代理。打开插件的设置页面，选择<code>auto switch</code>，在<code>Rule list</code>中选择<code>AutoProxy</code>，然后在网址填入<code>https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt</code>。点下载配置即可。</p>
+<p>此时应该可以顺利翻墙了。</p>
+<h2 id="DNS污染"><a href="#DNS污染" class="headerlink" title="DNS污染"></a>DNS污染</h2><p>这个概念我还没有搞清楚，也没有去折腾相关的解决方案，使用了胡神给的一个据说没有被污染的DNS，然后就能成功访问<code>Google</code>了。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://blog.mkdef.com/2016/08/02/Ivita里使用Mysql的一些小技巧/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -880,141 +1030,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://blog.mkdef.com/2016/05/30/Sublime-Text3-配置/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="无生">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Coder">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/30/Sublime-Text3-配置/" itemprop="url">
-                  Sublime Text3 配置
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-30T15:37:48+08:00">
-                2016-05-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Sublime-Text3-介绍"><a href="#Sublime-Text3-介绍" class="headerlink" title="Sublime Text3 介绍"></a>Sublime Text3 介绍</h2><p><a href="https://www.sublimetext.com/" target="_blank" rel="external">Sublime Text3</a>是一款轻量级、跨平台的、拓展功能丰富的编辑器，使用python编写，自然也是用来写python的不二选择。然而，通过丰富强大的插件配置，ST也可以用于其他各种语言的编写。这里主要介绍我常使用的python和<code>Markdown</code>的配置。</p>
-<h2 id="Package-Control"><a href="#Package-Control" class="headerlink" title="Package Control"></a>Package Control</h2><p>要想在ST上使用插件，最方便的方法就是通过<code>Package Control</code>来安装，不过我们首先得手工安装它本身。</p>
-<p>安装文档可以参考官方的<a href="https://packagecontrol.io/installation" target="_blank" rel="external">主页</a>，使用<code>Ctrl+` </code>调出console，复制以下代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">import urllib.request,os,hashlib; h = &apos;2915d1851351e5ee549c20394736b442&apos; + &apos;8bc59f460fa1548d1514676163dafc88&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://packagecontrol.io/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)</div></pre></td></tr></table></figure>
-<p>其实是压成一行的python代码，不过我还是不把它高亮了。安装完成之后，就可以通过<code>Ctrl+shift+P</code>来打开命令面板，然后在里面输入<code>install</code>，就能找到<code>install package</code>的选项，回车之后就能看到所有的插件列表了。</p>
-<h2 id="主题美化"><a href="#主题美化" class="headerlink" title="主题美化"></a>主题美化</h2><p>作为一个看脸的世界，肯定首先要把界面得漂漂亮亮的才会有动力继续用下。虽然说，ST本身的界面已经非常好看了，我自己也对着这个朴素的界面用了很多很多年。但是今天在<a href="https://dribbble.com/search?q=sublime" target="_blank" rel="external">dribbble</a>上看到了一个崭新的世界。不得不承认，程序员和设计师的审美差距还是有一定距离的。</p>
-<p>最后采用的这个<a href="http://equinusocio.github.io/material-theme/" target="_blank" rel="external">Material theme</a>主题，并且添加了所有可选选项(我相信人家的审美每一个细节都比我做得好)。效果非常好，python的高亮看着略不舒服，换成<code>OceanicNext</code>会好很多。</p>
-<p>根据项目主页上的图片来看，<code>Markdown</code>的配色应该是这个主题设置的，然而我在第一时间并没有看到效果，倒是反反复复折腾了很久的<code>Markdown</code>插件之后才突然正常了，不过只要设置正常了，效果非常非常赞。</p>
-<h2 id="Python插件配置"><a href="#Python插件配置" class="headerlink" title="Python插件配置"></a>Python插件配置</h2><p>这里提到的插件，都是通过<code>Package Control</code>里直接输入名字就能安装的。</p>
-<h3 id="SideBarFolders"><a href="#SideBarFolders" class="headerlink" title="SideBarFolders"></a><a href="https://github.com/titoBouzout/SideBarFolders" target="_blank" rel="external">SideBarFolders</a></h3><p>如果同时开发好几个项目时，ST打开项目文件夹比较麻烦，有了这个插件之后，菜单上就会多出一项<code>Folders</code>，里面就可以方便切换最近打开的目录，非常的方便。同时，如果文件夹位置发生了变动，导致之前的目录失效了，它也会提醒删除，也算是一个不错的处理方式(要求不要太高)。</p>
-<h3 id="SublimeREPL"><a href="#SublimeREPL" class="headerlink" title="SublimeREPL"></a><a href="https://github.com/wuub/SublimeREPL" target="_blank" rel="external">SublimeREPL</a></h3><p>之前很长一段时间里，在ST跑python程序都不能中止，让我很是郁闷，前几年从来没有这个问题啊。后来发现是因为有一次强迫症发作，只挑了自己认识的插件安装，结果落下了这个插件。事实上，正是这个插件默默的提供了一个内置的解释器来运行python程序，也只有这样，才能通过快捷键中止程序。目前看来，对于终端的交互支持得不是很好，不过平时开发的时候，也不会用到终端输入了吧..</p>
-<h3 id="SideBarEnhancements"><a href="#SideBarEnhancements" class="headerlink" title="SideBarEnhancements"></a><a href="https://github.com/titoBouzout/SideBarEnhancements" target="_blank" rel="external">SideBarEnhancements</a></h3><p>侧边文件栏功能加强的插件，虽然说实话我并没有仔细对比过多了哪些功能，因为之前的功能我也用得不多。不过直观上感觉右键菜单确实长了好多，之后会多多关注一下。</p>
-<h3 id="SublimeCodeIntel"><a href="#SublimeCodeIntel" class="headerlink" title="SublimeCodeIntel"></a><a href="https://github.com/SublimeCodeIntel/SublimeCodeIntel" target="_blank" rel="external">SublimeCodeIntel</a></h3><p>支持很多语言的自动补全提醒，再也不用dir一个一个看了。提示非常高大上，不过如果记错了函数位置，然后找半天找不到还是比较尴尬的(怪我咯)</p>
-<h3 id="Virtuallenv"><a href="#Virtuallenv" class="headerlink" title="Virtuallenv"></a><a href="https://github.com/AdrianLC/sublime-text-virtualenv" target="_blank" rel="external">Virtuallenv</a></h3><p>可以很方便的激活虚拟环境，事实上我也就用过这一个功能..其他管理的功能应该也都有，但是没有用过。不过发现这个插件和<code>SublimeREPL</code>不能一起使用，也就是说用那个插件不能按照我目前的习惯使用<code>virtualenv</code>，用这个插件的话就不能中止程序了。Anyway, 这个坑还得多试试，目前看来这个插件估计用得不会太多。</p>
-<h3 id="SublimeGit"><a href="#SublimeGit" class="headerlink" title="SublimeGit"></a><a href="https://github.com/SublimeGit/SublimeGit" target="_blank" rel="external">SublimeGit</a></h3><p>洛洛推荐的Git集成，大部分时候都非常好用，除了本地merge出现冲突的时候出现过Bug，当然也有可能是打开方式不太对。之后自己的项目基本也都用Github管理了，所以这个插件应该会用得更多。</p>
-<h2 id="Markdown插件配置"><a href="#Markdown插件配置" class="headerlink" title="Markdown插件配置"></a>Markdown插件配置</h2><h3 id="Markdown-Extended"><a href="#Markdown-Extended" class="headerlink" title="Markdown Extended"></a><a href="https://github.com/jonschlinkert/sublime-markdown-extended" target="_blank" rel="external">Markdown Extended</a></h3><p>安装完之后，Syntax里会多出一个类型<code>Markdown Extended</code>，将<code>.md</code>的文件和这个新类型绑定起来之后，就能看到丰富的配色了。其实我不确定到底是这个插件的作用还是之前那个<code>Material theme</code>的作用才有了我现在的<code>Markdown</code>配色，总之很赞。</p>
-<h3 id="OmniMarkupPreviewer"><a href="#OmniMarkupPreviewer" class="headerlink" title="OmniMarkupPreviewer"></a><a href="https://github.com/timonwong/OmniMarkupPreviewer" target="_blank" rel="external">OmniMarkupPreviewer</a></h3><p>用来预览<code>Markdown</code>文件的，其实如果我只是为了写<code>Hexo</code>的话，直接用<code>Hexo</code>渲染预览就好了，效果更好。但是如果为了用在其他地方的话，这个插件还是不错的，而且它也支持其他格式的文件。</p>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p><img src="/uploads/ST3.png" alt=""><br>最后上一张王道，这样配置一番后，确实比之前的ST要好用很多(然而代码写得还是那么烂)。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1064,7 +1079,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-count">18</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1077,7 +1092,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">48</span>
+                <span class="site-state-item-count">50</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
