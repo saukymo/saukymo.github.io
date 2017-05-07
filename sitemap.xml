@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.mkdef.com/about/index.html</loc>
+    
+    <lastmod>2017-05-07T06:20:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.mkdef.com/2016/04/17/Hexo%E5%92%8CGithub%E6%90%AD%E5%BB%BABlog/</loc>
     
     <lastmod>2017-05-07T05:56:47.000Z</lastmod>
@@ -26,13 +33,6 @@
     <loc>http://blog.mkdef.com/2016/04/13/hello-world/</loc>
     
     <lastmod>2017-03-05T08:43:28.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.mkdef.com/about/index.html</loc>
-    
-    <lastmod>2017-03-05T08:41:11.000Z</lastmod>
     
   </url>
   
