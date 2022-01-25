@@ -3,6 +3,7 @@ title = "Coder"
 theme = "hugo-coder"
 languagecode = "en"
 defaultcontentlanguage = "en"
+timeZone = "Asia/Shanghai"
 
 paginate = 20
 
