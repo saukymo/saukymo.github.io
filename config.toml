@@ -1,4 +1,4 @@
-baseurl = "https://saukymo.github.io/"
+baseurl = "https://blog.mkdef.com/"
 title = "Coder"
 theme = "hugo-coder"
 languagecode = "en"
