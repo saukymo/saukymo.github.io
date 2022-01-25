@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Caffe on Coder</title><link>https://saukymo.github.io/tags/caffe/</link><description>Recent content in Caffe on Coder</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 19 Aug 2016 13:21:35 +0000</lastBuildDate><atom:link href="https://saukymo.github.io/tags/caffe/index.xml" rel="self" type="application/rss+xml"/><item><title>Macos安装Caffe和pyCaffe</title><link>https://saukymo.github.io/posts/macos%E5%AE%89%E8%A3%85caffe%E5%92%8Cpycaffe/</link><pubDate>Fri, 19 Aug 2016 13:21:35 +0000</pubDate><guid>https://saukymo.github.io/posts/macos%E5%AE%89%E8%A3%85caffe%E5%92%8Cpycaffe/</guid><description>参考阅读 其实主要是翻译的官方文档，官方文档主要是比较全面，各种情况都要考虑到，所以内容比较分散，而很多细节容易被忽略掉。但是如果具体我自己的安装需求，情况比较单一，所以相比之下更加清晰一点。
+Macos依赖安装 源码编译
+安装依赖包 官方的代码为：
+brew install -vd snappy leveldb gflags glog szip lmdb # need the homebrew science source for OpenCV and hdf5 brew tap homebrew/science brew install hdf5 opencv 依次安装就好，每个包的作用如下：
+snappy 用于压缩和解压文件
+leveldb &amp;amp; lmdb 将各种原始数据通过Key-Value键值对的方式存储在内存中，方便Caffe的DataLayer获取这些数据。 lmdb是比较新的数据管理库，leveldb是比较老的版本，但是为了兼容，仍然保留了这个库。
+gflags 解析命令行参数。
+glog 日志记录。
+BLAS 我不记得有安装这个，可能之前其他项目有装过，这个是主要的矩阵、向量计算的库。根据文档，应该默认使用的ATLAS库。
+HDF5 统一的数据存储格式。</description></item></channel></rss>

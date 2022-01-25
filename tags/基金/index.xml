@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>基金 on Coder</title><link>https://saukymo.github.io/tags/%E5%9F%BA%E9%87%91/</link><description>Recent content in 基金 on Coder</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 11 May 2016 13:33:07 +0000</lastBuildDate><atom:link href="https://saukymo.github.io/tags/%E5%9F%BA%E9%87%91/index.xml" rel="self" type="application/rss+xml"/><item><title>Brinson绩效分解</title><link>https://saukymo.github.io/posts/brinson%E7%BB%A9%E6%95%88%E5%88%86%E8%A7%A3/</link><pubDate>Wed, 11 May 2016 13:33:07 +0000</pubDate><guid>https://saukymo.github.io/posts/brinson%E7%BB%A9%E6%95%88%E5%88%86%E8%A7%A3/</guid><description>由于工作需要评估基金表现，所以尝试了使用最简单直观的Brinson模型来对基金的收益进行分解。通过Brinson分解，我们能够知道基金的收益中有多少来自于对债股的比例配置，有多少来自于对个股的选择。
+首先需要说明的是，Brinson能够分解出的因素有很多，但是由于需求和实际数据的限制，这里只考虑资产配置和个股选择两个因素。其次，由于需要比较宽泛的应用到各种基金且各个历史阶段，所以只能对模型作很多简化处理，如果对单一基金做精细分析，Brinson分解能够取得更好的效果。
+单期Brinson模型 其实Brinson模型的原理很简单，我们假设有一个基准线，也就是什么额外付出都没有的情况下，一个基金能够获得的收益。然后现在我们待分析的基金比基准多出了一部分收益，那Brinson模型就是用来告诉我们多出来的这部分收益是什么因素导致的。
+进一步的，假设这些收益仅仅来自于两个因素，一个因素是资产配置，也就是多少用来买债券，多少用来买股票。如果一定时间段内，股票涨得好，多配一部分股票自然收益会更高一些。另一个因素是个股选择，同样多的钱买股票，我买的股票比你准，涨得比你多，自然我的收益就更一些。
+我们用公式来表达，假设基金的实际收益率为$R_{p}$ ，资产配置为$W_{p, i}$, 每种资产的收益率分别为$r_{p, i}$，那么总的收益率就可以表示为
+$$ R_{p} = \sum_{i} W_{p,i}r_{p,i} $$
+同样，我们用来的参考的基准收益也可以这样分解，表示为
+$$ R_{b} = \sum_{i} W_{b,i}r_{b,i} $$
+那Brinson模型就把收益分为了四个部分，一个是基准线上的基准收益，第二个是由于你资产配置能力强造成的收益，第三个是由于选股准确造成的收益，最后一个就是由两个部分共同造成的收益。 用表格表示就是
+基准行业权重 $w_{b,i}$ 实际行业权重 $w_{p,i}$ 基准行业收益率$r_{b,i}$ 基准组合B $r_{b}=\sum r_{b,i}w_{b,i}$ 配置组合A $r_{a}=\sum r_{b,i}w_{p,i}$ 实际行业收益率$r_{p,i}$ 选股组合S $r_{s}=\sum r_{p,i} w_{b,i}$ 实际组合P $r_{p}=\sum r_{p,i}w_{p,i}$ 所以，对于每个时期的基金表现，找到相应的基准线，计算出以上四个值就可以了。这里我们选取沪深300指数为基准，基准资产配置则为80%股票和20%债券。
+数据采集 我们先来分析一下需要哪些数据，首先需要每一支基金在特定时期的收益率，这个数据来源易天富，这个页面支持净值回查，就可以得到所有基金任意时期的收益率了，采集的方法可以参考另一篇文章。
+我们需要知道这支基金的资产配置情况，这个可以在这个页面查到。观察一下可以发现，这些数据来源于每个季度的季报，日期确定一年四次，为了简单起见，这里只取股票和债券的比例，其他部分的收益假设为0。需要注意到，这里的数据可能会有错误，有的时候会用0.46表示，有点时候用46.16表示。这个问题很好处理，大于等于1的统一除以100即可。
+我们还需要沪深300指数的历史收益，这个数据可以用sohu的api
+http://q.stock.sohu.com/hisHq?code=zs_000300&amp;amp;start=20151231&amp;amp;end=20160331 这个api是从这里抓到的，改变日期就可以得到中间所有交易日的净值，非常方便。</description></item></channel></rss>

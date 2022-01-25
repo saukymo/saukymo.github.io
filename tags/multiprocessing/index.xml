@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>multiprocessing on Coder</title><link>https://saukymo.github.io/tags/multiprocessing/</link><description>Recent content in multiprocessing on Coder</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 14 Apr 2016 14:07:36 +0000</lastBuildDate><atom:link href="https://saukymo.github.io/tags/multiprocessing/index.xml" rel="self" type="application/rss+xml"/><item><title>pypy加速抓取Sina后复权数据</title><link>https://saukymo.github.io/posts/pypy%E5%8A%A0%E9%80%9F%E6%8A%93%E5%8F%96sina%E5%90%8E%E5%A4%8D%E6%9D%83%E6%95%B0%E6%8D%AE/</link><pubDate>Thu, 14 Apr 2016 14:07:36 +0000</pubDate><guid>https://saukymo.github.io/posts/pypy%E5%8A%A0%E9%80%9F%E6%8A%93%E5%8F%96sina%E5%90%8E%E5%A4%8D%E6%9D%83%E6%95%B0%E6%8D%AE/</guid><description>pypy PyPy是一个独立的解析器， 通过即时编译(JIT,Just-in-time)代码避免逐行解释执行来提升运行速度。我们一般使用的Python一般是使用C实现的,所以一般又叫CPython。PyPy采用python实现，速度最快可以达到CPython的10倍左右。
+PyPy对纯Python的模块支持的非常好，支持的模块可以在这里看到。但是PyPy对C模块的支持还不是很好，主要是对numpy的支持完成度还不够高，所以常用的一些科学运算库也就都不兼容PyPy了。所以个人感觉PyPy主要是应用在服务器和爬虫上。
+multiprocessing.dummy multiprocessing.dummy和multiprocessing是两个执行并行任务的库，其中前者是多线程库，后者是多进程库，但是具有相同的api，所以可以很方便的在多线程和多进程之间切换。
+由于GIL的原因，Python的多线程其实是单线程交替执行的，所以对于CPU密集的任务来说，多线程其实并不会有很好的效果。但是对于IO密集型的任务，多线程实现简单轻量也有很好的加速效果，值得一试。
+举一个简单的爬取网页的例子：
+import urllib2 from multiprocessing.dummy import Pool as ThreadPool urls = [] pool = ThreadPool(4) results = pool.map(urllib2.urlopen, urls) pool.close() pool.join() 这个例子采用了4个线程，通过pool.map()来分发任务，结果依次保存在results中，其中pool.join()是等待所有线程结束之后再执行后续的代码。
+tushare TuShare是一个免费、开源的python财经数据接口包。它的数据也是从网上各种数据源抓取整理过来的，并且采用统一的结构，返回pandas的dataframe。并且它整合了通联的数据，所以这个包的数据数量和质量都是很不错的。
+我的任务是采集A股市场的复权数据，tushare本来可以轻松完成这个任务，但是速度特别慢， 2800支个股4个线程采集需要将近50分钟的时间，对于一个需要每天运行一次的程序来说时间有点长。通过查看源代码，发现其实它是抓取的sina的复权数据页面，而且是每支股票单独抓取的，所以它一共调了将近3K次api来请求整个html页面，然后从中解析出数据。(其实是6K次，因为新浪那个页面是按季度来查询的，然后当时正好跨越了第一和第二两个季度)
+于是自然想试试用PyPy来加速了，加上之前也没有用过PyPy，正好通过这个机会来测试一下PyPy的效果。
+PyPy的下载和安装 首先在官网的下载页面下载最新版本的PyPy：
+wget https://bitbucket.org/pypy/pypy/downloads/pypy-5.0.1-linux64.tar.bz2 然后解压放到任意位置，并用PyPy的作为virtualenv的解释器。
+virtualenv -p /path/to/pypy/bin/pypy env source env/bin/activate 此时运行python就能看到PyPy的信息了：
+Python 2.7.10 (bbd45126bc69, Mar 18 2016, 21:35:08) [PyPy 5.0.1 with GCC 4.8.4] on linux2 Type &amp;#34;help&amp;#34;, &amp;#34;copyright&amp;#34;, &amp;#34;credits&amp;#34; or &amp;#34;license&amp;#34; for more information.</description></item></channel></rss>

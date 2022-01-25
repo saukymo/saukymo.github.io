@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>爬虫 on Coder</title><link>https://saukymo.github.io/tags/%E7%88%AC%E8%99%AB/</link><description>Recent content in 爬虫 on Coder</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 16 Jun 2016 10:02:25 +0000</lastBuildDate><atom:link href="https://saukymo.github.io/tags/%E7%88%AC%E8%99%AB/index.xml" rel="self" type="application/rss+xml"/><item><title>Odes（一）爬取全文</title><link>https://saukymo.github.io/posts/odes%E4%B8%80%E7%88%AC%E5%8F%96%E5%85%A8%E6%96%87/</link><pubDate>Thu, 16 Jun 2016 10:02:25 +0000</pubDate><guid>https://saukymo.github.io/posts/odes%E4%B8%80%E7%88%AC%E5%8F%96%E5%85%A8%E6%96%87/</guid><description>项目想法 因为一直没有一个比较完整的项目，所以想参考变卦做一个小的project，展示一个内容有限但是比较有意思的东西，顺便学习实践一下前端技术，于是就选择了诗经。内容不多，一共也就305首。一共分成3个步骤吧，第一步找个网站抓一个比较完整的全文下来，整理好之后存放到数据库里，第二步写一个前端把内容展示出来，但是这边是前后端配合还是单独一个前端页面还没有想好。第三步是其他功能的加入，比如注音和释义，甚至其他的一些比如统计数据之类的功能。
+时间安排上并没有计划，主要最近空闲时间比较多，又不想复习，于是才想做这么个项目。反正先把坑挖在这，什么时候能做完就只能随缘了。
+postgres安装和配置 其实这一部并不一定需要，因为内容确实不多，直接做成静态页面效果也不错。主要是为了之后第三部可能会需要比较复杂的功能时提前准备。但是没想到这一部花了比较多的时间，最后也只是能用，并没有设置成一个正常的状态。
+postgres安装 按照各类教程中的内容，只需要这一步就可以安装好数据库并且自动开启服务，端口5432。
+sudo apt-get install postgresql 但是执行完之后，psql并没有连上数据库，服务器上也看不到postgres的进程。
+略去中间大量的搜索和尝试的过程，在/usr/lib/postgresql/9.1/bin/目录里找到常用的命令，于是按照手动启动数据库的方式启动：
+/usr/lib/postgresql/9.1/bin/postgres -D ~/data 这里提示我不能用root权限开启服务，恍然大悟，之前没有成功启动的原因可能就是因为我一直使用的root用户(使用的服务器虽然用了很长一段时间了，但是当时仅仅安装了一个wordpress就没有登上去过了。所以一直都是root用户。)但是它为什么没有任何提示呢？！于是得到一个教训，新服务器第一件事就是建立一个新的非root用户。建了一个新的用户saukymo之后，终于成功开启了服务。
+之后的过程由于大量试错，现在不能准确回忆起来了，不过应该还是通过这个目录下的initdb和createdb成功建立了一个数据库odes。
+在Mac中，可以通过brew安装，安装完成之后就可以使用psql了，之后也能安装psycopg2的python库了。
+brew install postgresql 直接使用psql命令进入数据库，然后给用户设置密码：
+\password saukymo Postgres允许远程连接 默认情况下，只允许本机连接数据库，如果需要远程连接到数据库，需要设置postgres允许远程连接。设置比较简单，首先修改data目录下的pg_hba.conf文件，加入一行
+host all all 0.0.0.0/0 md5 这样就能允许所有的ip通过密码访问数据库了。
+然后修改postgresl.conf文件，设置listen_addresses为任意即可，即：
+listen_addresses = &amp;#39;*&amp;#39; 然后重启服务，我这里因为安装方式不太正确，命令为：
+/usr/lib/postgresql/9.1/bin/pg_ctl -D ~/data restart 此时就能在其他机器上连接上数据库了，完整的psql命令为：
+psql -U saukymo -h ▇▇.▇▇.▇▇.▇▇ -d odes -W 按照提示输入之前设置的密码即可。
+安装psycopg2 这个库是python用来连接postgres数据库的，通过pip安装即可
+pip install psycopg2 需要注意的是，这个库并不能兼容Pypy，如果需要和Pypy一起工作的话，需要安装psycopg2cffi，简单设置之后，就可以兼容了，而且原来的代码不需要变化。</description></item><item><title>pypy加速抓取Sina后复权数据</title><link>https://saukymo.github.io/posts/pypy%E5%8A%A0%E9%80%9F%E6%8A%93%E5%8F%96sina%E5%90%8E%E5%A4%8D%E6%9D%83%E6%95%B0%E6%8D%AE/</link><pubDate>Thu, 14 Apr 2016 14:07:36 +0000</pubDate><guid>https://saukymo.github.io/posts/pypy%E5%8A%A0%E9%80%9F%E6%8A%93%E5%8F%96sina%E5%90%8E%E5%A4%8D%E6%9D%83%E6%95%B0%E6%8D%AE/</guid><description>pypy PyPy是一个独立的解析器， 通过即时编译(JIT,Just-in-time)代码避免逐行解释执行来提升运行速度。我们一般使用的Python一般是使用C实现的,所以一般又叫CPython。PyPy采用python实现，速度最快可以达到CPython的10倍左右。
+PyPy对纯Python的模块支持的非常好，支持的模块可以在这里看到。但是PyPy对C模块的支持还不是很好，主要是对numpy的支持完成度还不够高，所以常用的一些科学运算库也就都不兼容PyPy了。所以个人感觉PyPy主要是应用在服务器和爬虫上。
+multiprocessing.dummy multiprocessing.dummy和multiprocessing是两个执行并行任务的库，其中前者是多线程库，后者是多进程库，但是具有相同的api，所以可以很方便的在多线程和多进程之间切换。
+由于GIL的原因，Python的多线程其实是单线程交替执行的，所以对于CPU密集的任务来说，多线程其实并不会有很好的效果。但是对于IO密集型的任务，多线程实现简单轻量也有很好的加速效果，值得一试。
+举一个简单的爬取网页的例子：
+import urllib2 from multiprocessing.dummy import Pool as ThreadPool urls = [] pool = ThreadPool(4) results = pool.map(urllib2.urlopen, urls) pool.close() pool.join() 这个例子采用了4个线程，通过pool.map()来分发任务，结果依次保存在results中，其中pool.join()是等待所有线程结束之后再执行后续的代码。
+tushare TuShare是一个免费、开源的python财经数据接口包。它的数据也是从网上各种数据源抓取整理过来的，并且采用统一的结构，返回pandas的dataframe。并且它整合了通联的数据，所以这个包的数据数量和质量都是很不错的。
+我的任务是采集A股市场的复权数据，tushare本来可以轻松完成这个任务，但是速度特别慢， 2800支个股4个线程采集需要将近50分钟的时间，对于一个需要每天运行一次的程序来说时间有点长。通过查看源代码，发现其实它是抓取的sina的复权数据页面，而且是每支股票单独抓取的，所以它一共调了将近3K次api来请求整个html页面，然后从中解析出数据。(其实是6K次，因为新浪那个页面是按季度来查询的，然后当时正好跨越了第一和第二两个季度)
+于是自然想试试用PyPy来加速了，加上之前也没有用过PyPy，正好通过这个机会来测试一下PyPy的效果。
+PyPy的下载和安装 首先在官网的下载页面下载最新版本的PyPy：
+wget https://bitbucket.org/pypy/pypy/downloads/pypy-5.0.1-linux64.tar.bz2 然后解压放到任意位置，并用PyPy的作为virtualenv的解释器。
+virtualenv -p /path/to/pypy/bin/pypy env source env/bin/activate 此时运行python就能看到PyPy的信息了：
+Python 2.7.10 (bbd45126bc69, Mar 18 2016, 21:35:08) [PyPy 5.0.1 with GCC 4.8.4] on linux2 Type &amp;#34;help&amp;#34;, &amp;#34;copyright&amp;#34;, &amp;#34;credits&amp;#34; or &amp;#34;license&amp;#34; for more information.</description></item></channel></rss>

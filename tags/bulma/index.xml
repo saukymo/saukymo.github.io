@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bulma on Coder</title><link>https://saukymo.github.io/tags/bulma/</link><description>Recent content in Bulma on Coder</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 07 May 2017 22:20:52 +0000</lastBuildDate><atom:link href="https://saukymo.github.io/tags/bulma/index.xml" rel="self" type="application/rss+xml"/><item><title>odes前端改造</title><link>https://saukymo.github.io/posts/odes%E5%89%8D%E7%AB%AF%E6%94%B9%E9%80%A0/</link><pubDate>Sun, 07 May 2017 22:20:52 +0000</pubDate><guid>https://saukymo.github.io/posts/odes%E5%89%8D%E7%AB%AF%E6%94%B9%E9%80%A0/</guid><description>Bulma Bulma是一个轻量级的前端框架，仅仅包含CSS文件，而且有很多特别酷炫的主题。第一次看到之后就想用它来写一个前端页面，正好Odes的页面功能比较简单，而且之前实现的时候有很多地方都没有做好，正好借此机会做一个小的改造。
+替换掉Bootstrap 因为之前用bootstrap其实也只是为了用它的样式而已，主要功能还是得通过jQuery完成，于是用Bulma之后，就可以毫不犹豫地干掉Bootstrap了。
+直接在页面内插入css，然后将bootstrap的样式替换成bulma的样式就可以了。
+Bootstrap是包含部分icon的，odes里也有用到，于是还需要添加font-awesome的css才行。
+添加面包屑导航 之前的api里其实已经写好了类别的请求、更新的代码，不过因为样式一直调不好的原因，没有显示在界面上。
+Bulma最近才刚刚把这个加入到feature list里, 所以只能自己实现。
+实现很简单，抄自, html代码如下
+&amp;lt;ul class=&amp;#34;breadcrumb&amp;#34;&amp;gt; &amp;lt;li&amp;gt;&amp;lt;/li&amp;gt; &amp;lt;/ul&amp;gt; CSS代码
+ul.breadcrumb { outline-style: none; display: block; padding: 0.75rem; padding-left: 0; background: #fff; } ul.breadcrumb li { display: inline-block; } ul.breadcrumb li.is-active { color: #848484; } ul.breadcrumb&amp;gt;li+li:before { padding: 0 5px; color: #848484; content: &amp;#34;/\00a0&amp;#34;; } ul.breadcrumb li a:hover { text-decoration: underline; } 和原版相比，就去掉了边框阴影而已。</description></item></channel></rss>

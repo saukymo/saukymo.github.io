@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>lxml on Coder</title><link>https://saukymo.github.io/tags/lxml/</link><description>Recent content in lxml on Coder</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 16 Jun 2016 10:02:25 +0000</lastBuildDate><atom:link href="https://saukymo.github.io/tags/lxml/index.xml" rel="self" type="application/rss+xml"/><item><title>Odes（一）爬取全文</title><link>https://saukymo.github.io/posts/odes%E4%B8%80%E7%88%AC%E5%8F%96%E5%85%A8%E6%96%87/</link><pubDate>Thu, 16 Jun 2016 10:02:25 +0000</pubDate><guid>https://saukymo.github.io/posts/odes%E4%B8%80%E7%88%AC%E5%8F%96%E5%85%A8%E6%96%87/</guid><description>项目想法 因为一直没有一个比较完整的项目，所以想参考变卦做一个小的project，展示一个内容有限但是比较有意思的东西，顺便学习实践一下前端技术，于是就选择了诗经。内容不多，一共也就305首。一共分成3个步骤吧，第一步找个网站抓一个比较完整的全文下来，整理好之后存放到数据库里，第二步写一个前端把内容展示出来，但是这边是前后端配合还是单独一个前端页面还没有想好。第三步是其他功能的加入，比如注音和释义，甚至其他的一些比如统计数据之类的功能。
+时间安排上并没有计划，主要最近空闲时间比较多，又不想复习，于是才想做这么个项目。反正先把坑挖在这，什么时候能做完就只能随缘了。
+postgres安装和配置 其实这一部并不一定需要，因为内容确实不多，直接做成静态页面效果也不错。主要是为了之后第三部可能会需要比较复杂的功能时提前准备。但是没想到这一部花了比较多的时间，最后也只是能用，并没有设置成一个正常的状态。
+postgres安装 按照各类教程中的内容，只需要这一步就可以安装好数据库并且自动开启服务，端口5432。
+sudo apt-get install postgresql 但是执行完之后，psql并没有连上数据库，服务器上也看不到postgres的进程。
+略去中间大量的搜索和尝试的过程，在/usr/lib/postgresql/9.1/bin/目录里找到常用的命令，于是按照手动启动数据库的方式启动：
+/usr/lib/postgresql/9.1/bin/postgres -D ~/data 这里提示我不能用root权限开启服务，恍然大悟，之前没有成功启动的原因可能就是因为我一直使用的root用户(使用的服务器虽然用了很长一段时间了，但是当时仅仅安装了一个wordpress就没有登上去过了。所以一直都是root用户。)但是它为什么没有任何提示呢？！于是得到一个教训，新服务器第一件事就是建立一个新的非root用户。建了一个新的用户saukymo之后，终于成功开启了服务。
+之后的过程由于大量试错，现在不能准确回忆起来了，不过应该还是通过这个目录下的initdb和createdb成功建立了一个数据库odes。
+在Mac中，可以通过brew安装，安装完成之后就可以使用psql了，之后也能安装psycopg2的python库了。
+brew install postgresql 直接使用psql命令进入数据库，然后给用户设置密码：
+\password saukymo Postgres允许远程连接 默认情况下，只允许本机连接数据库，如果需要远程连接到数据库，需要设置postgres允许远程连接。设置比较简单，首先修改data目录下的pg_hba.conf文件，加入一行
+host all all 0.0.0.0/0 md5 这样就能允许所有的ip通过密码访问数据库了。
+然后修改postgresl.conf文件，设置listen_addresses为任意即可，即：
+listen_addresses = &amp;#39;*&amp;#39; 然后重启服务，我这里因为安装方式不太正确，命令为：
+/usr/lib/postgresql/9.1/bin/pg_ctl -D ~/data restart 此时就能在其他机器上连接上数据库了，完整的psql命令为：
+psql -U saukymo -h ▇▇.▇▇.▇▇.▇▇ -d odes -W 按照提示输入之前设置的密码即可。
+安装psycopg2 这个库是python用来连接postgres数据库的，通过pip安装即可
+pip install psycopg2 需要注意的是，这个库并不能兼容Pypy，如果需要和Pypy一起工作的话，需要安装psycopg2cffi，简单设置之后，就可以兼容了，而且原来的代码不需要变化。</description></item></channel></rss>

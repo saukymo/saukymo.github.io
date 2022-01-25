@@ -1,0 +1,229 @@
+<!doctype html><html lang=en>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta http-equiv=content-language content="en">
+<meta name=color-scheme content="light dark">
+<meta name=author content="无生">
+<meta name=description content="Sublime Text3 介绍    Sublime Text3是一款轻量级、跨平台的、拓展功能丰富的编辑器，使用python编写，自然也是用来写python的不二选择。然而，通过丰富强大的插件配置，ST也可以用于其他各种语言的编写。这里主要介绍我常使用的python和Markdown的配置。
+Package Control    要想在ST上使用插件，最方便的方法就是通过Package Control来安装，不过我们首先得手工安装它本身。
+安装文档可以参考官方的主页，使用Ctrl+` 调出console，复制以下代码
+import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).">
+<meta name=keywords content="blog,developer,personal">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="Sublime Text3 配置">
+<meta name=twitter:description content="Sublime Text3 介绍    Sublime Text3是一款轻量级、跨平台的、拓展功能丰富的编辑器，使用python编写，自然也是用来写python的不二选择。然而，通过丰富强大的插件配置，ST也可以用于其他各种语言的编写。这里主要介绍我常使用的python和Markdown的配置。
+Package Control    要想在ST上使用插件，最方便的方法就是通过Package Control来安装，不过我们首先得手工安装它本身。
+安装文档可以参考官方的主页，使用Ctrl+` 调出console，复制以下代码
+import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).">
+<meta property="og:title" content="Sublime Text3 配置">
+<meta property="og:description" content="Sublime Text3 介绍    Sublime Text3是一款轻量级、跨平台的、拓展功能丰富的编辑器，使用python编写，自然也是用来写python的不二选择。然而，通过丰富强大的插件配置，ST也可以用于其他各种语言的编写。这里主要介绍我常使用的python和Markdown的配置。
+Package Control    要想在ST上使用插件，最方便的方法就是通过Package Control来安装，不过我们首先得手工安装它本身。
+安装文档可以参考官方的主页，使用Ctrl+` 调出console，复制以下代码
+import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://saukymo.github.io/posts/sublime-text3-%E9%85%8D%E7%BD%AE/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2016-05-30T15:37:48+00:00">
+<meta property="article:modified_time" content="2016-05-30T15:37:48+00:00">
+<title>
+Sublime Text3 配置 · Coder
+</title>
+<link rel=canonical href=https://saukymo.github.io/posts/sublime-text3-%E9%85%8D%E7%BD%AE/>
+<link rel=preload href="/fonts/forkawesome-webfont.woff2?v=1.2.0" as=font type=font/woff2 crossorigin>
+<link rel=stylesheet href=/css/coder.min.d9fddbffe6f27e69985dc5fe0471cdb0e57fbf4775714bc3d847accb08f4a1f6.css integrity="sha256-2f3b/+byfmmYXcX+BHHNsOV/v0d1cUvD2Eesywj0ofY=" crossorigin=anonymous media=screen>
+<link rel=stylesheet href=/css/coder-dark.min.002ee2378e14c7a68f1f0a53d9694ed252090987c4e768023fac694a4fc5f793.css integrity="sha256-AC7iN44Ux6aPHwpT2WlO0lIJCYfE52gCP6xpSk/F95M=" crossorigin=anonymous media=screen>
+<link rel=icon type=image/png href=/images/favicon-32x32.png sizes=32x32>
+<link rel=icon type=image/png href=/images/favicon-16x16.png sizes=16x16>
+<link rel=apple-touch-icon href=/images/apple-touch-icon.png>
+<link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png>
+<meta name=generator content="Hugo 0.92.0">
+</head>
+<body class="preload-transitions colorscheme-auto">
+<div class=float-container>
+<a id=dark-mode-toggle class=colorscheme-toggle>
+<i class="fa fa-adjust fa-fw" aria-hidden=true></i>
+</a>
+</div>
+<main class=wrapper>
+<nav class=navigation>
+<section class=container>
+<a class=navigation-title href=/>
+Coder
+</a>
+<input type=checkbox id=menu-toggle>
+<label class="menu-button float-right" for=menu-toggle>
+<i class="fa fa-bars fa-fw" aria-hidden=true></i>
+</label>
+<ul class=navigation-list>
+<li class=navigation-item>
+<a class=navigation-link href=/posts/>Blog</a>
+</li>
+<li class=navigation-item>
+<a class=navigation-link href=/about/>About</a>
+</li>
+</ul>
+</section>
+</nav>
+<div class=content>
+<section class="container post">
+<article>
+<header>
+<div class=post-title>
+<h1 class=title>
+<a class=title-link href=https://saukymo.github.io/posts/sublime-text3-%E9%85%8D%E7%BD%AE/>
+Sublime Text3 配置
+</a>
+</h1>
+</div>
+<div class=post-meta>
+<div class=date>
+<span class=posted-on>
+<i class="fa fa-calendar" aria-hidden=true></i>
+<time datetime=2016-05-30T15:37:48Z>
+May 30, 2016
+</time>
+</span>
+<span class=reading-time>
+<i class="fa fa-clock-o" aria-hidden=true></i>
+One-minute read
+</span>
+</div>
+<div class=tags>
+<i class="fa fa-tag" aria-hidden=true></i>
+<span class=tag>
+<a href=/tags/sublime-text3/>Sublime Text3</a>
+</span>
+<span class=separator>•</span>
+<span class=tag>
+<a href=/tags/python/>Python</a>
+</span>
+<span class=separator>•</span>
+<span class=tag>
+<a href=/tags/markdown/>Markdown</a>
+</span></div>
+</div>
+</header>
+<div>
+<h2 id=sublime-text3-介绍>
+Sublime Text3 介绍
+<a class=heading-link href=#sublime-text3-%e4%bb%8b%e7%bb%8d>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h2>
+<p><a href=https://www.sublimetext.com/>Sublime Text3</a>是一款轻量级、跨平台的、拓展功能丰富的编辑器，使用python编写，自然也是用来写python的不二选择。然而，通过丰富强大的插件配置，ST也可以用于其他各种语言的编写。这里主要介绍我常使用的python和<code>Markdown</code>的配置。</p>
+<h2 id=package-control>
+Package Control
+<a class=heading-link href=#package-control>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h2>
+<p>要想在ST上使用插件，最方便的方法就是通过<code>Package Control</code>来安装，不过我们首先得手工安装它本身。</p>
+<p>安装文档可以参考官方的<a href=https://packagecontrol.io/installation>主页</a>，使用<code>Ctrl+` </code>调出console，复制以下代码</p>
+<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>import urllib.request,os,hashlib; h = &#39;2915d1851351e5ee549c20394736b442&#39; + &#39;8bc59f460fa1548d1514676163dafc88&#39;; pf = &#39;Package Control.sublime-package&#39;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &#39;http://packagecontrol.io/&#39; + pf.replace(&#39; &#39;, &#39;%20&#39;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&#39;Error validating download (got %s instead of %s), please try manual install&#39; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &#39;wb&#39; ).write(by)
+</code></pre></div><p>其实是压成一行的python代码，不过我还是不把它高亮了。安装完成之后，就可以通过<code>Ctrl+shift+P</code>来打开命令面板，然后在里面输入<code>install</code>，就能找到<code>install package</code>的选项，回车之后就能看到所有的插件列表了。</p>
+<h2 id=主题美化>
+主题美化
+<a class=heading-link href=#%e4%b8%bb%e9%a2%98%e7%be%8e%e5%8c%96>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h2>
+<p>作为一个看脸的世界，肯定首先要把界面得漂漂亮亮的才会有动力继续用下。虽然说，ST本身的界面已经非常好看了，我自己也对着这个朴素的界面用了很多很多年。但是今天在<a href="https://dribbble.com/search?q=sublime">dribbble</a>上看到了一个崭新的世界。不得不承认，程序员和设计师的审美差距还是有一定距离的。</p>
+<p>最后采用的这个<a href=http://equinusocio.github.io/material-theme/>Material theme</a>主题，并且添加了所有可选选项(我相信人家的审美每一个细节都比我做得好)。效果非常好，python的高亮看着略不舒服，换成<code>OceanicNext</code>会好很多。</p>
+<p>根据项目主页上的图片来看，<code>Markdown</code>的配色应该是这个主题设置的，然而我在第一时间并没有看到效果，倒是反反复复折腾了很久的<code>Markdown</code>插件之后才突然正常了，不过只要设置正常了，效果非常非常赞。</p>
+<h2 id=python插件配置>
+Python插件配置
+<a class=heading-link href=#python%e6%8f%92%e4%bb%b6%e9%85%8d%e7%bd%ae>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h2>
+<p>这里提到的插件，都是通过<code>Package Control</code>里直接输入名字就能安装的。</p>
+<h3 id=sidebarfoldershttpsgithubcomtitobouzoutsidebarfolders>
+<a href=https://github.com/titoBouzout/SideBarFolders>SideBarFolders</a>
+<a class=heading-link href=#sidebarfoldershttpsgithubcomtitobouzoutsidebarfolders>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h3>
+<p>如果同时开发好几个项目时，ST打开项目文件夹比较麻烦，有了这个插件之后，菜单上就会多出一项<code>Folders</code>，里面就可以方便切换最近打开的目录，非常的方便。同时，如果文件夹位置发生了变动，导致之前的目录失效了，它也会提醒删除，也算是一个不错的处理方式(要求不要太高)。</p>
+<h3 id=sublimereplhttpsgithubcomwuubsublimerepl>
+<a href=https://github.com/wuub/SublimeREPL>SublimeREPL</a>
+<a class=heading-link href=#sublimereplhttpsgithubcomwuubsublimerepl>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h3>
+<p>之前很长一段时间里，在ST跑python程序都不能中止，让我很是郁闷，前几年从来没有这个问题啊。后来发现是因为有一次强迫症发作，只挑了自己认识的插件安装，结果落下了这个插件。事实上，正是这个插件默默的提供了一个内置的解释器来运行python程序，也只有这样，才能通过快捷键中止程序。目前看来，对于终端的交互支持得不是很好，不过平时开发的时候，也不会用到终端输入了吧..</p>
+<h3 id=sidebarenhancementshttpsgithubcomtitobouzoutsidebarenhancements>
+<a href=https://github.com/titoBouzout/SideBarEnhancements>SideBarEnhancements</a>
+<a class=heading-link href=#sidebarenhancementshttpsgithubcomtitobouzoutsidebarenhancements>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h3>
+<p>侧边文件栏功能加强的插件，虽然说实话我并没有仔细对比过多了哪些功能，因为之前的功能我也用得不多。不过直观上感觉右键菜单确实长了好多，之后会多多关注一下。</p>
+<h3 id=sublimecodeintelhttpsgithubcomsublimecodeintelsublimecodeintel>
+<a href=https://github.com/SublimeCodeIntel/SublimeCodeIntel>SublimeCodeIntel</a>
+<a class=heading-link href=#sublimecodeintelhttpsgithubcomsublimecodeintelsublimecodeintel>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h3>
+<p>支持很多语言的自动补全提醒，再也不用dir一个一个看了。提示非常高大上，不过如果记错了函数位置，然后找半天找不到还是比较尴尬的(怪我咯)</p>
+<h3 id=virtuallenvhttpsgithubcomadrianlcsublime-text-virtualenv>
+<a href=https://github.com/AdrianLC/sublime-text-virtualenv>Virtuallenv</a>
+<a class=heading-link href=#virtuallenvhttpsgithubcomadrianlcsublime-text-virtualenv>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h3>
+<p>可以很方便的激活虚拟环境，事实上我也就用过这一个功能..其他管理的功能应该也都有，但是没有用过。不过发现这个插件和<code>SublimeREPL</code>不能一起使用，也就是说用那个插件不能按照我目前的习惯使用<code>virtualenv</code>，用这个插件的话就不能中止程序了。Anyway, 这个坑还得多试试，目前看来这个插件估计用得不会太多。</p>
+<h3 id=sublimegithttpsgithubcomsublimegitsublimegit>
+<a href=https://github.com/SublimeGit/SublimeGit>SublimeGit</a>
+<a class=heading-link href=#sublimegithttpsgithubcomsublimegitsublimegit>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h3>
+<p>洛洛推荐的Git集成，大部分时候都非常好用，除了本地merge出现冲突的时候出现过Bug，当然也有可能是打开方式不太对。之后自己的项目基本也都用Github管理了，所以这个插件应该会用得更多。</p>
+<h2 id=markdown插件配置>
+Markdown插件配置
+<a class=heading-link href=#markdown%e6%8f%92%e4%bb%b6%e9%85%8d%e7%bd%ae>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h2>
+<h3 id=markdown-extendedhttpsgithubcomjonschlinkertsublime-markdown-extended>
+<a href=https://github.com/jonschlinkert/sublime-markdown-extended>Markdown Extended</a>
+<a class=heading-link href=#markdown-extendedhttpsgithubcomjonschlinkertsublime-markdown-extended>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h3>
+<p>安装完之后，Syntax里会多出一个类型<code>Markdown Extended</code>，将<code>.md</code>的文件和这个新类型绑定起来之后，就能看到丰富的配色了。其实我不确定到底是这个插件的作用还是之前那个<code>Material theme</code>的作用才有了我现在的<code>Markdown</code>配色，总之很赞。</p>
+<h3 id=omnimarkuppreviewerhttpsgithubcomtimonwongomnimarkuppreviewer>
+<a href=https://github.com/timonwong/OmniMarkupPreviewer>OmniMarkupPreviewer</a>
+<a class=heading-link href=#omnimarkuppreviewerhttpsgithubcomtimonwongomnimarkuppreviewer>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h3>
+<p>用来预览<code>Markdown</code>文件的，其实如果我只是为了写<code>Hexo</code>的话，直接用<code>Hexo</code>渲染预览就好了，效果更好。但是如果为了用在其他地方的话，这个插件还是不错的，而且它也支持其他格式的文件。</p>
+<h2 id=小结>
+小结
+<a class=heading-link href=#%e5%b0%8f%e7%bb%93>
+<i class="fa fa-link" aria-hidden=true></i>
+</a>
+</h2>
+<p><img src=/uploads/ST3.png alt>
+最后上一张王道，这样配置一番后，确实比之前的ST要好用很多(然而代码写得还是那么烂)。</p>
+</div>
+<footer>
+</footer>
+</article>
+</section>
+</div>
+<footer class=footer>
+<section class=container>
+©
+2016 -
+2022
+无生
+·
+Powered by <a href=https://gohugo.io/>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/>Coder</a>.
+</section>
+</footer>
+</main>
+<script src=/js/coder.min.39a51230dce2ac866c049b52573e38bf60666af4bc63c1bdf203b9b2d95b1cd6.js integrity="sha256-OaUSMNzirIZsBJtSVz44v2BmavS8Y8G98gO5stlbHNY="></script>
+</body>
+</html>
