@@ -29,8 +29,8 @@ WITH s AS (SELECT * FROM odes where id in (%s, %s, %s)) SELECT array_to_json(arr
 if (id == 1): res[0][0], res[0][1], res[0][2] = res[0][2], res[0][0], res[0][1] if (id == MAXID): res[0][0], res[0][1], res[0][2] = res[0][1], res[0][2], res[0][0] 但是这样会出现几个问题，第一个是顺序是由postgres默认决定的，程序没有做校验，也没有办法校验（各个数据一致，没有字段标识区别开），正确结果依赖于各个部分默契合作，这样显然是不合理的。第二个是传输查询的内容过多，然而很多信息是毫无必要的，减慢了页面的加载速度。所以重新设计如下：第一，不采用循环的方式，第一篇没有上一篇，最后一篇没有下一篇(一方面处理逻辑要简单很多，更主要的是这个功能确实无所谓)。第二，分两次查询，因为查询是在服务器本地进行的，查询两次代价并不大，第二次仅仅查询相邻篇章的标题。代码如下：">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://blog.mkdef.com/posts/odes%E4%BA%8C%E9%A1%B5%E9%9D%A2%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2016-06-20T13:46:52+00:00">
-<meta property="article:modified_time" content="2016-06-20T13:46:52+00:00">
+<meta property="article:published_time" content="2016-06-20T13:46:52+08:00">
+<meta property="article:modified_time" content="2016-06-20T13:46:52+08:00">
 <title>
 Odes（二）页面设计与实现 · Coder
 </title>
@@ -85,7 +85,7 @@ Odes（二）页面设计与实现
 <div class=date>
 <span class=posted-on>
 <i class="fa fa-calendar" aria-hidden=true></i>
-<time datetime=2016-06-20T13:46:52Z>
+<time datetime=2016-06-20T13:46:52+08:00>
 June 20, 2016
 </time>
 </span>
