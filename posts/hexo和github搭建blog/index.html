@@ -1,444 +1,171 @@
-<!doctype html><html lang=en>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta http-equiv=content-language content="en">
-<meta name=color-scheme content="light dark">
-<meta name=author content="无生">
-<meta name=description content="Hexo    Hexo是一个很简洁好用的静态Blog框架，第一次看到是在始终的博客，当时觉得主题很漂亮，速度也还不错，在页面底下看到了Hexo，于是就去看了一下介绍，结果发现好简单啊。加上去年写了一学期Latex，觉得Markdown肯定只会更简单，于是就按照这个教程也搭了一个，于是这篇日志基本就参(zhao)考(chao)这篇教程写了。
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=content-language content="en"><meta name=color-scheme content="light dark"><meta name=author content="无生"><meta name=description content="Hexo    Hexo是一个很简洁好用的静态Blog框架，第一次看到是在始终的博客，当时觉得主题很漂亮，速度也还不错，在页面底下看到了Hexo，于是就去看了一下介绍，结果发现好简单啊。加上去年写了一学期Latex，觉得Markdown肯定只会更简单，于是就按照这个教程也搭了一个，于是这篇日志基本就参(zhao)考(chao)这篇教程写了。
 准备工作    教程用的windows，我用的Mac，其实差不多，Mac还简单一些，正好给了我个机会证明这篇日志是原创不全是照抄的。
 Homebrew    Mac下缺的东西都可以用Homwbrew来装，很方便。打开就是安装命令。
 Node.js    $ brew install npm hexo    然后就可以安装hexo了
 $ npm install hexo-cli -g $ npm install hexo --save Hexo配置    初始化    执行以下命令
-# 安装 Hexo 完成后，请执行下列命令，Hexo 将会在指定文件夹中新建所需要的文件。 $ hexo init <folder> $ cd <folder> $ npm install # 新建完成后，指定文件夹的目录如下 . ├── _config.yml ├── package.json ├── scaffolds ├── scripts ├── source | ├── _drafts | └── _posts └── themes 安装插件    这个我是按照教程来的，但是有几个明显用不到的就可以不装了，比如git之外的几个deployer， 还有好几个generator。">
-<meta name=keywords content="blog,developer,personal">
-<meta name=twitter:card content="summary">
-<meta name=twitter:title content="Hexo和Github搭建Blog">
-<meta name=twitter:description content="Hexo    Hexo是一个很简洁好用的静态Blog框架，第一次看到是在始终的博客，当时觉得主题很漂亮，速度也还不错，在页面底下看到了Hexo，于是就去看了一下介绍，结果发现好简单啊。加上去年写了一学期Latex，觉得Markdown肯定只会更简单，于是就按照这个教程也搭了一个，于是这篇日志基本就参(zhao)考(chao)这篇教程写了。
+# 安装 Hexo 完成后，请执行下列命令，Hexo 将会在指定文件夹中新建所需要的文件。 $ hexo init <folder> $ cd <folder> $ npm install  # 新建完成后，指定文件夹的目录如下 . ├── _config.yml ├── package.json ├── scaffolds ├── scripts ├── source | ├── _drafts | └── _posts └── themes 安装插件    这个我是按照教程来的，但是有几个明显用不到的就可以不装了，比如git之外的几个deployer， 还有好几个generator。"><meta name=keywords content="blog,developer,personal"><meta name=twitter:card content="summary"><meta name=twitter:title content="Hexo和Github搭建Blog"><meta name=twitter:description content="Hexo    Hexo是一个很简洁好用的静态Blog框架，第一次看到是在始终的博客，当时觉得主题很漂亮，速度也还不错，在页面底下看到了Hexo，于是就去看了一下介绍，结果发现好简单啊。加上去年写了一学期Latex，觉得Markdown肯定只会更简单，于是就按照这个教程也搭了一个，于是这篇日志基本就参(zhao)考(chao)这篇教程写了。
 准备工作    教程用的windows，我用的Mac，其实差不多，Mac还简单一些，正好给了我个机会证明这篇日志是原创不全是照抄的。
 Homebrew    Mac下缺的东西都可以用Homwbrew来装，很方便。打开就是安装命令。
 Node.js    $ brew install npm hexo    然后就可以安装hexo了
 $ npm install hexo-cli -g $ npm install hexo --save Hexo配置    初始化    执行以下命令
-# 安装 Hexo 完成后，请执行下列命令，Hexo 将会在指定文件夹中新建所需要的文件。 $ hexo init <folder> $ cd <folder> $ npm install # 新建完成后，指定文件夹的目录如下 . ├── _config.yml ├── package.json ├── scaffolds ├── scripts ├── source | ├── _drafts | └── _posts └── themes 安装插件    这个我是按照教程来的，但是有几个明显用不到的就可以不装了，比如git之外的几个deployer， 还有好几个generator。">
-<meta property="og:title" content="Hexo和Github搭建Blog">
-<meta property="og:description" content="Hexo    Hexo是一个很简洁好用的静态Blog框架，第一次看到是在始终的博客，当时觉得主题很漂亮，速度也还不错，在页面底下看到了Hexo，于是就去看了一下介绍，结果发现好简单啊。加上去年写了一学期Latex，觉得Markdown肯定只会更简单，于是就按照这个教程也搭了一个，于是这篇日志基本就参(zhao)考(chao)这篇教程写了。
+# 安装 Hexo 完成后，请执行下列命令，Hexo 将会在指定文件夹中新建所需要的文件。 $ hexo init <folder> $ cd <folder> $ npm install  # 新建完成后，指定文件夹的目录如下 . ├── _config.yml ├── package.json ├── scaffolds ├── scripts ├── source | ├── _drafts | └── _posts └── themes 安装插件    这个我是按照教程来的，但是有几个明显用不到的就可以不装了，比如git之外的几个deployer， 还有好几个generator。"><meta property="og:title" content="Hexo和Github搭建Blog"><meta property="og:description" content="Hexo    Hexo是一个很简洁好用的静态Blog框架，第一次看到是在始终的博客，当时觉得主题很漂亮，速度也还不错，在页面底下看到了Hexo，于是就去看了一下介绍，结果发现好简单啊。加上去年写了一学期Latex，觉得Markdown肯定只会更简单，于是就按照这个教程也搭了一个，于是这篇日志基本就参(zhao)考(chao)这篇教程写了。
 准备工作    教程用的windows，我用的Mac，其实差不多，Mac还简单一些，正好给了我个机会证明这篇日志是原创不全是照抄的。
 Homebrew    Mac下缺的东西都可以用Homwbrew来装，很方便。打开就是安装命令。
 Node.js    $ brew install npm hexo    然后就可以安装hexo了
 $ npm install hexo-cli -g $ npm install hexo --save Hexo配置    初始化    执行以下命令
-# 安装 Hexo 完成后，请执行下列命令，Hexo 将会在指定文件夹中新建所需要的文件。 $ hexo init <folder> $ cd <folder> $ npm install # 新建完成后，指定文件夹的目录如下 . ├── _config.yml ├── package.json ├── scaffolds ├── scripts ├── source | ├── _drafts | └── _posts └── themes 安装插件    这个我是按照教程来的，但是有几个明显用不到的就可以不装了，比如git之外的几个deployer， 还有好几个generator。">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://blog.mkdef.com/posts/hexo%E5%92%8Cgithub%E6%90%AD%E5%BB%BAblog/"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2016-04-17T10:19:42+08:00">
-<meta property="article:modified_time" content="2016-04-17T10:19:42+08:00">
-<title>
-Hexo和Github搭建Blog · Coder
-</title>
-<link rel=canonical href=https://blog.mkdef.com/posts/hexo%E5%92%8Cgithub%E6%90%AD%E5%BB%BAblog/>
-<link rel=preload href="/fonts/forkawesome-webfont.woff2?v=1.2.0" as=font type=font/woff2 crossorigin>
-<link rel=stylesheet href=/css/coder.min.d9fddbffe6f27e69985dc5fe0471cdb0e57fbf4775714bc3d847accb08f4a1f6.css integrity="sha256-2f3b/+byfmmYXcX+BHHNsOV/v0d1cUvD2Eesywj0ofY=" crossorigin=anonymous media=screen>
-<link rel=stylesheet href=/css/coder-dark.min.002ee2378e14c7a68f1f0a53d9694ed252090987c4e768023fac694a4fc5f793.css integrity="sha256-AC7iN44Ux6aPHwpT2WlO0lIJCYfE52gCP6xpSk/F95M=" crossorigin=anonymous media=screen>
-<link rel=icon type=image/png href=/images/favicon-32x32.png sizes=32x32>
-<link rel=icon type=image/png href=/images/favicon-16x16.png sizes=16x16>
-<link rel=apple-touch-icon href=/images/apple-touch-icon.png>
-<link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png>
-<meta name=generator content="Hugo 0.92.0">
-</head>
-<body class="preload-transitions colorscheme-auto">
-<div class=float-container>
-<a id=dark-mode-toggle class=colorscheme-toggle>
-<i class="fa fa-adjust fa-fw" aria-hidden=true></i>
-</a>
-</div>
-<main class=wrapper>
-<nav class=navigation>
-<section class=container>
-<a class=navigation-title href=/>
-Coder
-</a>
+# 安装 Hexo 完成后，请执行下列命令，Hexo 将会在指定文件夹中新建所需要的文件。 $ hexo init <folder> $ cd <folder> $ npm install  # 新建完成后，指定文件夹的目录如下 . ├── _config.yml ├── package.json ├── scaffolds ├── scripts ├── source | ├── _drafts | └── _posts └── themes 安装插件    这个我是按照教程来的，但是有几个明显用不到的就可以不装了，比如git之外的几个deployer， 还有好几个generator。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.mkdef.com/posts/hexo%E5%92%8Cgithub%E6%90%AD%E5%BB%BAblog/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2016-04-17T10:19:42+08:00"><meta property="article:modified_time" content="2016-04-17T10:19:42+08:00"><title>Hexo和Github搭建Blog · Coder</title><link rel=canonical href=https://blog.mkdef.com/posts/hexo%E5%92%8Cgithub%E6%90%AD%E5%BB%BAblog/><link rel=preload href="/fonts/forkawesome-webfont.woff2?v=1.2.0" as=font type=font/woff2 crossorigin><link rel=stylesheet href=/css/coder.min.d9fddbffe6f27e69985dc5fe0471cdb0e57fbf4775714bc3d847accb08f4a1f6.css integrity="sha256-2f3b/+byfmmYXcX+BHHNsOV/v0d1cUvD2Eesywj0ofY=" crossorigin=anonymous media=screen><link rel=stylesheet href=/css/coder-dark.min.002ee2378e14c7a68f1f0a53d9694ed252090987c4e768023fac694a4fc5f793.css integrity="sha256-AC7iN44Ux6aPHwpT2WlO0lIJCYfE52gCP6xpSk/F95M=" crossorigin=anonymous media=screen><link rel=icon type=image/png href=/images/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/images/favicon-16x16.png sizes=16x16><link rel=apple-touch-icon href=/images/apple-touch-icon.png><link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png><meta name=generator content="Hugo 0.94.2"></head><body class="preload-transitions colorscheme-auto"><div class=float-container><a id=dark-mode-toggle class=colorscheme-toggle><i class="fa fa-adjust fa-fw" aria-hidden=true></i></a></div><main class=wrapper><nav class=navigation><section class=container><a class=navigation-title href=/>Coder</a>
 <input type=checkbox id=menu-toggle>
-<label class="menu-button float-right" for=menu-toggle>
-<i class="fa fa-bars fa-fw" aria-hidden=true></i>
-</label>
-<ul class=navigation-list>
-<li class=navigation-item>
-<a class=navigation-link href=/posts/>Blog</a>
-</li>
-<li class=navigation-item>
-<a class=navigation-link href=/about/>About</a>
-</li>
-</ul>
-</section>
-</nav>
-<div class=content>
-<section class="container post">
-<article>
-<header>
-<div class=post-title>
-<h1 class=title>
-<a class=title-link href=https://blog.mkdef.com/posts/hexo%E5%92%8Cgithub%E6%90%AD%E5%BB%BAblog/>
-Hexo和Github搭建Blog
-</a>
-</h1>
-</div>
-<div class=post-meta>
-<div class=date>
-<span class=posted-on>
-<i class="fa fa-calendar" aria-hidden=true></i>
-<time datetime=2016-04-17T10:19:42+08:00>
-April 17, 2016
-</time>
-</span>
-<span class=reading-time>
-<i class="fa fa-clock-o" aria-hidden=true></i>
-3-minute read
-</span>
-</div>
-<div class=tags>
-<i class="fa fa-tag" aria-hidden=true></i>
-<span class=tag>
-<a href=/tags/hexo/>Hexo</a>
-</span>
+<label class="menu-button float-right" for=menu-toggle><i class="fa fa-bars fa-fw" aria-hidden=true></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=/posts/>Blog</a></li><li class=navigation-item><a class=navigation-link href=/about/>About</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title><a class=title-link href=https://blog.mkdef.com/posts/hexo%E5%92%8Cgithub%E6%90%AD%E5%BB%BAblog/>Hexo和Github搭建Blog</a></h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fa fa-calendar" aria-hidden=true></i>
+<time datetime=2016-04-17T10:19:42+08:00>April 17, 2016</time></span>
+<span class=reading-time><i class="fa fa-clock-o" aria-hidden=true></i>
+3-minute read</span></div><div class=tags><i class="fa fa-tag" aria-hidden=true></i>
+<span class=tag><a href=/tags/hexo/>Hexo</a></span>
 <span class=separator>•</span>
-<span class=tag>
-<a href=/tags/github/>github</a>
-</span>
+<span class=tag><a href=/tags/github/>github</a></span>
 <span class=separator>•</span>
-<span class=tag>
-<a href=/tags/mathjax/>MathJax</a>
-</span>
+<span class=tag><a href=/tags/mathjax/>MathJax</a></span>
 <span class=separator>•</span>
-<span class=tag>
-<a href=/tags/next/>Next</a>
-</span>
+<span class=tag><a href=/tags/next/>Next</a></span>
 <span class=separator>•</span>
-<span class=tag>
-<a href=/tags/pandoc/>Pandoc</a>
-</span></div>
-</div>
-</header>
-<div>
-<p><img src=/uploads/github_hexo.png alt></p>
-<h2 id=hexo>
-Hexo
-<a class=heading-link href=#hexo>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p><a href=https://hexo.io/zh-cn/>Hexo</a>是一个很简洁好用的静态Blog框架，第一次看到是在<a href=http://liam0205.me/>始终</a>的博客，当时觉得主题很漂亮，速度也还不错，在页面底下看到了<code>Hexo</code>，于是就去看了一下介绍，结果发现好简单啊。加上去年写了一学期<code>Latex</code>，觉得<code>Markdown</code>肯定只会更简单，于是就按照这个<a href=http://wsgzao.github.io/post/hexo-guide/>教程</a>也搭了一个，于是这篇日志基本就参(zhao)考(chao)这篇教程写了。</p>
-<h2 id=准备工作>
-准备工作
-<a class=heading-link href=#%e5%87%86%e5%a4%87%e5%b7%a5%e4%bd%9c>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p>教程用的windows，我用的Mac，其实差不多，Mac还简单一些，正好给了我个机会证明这篇日志<del>是原创</del>不全是照抄的。</p>
-<h3 id=homebrew>
-Homebrew
-<a class=heading-link href=#homebrew>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h3>
-<p>Mac下缺的东西都可以用<a href=http://brew.sh/>Homwbrew</a>来装，很方便。打开就是安装命令。</p>
-<h3 id=nodejs>
-Node.js
-<a class=heading-link href=#nodejs>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h3>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ brew install npm
-</code></pre></div><h3 id=hexo-1>
-hexo
-<a class=heading-link href=#hexo-1>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h3>
-<p>然后就可以安装<code>hexo</code>了</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ npm install hexo-cli -g
-$ npm install hexo --save
-</code></pre></div><h2 id=hexo配置>
-Hexo配置
-<a class=heading-link href=#hexo%e9%85%8d%e7%bd%ae>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<h3 id=初始化>
-初始化
-<a class=heading-link href=#%e5%88%9d%e5%a7%8b%e5%8c%96>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h3>
-<p>执行以下命令</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=font-style:italic># 安装 Hexo 完成后，请执行下列命令，Hexo 将会在指定文件夹中新建所需要的文件。</span>
-$ hexo init &lt;folder&gt;
-$ cd &lt;folder&gt;
-$ npm install
-
-<span style=font-style:italic># 新建完成后，指定文件夹的目录如下</span>
-.
-├── _config.yml
-├── package.json
-├── scaffolds
-├── scripts
-├── source
-|      ├── _drafts
-|      └── _posts
-└── themes
-</code></pre></div><h3 id=安装插件>
-安装插件
-<a class=heading-link href=#%e5%ae%89%e8%a3%85%e6%8f%92%e4%bb%b6>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h3>
-<p>这个我是按照教程来的，但是有几个明显用不到的就可以不装了，比如git之外的几个<code>deployer</code>， 还有好几个<code>generator</code>。</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ npm install hexo-generator-index --save
-$ npm install hexo-generator-archive --save
-$ npm install hexo-generator-category --save
-$ npm install hexo-generator-tag --save
-$ npm install hexo-server --save
-$ npm install hexo-deployer-git --save
-$ npm install hexo-deployer-heroku --save
-$ npm install hexo-deployer-rsync --save
-$ npm install hexo-deployer-openshift --save
-$ npm install hexo-renderer-marked@0.2 --save
-$ npm install hexo-renderer-stylus@0.2 --save
-$ npm install hexo-generator-feed@1 --save
-$ npm install hexo-generator-sitemap@1 --save
-</code></pre></div><h3 id=预览>
-预览
-<a class=heading-link href=#%e9%a2%84%e8%a7%88>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h3>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ hexo g <span style=font-style:italic>#生成public静态文件</span>
-$ hexo s <span style=font-style:italic>#本地发布预览效果</span>
-INFO  Start processing
-INFO  Hexo is running at http://0.0.0.0:4000/. Press Ctrl+C to stop.
-</code></pre></div><p>本地做的所有更改都会实时的更新，可以随时看到刚刚所做的修改，非常方便，平时也可以另外开一个进程一直跑，然后再修改。</p>
-<h3 id=新文章和新页面>
-新文章和新页面
-<a class=heading-link href=#%e6%96%b0%e6%96%87%e7%ab%a0%e5%92%8c%e6%96%b0%e9%a1%b5%e9%9d%a2>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h3>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>hexo new &#34;文章标题&#34;
-hexo new page &#34;关于&#34;
-</code></pre></div><p>这两个命令其实都是生成的<code>Markdown</code>文件，如果想要修改文章或者编辑页面，编辑相应的<code>.md</code>文件就可以了。</p>
-<h2 id=github配置和自动部署>
-Github配置和自动部署
-<a class=heading-link href=#github%e9%85%8d%e7%bd%ae%e5%92%8c%e8%87%aa%e5%8a%a8%e9%83%a8%e7%bd%b2>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p><a href=https://pages.github.com/>Github Pages</a>是一个Github开发的给用户托管静态网页的功能，自由度和稳定性都非常高，十分良心。</p>
-<h3 id=github>
-github
-<a class=heading-link href=#github>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h3>
-<ol>
-<li>
-<p>新建项目，名字必须和用户名一致，格式为<code>username.github.io</code>；</p>
-</li>
-<li>
-<p>稍等几分钟之后就能访问静态主页了<code>http://username.github.io</code>；</p>
-</li>
-<li>
-<p>编辑<code>_config.yml</code></p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>deploy:
-  type: git
-  repo: &lt;repository url&gt;
-  branch: [branch]
-  message: [message]
-</code></pre></div><p>``</p>
-</li>
-<li>
-<p>命令<code>hexo d</code>就会自动把<code>public</code>里的文件全部同步到github上，并且访问主页就能看到所做的修改。</p>
-</li>
-</ol>
-<h3 id=域名设置>
-域名设置
-<a class=heading-link href=#%e5%9f%9f%e5%90%8d%e8%ae%be%e7%bd%ae>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h3>
-<ol>
-<li>在<code>source</code>目录下创建<code>CNAME</code>文件，里面填写自己的域名；</li>
-<li>给自己的域名添加CNAME记录，推荐<a href=https://www.dnspod.cn/>DNSPod</a>，配置页有详细的介绍；</li>
-<li>将<code>CNAME</code>文件同步到Github上，很快就能通过自己的域名访问网站了。</li>
-</ol>
-<h2 id=hexo主题设置>
-Hexo主题设置
-<a class=heading-link href=#hexo%e4%b8%bb%e9%a2%98%e8%ae%be%e7%bd%ae>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p>目前用的是<a href=http://theme-next.iissnan.com/getting-started.html#activate-next-theme>Next</a>，链接有详细的安装和设置教程。</p>
-<p>参考其中头像的设置，可以用类似的方法设置favicon，平时在文章中插入图像的链接也是一样的。</p>
-<h2 id=关于markdown编辑器>
-关于Markdown编辑器
-<a class=heading-link href=#%e5%85%b3%e4%ba%8emarkdown%e7%bc%96%e8%be%91%e5%99%a8>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p>其实我一直用<code>Sublime Text</code>写代码，我相信它也一定能够写<code>Markdown</code>，不过我估计它不支持所见即所得，所以我也没有去配置它。</p>
-<p>目前我用的是<code>MacDown</code>，基本我能想到的它都支持，包括代码高亮，而且效果基本和Hexo生成的一样，目前看来是我用过的最好的<code>Markdown</code>编辑器，唯一的遗憾在于不支持文档管理，不过这个功能有没有都有一定道理。</p>
-<p>目前发现的和<code>Hexo</code>的区别有：</p>
-<ol>
-<li><code>Hexo</code>文件前面有一块配置区域<code>Macdown</code>解析不了；</li>
-<li>插入图片的文件路径不一致；</li>
-<li>#开头的标题要空格，不然<code>Hexo</code>不会解析成标题，而<code>Macdown</code>没有这个问题；</li>
-<li>父标题和子标题的#数目要连续，不然生成的目录可能会有bug；</li>
-<li>使用<code>MathJax</code>的时候，_前面要加<code>\</code>，不然解析不正确；</li>
-<li>使用<code>MathJax</code>的时候，行内公式使用单个<code>$</code>，<code>MacDown</code>默认使用两个<code>$</code>, 设置中可以更改；</li>
-</ol>
-<h2 id=使用mathjax>
-使用MathJax
-<a class=heading-link href=#%e4%bd%bf%e7%94%a8mathjax>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p>参考<a href=http://theme-next.iissnan.com/third-party-services.html#others>Next的官方文档</a></p>
-<p>编辑 主题配置文件， 将 <code>Mathjax</code> 下的 enable 设定为 true 即可。 cdn 用于指定 <code>MathJax</code> 的脚本地址，默认是 <code>MathJax</code> 官方提供的 CDN 地址。</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=font-style:italic># MathJax Support</span>
-mathjax:
-  enable: true
-  cdn: //cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML
-</code></pre></div><h2 id=备份源文件>
-备份源文件
-<a class=heading-link href=#%e5%a4%87%e4%bb%bd%e6%ba%90%e6%96%87%e4%bb%b6>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p>来源：<a href=http://www.yuthon.com/2016/04/11/Tips-for-Hexo-configuration/>Tips for Hexo configuration</a>
-之前采用新建一个repo的方法备份文件，然后发现使用<code>hexo d</code>的时候，会部署所有的文件，然后也没有找到办法恢复。</p>
-<p>其实，只需要新建一个分支就可以备份源文件了</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ git init
-$ git checkout -b source
-$ git add .
-$ git commit -m <span style=font-style:italic>&#34;init&#34;</span>
-$ git remote add origin git@github.com:saukymo/saukymo.github.io.git
-$ git push origin source
-</code></pre></div><h2 id=部署后自动备份源文件>
-部署后自动备份源文件
-<a class=heading-link href=#%e9%83%a8%e7%bd%b2%e5%90%8e%e8%87%aa%e5%8a%a8%e5%a4%87%e4%bb%bd%e6%ba%90%e6%96%87%e4%bb%b6>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p>来源: <a href=http://notes.wanghao.work/2015-07-06-%E8%87%AA%E5%8A%A8%E5%A4%87%E4%BB%BDHexo%E5%8D%9A%E5%AE%A2%E6%BA%90%E6%96%87%E4%BB%B6.html>自动备份Hexo博客源文件</a></p>
-<p>安装<code>shelljs</code></p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ npm install --save shelljs
-</code></pre></div><p>在<code>Hexo</code>根目录的<code>scripts</code>文件夹下新建一个js文件，文件名随意取， 如果没有<code>scripts</code>目录，请新建一个。</p>
-<p>然后在脚本中，写入以下内容：</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js>require(<span style=font-style:italic>&#39;shelljs/global&#39;</span>);
-
-<span style=font-weight:700>try</span> {
-	hexo.on(<span style=font-style:italic>&#39;deployAfter&#39;</span>, <span style=font-weight:700>function</span>() { <span style=font-style:italic>//当deploy完成后执行备份
-</span><span style=font-style:italic></span>		run();
-	});
-} <span style=font-weight:700>catch</span> (e) {
-	console.log(<span style=font-style:italic>&#34;产生了一个错误&lt;(￣3￣)&gt; !，错误详情为：&#34;</span> + e.toString());
-}
-
-<span style=font-weight:700>function</span> run() {
-	<span style=font-weight:700>if</span> (!which(<span style=font-style:italic>&#39;git&#39;</span>)) {
-		echo(<span style=font-style:italic>&#39;Sorry, this script requires git&#39;</span>);
-		exit(1);
-	} <span style=font-weight:700>else</span> {
-		echo(<span style=font-style:italic>&#34;======================Auto Backup Begin===========================&#34;</span>);
-		cd(<span style=font-style:italic>&#39;~/Documents/mkdef&#39;</span>);    <span style=font-style:italic>//此处修改为Hexo根目录路径
-</span><span style=font-style:italic></span>		<span style=font-weight:700>if</span> (exec(<span style=font-style:italic>&#39;git checkout source&#39;</span>).code !== 0){
-			echo(<span style=font-style:italic>&#39;Error: Git checkout branch source failed&#39;</span>);
-			exit(1);
-		}
-		<span style=font-weight:700>if</span> (exec(<span style=font-style:italic>&#39;git add --all&#39;</span>).code !== 0) {
-			echo(<span style=font-style:italic>&#39;Error: Git add failed&#39;</span>);
-			exit(1);
-
-		}
-		<span style=font-weight:700>if</span> (exec(<span style=font-style:italic>&#39;git commit -am &#34;From auto backup script\&#39;s commit&#34;&#39;</span>).code !== 0) {
-			echo(<span style=font-style:italic>&#39;Error: Git commit failed&#39;</span>);
-			exit(1);
-
-		}
-		<span style=font-weight:700>if</span> (exec(<span style=font-style:italic>&#39;git push origin source&#39;</span>).code !== 0) {
-			echo(<span style=font-style:italic>&#39;Error: Git push failed&#39;</span>);
-			exit(1);
-
-		}
-		echo(<span style=font-style:italic>&#34;==================Auto Backup Complete============================&#34;</span>)
-	}
-}
-</code></pre></div><p>注意修改为自己的远程仓库名和相应的分支名。</p>
-<p>此时，运行<code>hexo d</code>后的结果如下：</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ hexo d
-INFO  Deploying: git
-INFO  Clearing .deploy_git folder...
-INFO  Copying files from public folder...
-[master d747a0d] Site updated: 2016-05-29 01:22:33
- 5 files changed, 7 insertions(+), 13 deletions(-)
-To git@github.com:saukymo/saukymo.github.io.git
-   bb4cdbd..d747a0d  HEAD -&gt; master
-Branch master set up to track remote branch master from git@github.com:saukymo/saukymo.github.io.git.
-INFO  Deploy <span style=font-weight:700>done</span>: git
-======================Auto Backup Begin===========================
-Already on <span style=font-style:italic>&#39;source&#39;</span>
-M	<span style=font-style:italic>&#34;source/_posts/Hexo\345\222\214Github\346\220\255\345\273\272Blog.md&#34;</span>
-M	themes/next
-[source 1786b36] From auto backup script<span>&#39;</span>s commit
- 1 file changed, 5 insertions(+)
-To git@github.com:saukymo/saukymo.github.io.git
-   49ab33a..1786b36  source -&gt; source
-==================Auto Backup Complete============================
-</code></pre></div><h2 id=压缩静态资源>
-压缩静态资源
-<a class=heading-link href=#%e5%8e%8b%e7%bc%a9%e9%9d%99%e6%80%81%e8%b5%84%e6%ba%90>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p>安装<a href=https://github.com/unhealthy/hexo-all-minifier>hexo-all-minifier</a></p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ npm install hexo-all-minifier --save
-</code></pre></div><p>然后 <code>hexo g</code>时就会自动压缩静态资源</p>
-<h2 id=使用pandoc解析>
-使用pandoc解析
-<a class=heading-link href=#%e4%bd%bf%e7%94%a8pandoc%e8%a7%a3%e6%9e%90>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p><a href=http://pandoc.org/>pandoc</a>是一个比markdown更加强大的解析工具，使用它可以避免<code>MathJax</code>和<code>markdown</code>冲突的问题，而且二者的语法也大同小异。</p>
-<p>首先安装<code>pandoc</code>：</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>brew install pandoc
-</code></pre></div><p>然后用<code>npm</code>安装<code>hexo-renderer-pandoc</code>：</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>npm install hexo-renderer-pandoc --save
-</code></pre></div><p>这里我不知道怎么设置<code>Hexo</code>使用哪一个解析器，所以我直接删掉了另一个解析器<code>hexo-renderer-marked</code></p>
-<p>此时，新生成的页面里，所有的公式应该都不需要转义下划线了。</p>
-<p>但是，<code>pandoc</code>对表格的支持没有<code>markdown</code>那么智能，<code>-</code>的数目和表格的宽度严格相关，两端也需要用<code>|</code>闭合，才能正常显示。坏处自然是设置更加麻烦了，好处则是有利于微调。不过暂时还不清楚什么时候表格里的内容会溢出，什么时候会自动换行。</p>
-<p>据说<code>pandoc</code>可以用来写论文，之后可以尝试一下。</p>
-<h2 id=设置侧边栏头像>
-设置侧边栏头像
-<a class=heading-link href=#%e8%ae%be%e7%bd%ae%e4%be%a7%e8%be%b9%e6%a0%8f%e5%a4%b4%e5%83%8f>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p>参考<a href=https://github.com/iissnan/hexo-theme-next/wiki/%E8%AE%BE%E7%BD%AE%E4%BE%A7%E8%BE%B9%E6%A0%8F%E5%A4%B4%E5%83%8F>Next wiki</a></p>
-</div>
-<footer>
-</footer>
-</article>
-</section>
-</div>
-<footer class=footer>
-<section class=container>
-©
+<span class=tag><a href=/tags/pandoc/>Pandoc</a></span></div></div></header><div><p><img src=/uploads/github_hexo.png alt></p><h2 id=hexo>Hexo
+<a class=heading-link href=#hexo><i class="fa fa-link" aria-hidden=true></i></a></h2><p><a href=https://hexo.io/zh-cn/>Hexo</a>是一个很简洁好用的静态Blog框架，第一次看到是在<a href=http://liam0205.me/>始终</a>的博客，当时觉得主题很漂亮，速度也还不错，在页面底下看到了<code>Hexo</code>，于是就去看了一下介绍，结果发现好简单啊。加上去年写了一学期<code>Latex</code>，觉得<code>Markdown</code>肯定只会更简单，于是就按照这个<a href=http://wsgzao.github.io/post/hexo-guide/>教程</a>也搭了一个，于是这篇日志基本就参(zhao)考(chao)这篇教程写了。</p><h2 id=准备工作>准备工作
+<a class=heading-link href=#%e5%87%86%e5%a4%87%e5%b7%a5%e4%bd%9c><i class="fa fa-link" aria-hidden=true></i></a></h2><p>教程用的windows，我用的Mac，其实差不多，Mac还简单一些，正好给了我个机会证明这篇日志<del>是原创</del>不全是照抄的。</p><h3 id=homebrew>Homebrew
+<a class=heading-link href=#homebrew><i class="fa fa-link" aria-hidden=true></i></a></h3><p>Mac下缺的东西都可以用<a href=http://brew.sh/>Homwbrew</a>来装，很方便。打开就是安装命令。</p><h3 id=nodejs>Node.js
+<a class=heading-link href=#nodejs><i class="fa fa-link" aria-hidden=true></i></a></h3><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>$ brew install npm
+</span></span></code></pre></div><h3 id=hexo-1>hexo
+<a class=heading-link href=#hexo-1><i class="fa fa-link" aria-hidden=true></i></a></h3><p>然后就可以安装<code>hexo</code>了</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>$ npm install hexo-cli -g
+</span></span><span style=display:flex><span>$ npm install hexo --save
+</span></span></code></pre></div><h2 id=hexo配置>Hexo配置
+<a class=heading-link href=#hexo%e9%85%8d%e7%bd%ae><i class="fa fa-link" aria-hidden=true></i></a></h2><h3 id=初始化>初始化
+<a class=heading-link href=#%e5%88%9d%e5%a7%8b%e5%8c%96><i class="fa fa-link" aria-hidden=true></i></a></h3><p>执行以下命令</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=font-style:italic># 安装 Hexo 完成后，请执行下列命令，Hexo 将会在指定文件夹中新建所需要的文件。</span>
+</span></span><span style=display:flex><span>$ hexo init &lt;folder&gt;
+</span></span><span style=display:flex><span>$ cd &lt;folder&gt;
+</span></span><span style=display:flex><span>$ npm install
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=font-style:italic># 新建完成后，指定文件夹的目录如下</span>
+</span></span><span style=display:flex><span>.
+</span></span><span style=display:flex><span>├── _config.yml
+</span></span><span style=display:flex><span>├── package.json
+</span></span><span style=display:flex><span>├── scaffolds
+</span></span><span style=display:flex><span>├── scripts
+</span></span><span style=display:flex><span>├── source
+</span></span><span style=display:flex><span>|      ├── _drafts
+</span></span><span style=display:flex><span>|      └── _posts
+</span></span><span style=display:flex><span>└── themes
+</span></span></code></pre></div><h3 id=安装插件>安装插件
+<a class=heading-link href=#%e5%ae%89%e8%a3%85%e6%8f%92%e4%bb%b6><i class="fa fa-link" aria-hidden=true></i></a></h3><p>这个我是按照教程来的，但是有几个明显用不到的就可以不装了，比如git之外的几个<code>deployer</code>， 还有好几个<code>generator</code>。</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>$ npm install hexo-generator-index --save
+</span></span><span style=display:flex><span>$ npm install hexo-generator-archive --save
+</span></span><span style=display:flex><span>$ npm install hexo-generator-category --save
+</span></span><span style=display:flex><span>$ npm install hexo-generator-tag --save
+</span></span><span style=display:flex><span>$ npm install hexo-server --save
+</span></span><span style=display:flex><span>$ npm install hexo-deployer-git --save
+</span></span><span style=display:flex><span>$ npm install hexo-deployer-heroku --save
+</span></span><span style=display:flex><span>$ npm install hexo-deployer-rsync --save
+</span></span><span style=display:flex><span>$ npm install hexo-deployer-openshift --save
+</span></span><span style=display:flex><span>$ npm install hexo-renderer-marked@0.2 --save
+</span></span><span style=display:flex><span>$ npm install hexo-renderer-stylus@0.2 --save
+</span></span><span style=display:flex><span>$ npm install hexo-generator-feed@1 --save
+</span></span><span style=display:flex><span>$ npm install hexo-generator-sitemap@1 --save
+</span></span></code></pre></div><h3 id=预览>预览
+<a class=heading-link href=#%e9%a2%84%e8%a7%88><i class="fa fa-link" aria-hidden=true></i></a></h3><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>$ hexo g <span style=font-style:italic>#生成public静态文件</span>
+</span></span><span style=display:flex><span>$ hexo s <span style=font-style:italic>#本地发布预览效果</span>
+</span></span><span style=display:flex><span>INFO  Start processing
+</span></span><span style=display:flex><span>INFO  Hexo is running at http://0.0.0.0:4000/. Press Ctrl+C to stop.
+</span></span></code></pre></div><p>本地做的所有更改都会实时的更新，可以随时看到刚刚所做的修改，非常方便，平时也可以另外开一个进程一直跑，然后再修改。</p><h3 id=新文章和新页面>新文章和新页面
+<a class=heading-link href=#%e6%96%b0%e6%96%87%e7%ab%a0%e5%92%8c%e6%96%b0%e9%a1%b5%e9%9d%a2><i class="fa fa-link" aria-hidden=true></i></a></h3><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>hexo new &#34;文章标题&#34;
+</span></span><span style=display:flex><span>hexo new page &#34;关于&#34;
+</span></span></code></pre></div><p>这两个命令其实都是生成的<code>Markdown</code>文件，如果想要修改文章或者编辑页面，编辑相应的<code>.md</code>文件就可以了。</p><h2 id=github配置和自动部署>Github配置和自动部署
+<a class=heading-link href=#github%e9%85%8d%e7%bd%ae%e5%92%8c%e8%87%aa%e5%8a%a8%e9%83%a8%e7%bd%b2><i class="fa fa-link" aria-hidden=true></i></a></h2><p><a href=https://pages.github.com/>Github Pages</a>是一个Github开发的给用户托管静态网页的功能，自由度和稳定性都非常高，十分良心。</p><h3 id=github>github
+<a class=heading-link href=#github><i class="fa fa-link" aria-hidden=true></i></a></h3><ol><li><p>新建项目，名字必须和用户名一致，格式为<code>username.github.io</code>；</p></li><li><p>稍等几分钟之后就能访问静态主页了<code>http://username.github.io</code>；</p></li><li><p>编辑<code>_config.yml</code></p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>deploy:
+</span></span><span style=display:flex><span>  type: git
+</span></span><span style=display:flex><span>  repo: &lt;repository url&gt;
+</span></span><span style=display:flex><span>  branch: [branch]
+</span></span><span style=display:flex><span>  message: [message]
+</span></span></code></pre></div><p>``</p></li><li><p>命令<code>hexo d</code>就会自动把<code>public</code>里的文件全部同步到github上，并且访问主页就能看到所做的修改。</p></li></ol><h3 id=域名设置>域名设置
+<a class=heading-link href=#%e5%9f%9f%e5%90%8d%e8%ae%be%e7%bd%ae><i class="fa fa-link" aria-hidden=true></i></a></h3><ol><li>在<code>source</code>目录下创建<code>CNAME</code>文件，里面填写自己的域名；</li><li>给自己的域名添加CNAME记录，推荐<a href=https://www.dnspod.cn/>DNSPod</a>，配置页有详细的介绍；</li><li>将<code>CNAME</code>文件同步到Github上，很快就能通过自己的域名访问网站了。</li></ol><h2 id=hexo主题设置>Hexo主题设置
+<a class=heading-link href=#hexo%e4%b8%bb%e9%a2%98%e8%ae%be%e7%bd%ae><i class="fa fa-link" aria-hidden=true></i></a></h2><p>目前用的是<a href=http://theme-next.iissnan.com/getting-started.html#activate-next-theme>Next</a>，链接有详细的安装和设置教程。</p><p>参考其中头像的设置，可以用类似的方法设置favicon，平时在文章中插入图像的链接也是一样的。</p><h2 id=关于markdown编辑器>关于Markdown编辑器
+<a class=heading-link href=#%e5%85%b3%e4%ba%8emarkdown%e7%bc%96%e8%be%91%e5%99%a8><i class="fa fa-link" aria-hidden=true></i></a></h2><p>其实我一直用<code>Sublime Text</code>写代码，我相信它也一定能够写<code>Markdown</code>，不过我估计它不支持所见即所得，所以我也没有去配置它。</p><p>目前我用的是<code>MacDown</code>，基本我能想到的它都支持，包括代码高亮，而且效果基本和Hexo生成的一样，目前看来是我用过的最好的<code>Markdown</code>编辑器，唯一的遗憾在于不支持文档管理，不过这个功能有没有都有一定道理。</p><p>目前发现的和<code>Hexo</code>的区别有：</p><ol><li><code>Hexo</code>文件前面有一块配置区域<code>Macdown</code>解析不了；</li><li>插入图片的文件路径不一致；</li><li>#开头的标题要空格，不然<code>Hexo</code>不会解析成标题，而<code>Macdown</code>没有这个问题；</li><li>父标题和子标题的#数目要连续，不然生成的目录可能会有bug；</li><li>使用<code>MathJax</code>的时候，_前面要加<code>\</code>，不然解析不正确；</li><li>使用<code>MathJax</code>的时候，行内公式使用单个<code>$</code>，<code>MacDown</code>默认使用两个<code>$</code>, 设置中可以更改；</li></ol><h2 id=使用mathjax>使用MathJax
+<a class=heading-link href=#%e4%bd%bf%e7%94%a8mathjax><i class="fa fa-link" aria-hidden=true></i></a></h2><p>参考<a href=http://theme-next.iissnan.com/third-party-services.html#others>Next的官方文档</a></p><p>编辑 主题配置文件， 将 <code>Mathjax</code> 下的 enable 设定为 true 即可。 cdn 用于指定 <code>MathJax</code> 的脚本地址，默认是 <code>MathJax</code> 官方提供的 CDN 地址。</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=font-style:italic># MathJax Support</span>
+</span></span><span style=display:flex><span>mathjax:
+</span></span><span style=display:flex><span>  enable: true
+</span></span><span style=display:flex><span>  cdn: //cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+</span></span></code></pre></div><h2 id=备份源文件>备份源文件
+<a class=heading-link href=#%e5%a4%87%e4%bb%bd%e6%ba%90%e6%96%87%e4%bb%b6><i class="fa fa-link" aria-hidden=true></i></a></h2><p>来源：<a href=http://www.yuthon.com/2016/04/11/Tips-for-Hexo-configuration/>Tips for Hexo configuration</a>
+之前采用新建一个repo的方法备份文件，然后发现使用<code>hexo d</code>的时候，会部署所有的文件，然后也没有找到办法恢复。</p><p>其实，只需要新建一个分支就可以备份源文件了</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>$ git init
+</span></span><span style=display:flex><span>$ git checkout -b source
+</span></span><span style=display:flex><span>$ git add .
+</span></span><span style=display:flex><span>$ git commit -m <span style=font-style:italic>&#34;init&#34;</span>
+</span></span><span style=display:flex><span>$ git remote add origin git@github.com:saukymo/saukymo.github.io.git
+</span></span><span style=display:flex><span>$ git push origin source
+</span></span></code></pre></div><h2 id=部署后自动备份源文件>部署后自动备份源文件
+<a class=heading-link href=#%e9%83%a8%e7%bd%b2%e5%90%8e%e8%87%aa%e5%8a%a8%e5%a4%87%e4%bb%bd%e6%ba%90%e6%96%87%e4%bb%b6><i class="fa fa-link" aria-hidden=true></i></a></h2><p>来源: <a href=http://notes.wanghao.work/2015-07-06-%E8%87%AA%E5%8A%A8%E5%A4%87%E4%BB%BDHexo%E5%8D%9A%E5%AE%A2%E6%BA%90%E6%96%87%E4%BB%B6.html>自动备份Hexo博客源文件</a></p><p>安装<code>shelljs</code></p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>$ npm install --save shelljs
+</span></span></code></pre></div><p>在<code>Hexo</code>根目录的<code>scripts</code>文件夹下新建一个js文件，文件名随意取， 如果没有<code>scripts</code>目录，请新建一个。</p><p>然后在脚本中，写入以下内容：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span>require(<span style=font-style:italic>&#39;shelljs/global&#39;</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=font-weight:700>try</span> {
+</span></span><span style=display:flex><span>	hexo.on(<span style=font-style:italic>&#39;deployAfter&#39;</span>, <span style=font-weight:700>function</span>() { <span style=font-style:italic>//当deploy完成后执行备份
+</span></span></span><span style=display:flex><span><span style=font-style:italic></span>		run();
+</span></span><span style=display:flex><span>	});
+</span></span><span style=display:flex><span>} <span style=font-weight:700>catch</span> (e) {
+</span></span><span style=display:flex><span>	console.log(<span style=font-style:italic>&#34;产生了一个错误&lt;(￣3￣)&gt; !，错误详情为：&#34;</span> + e.toString());
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=font-weight:700>function</span> run() {
+</span></span><span style=display:flex><span>	<span style=font-weight:700>if</span> (!which(<span style=font-style:italic>&#39;git&#39;</span>)) {
+</span></span><span style=display:flex><span>		echo(<span style=font-style:italic>&#39;Sorry, this script requires git&#39;</span>);
+</span></span><span style=display:flex><span>		exit(1);
+</span></span><span style=display:flex><span>	} <span style=font-weight:700>else</span> {
+</span></span><span style=display:flex><span>		echo(<span style=font-style:italic>&#34;======================Auto Backup Begin===========================&#34;</span>);
+</span></span><span style=display:flex><span>		cd(<span style=font-style:italic>&#39;~/Documents/mkdef&#39;</span>);    <span style=font-style:italic>//此处修改为Hexo根目录路径
+</span></span></span><span style=display:flex><span><span style=font-style:italic></span>		<span style=font-weight:700>if</span> (exec(<span style=font-style:italic>&#39;git checkout source&#39;</span>).code !== 0){
+</span></span><span style=display:flex><span>			echo(<span style=font-style:italic>&#39;Error: Git checkout branch source failed&#39;</span>);
+</span></span><span style=display:flex><span>			exit(1);
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>		<span style=font-weight:700>if</span> (exec(<span style=font-style:italic>&#39;git add --all&#39;</span>).code !== 0) {
+</span></span><span style=display:flex><span>			echo(<span style=font-style:italic>&#39;Error: Git add failed&#39;</span>);
+</span></span><span style=display:flex><span>			exit(1);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>		<span style=font-weight:700>if</span> (exec(<span style=font-style:italic>&#39;git commit -am &#34;From auto backup script\&#39;s commit&#34;&#39;</span>).code !== 0) {
+</span></span><span style=display:flex><span>			echo(<span style=font-style:italic>&#39;Error: Git commit failed&#39;</span>);
+</span></span><span style=display:flex><span>			exit(1);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>		<span style=font-weight:700>if</span> (exec(<span style=font-style:italic>&#39;git push origin source&#39;</span>).code !== 0) {
+</span></span><span style=display:flex><span>			echo(<span style=font-style:italic>&#39;Error: Git push failed&#39;</span>);
+</span></span><span style=display:flex><span>			exit(1);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>		echo(<span style=font-style:italic>&#34;==================Auto Backup Complete============================&#34;</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>注意修改为自己的远程仓库名和相应的分支名。</p><p>此时，运行<code>hexo d</code>后的结果如下：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>$ hexo d
+</span></span><span style=display:flex><span>INFO  Deploying: git
+</span></span><span style=display:flex><span>INFO  Clearing .deploy_git folder...
+</span></span><span style=display:flex><span>INFO  Copying files from public folder...
+</span></span><span style=display:flex><span>[master d747a0d] Site updated: 2016-05-29 01:22:33
+</span></span><span style=display:flex><span> 5 files changed, 7 insertions(+), 13 deletions(-)
+</span></span><span style=display:flex><span>To git@github.com:saukymo/saukymo.github.io.git
+</span></span><span style=display:flex><span>   bb4cdbd..d747a0d  HEAD -&gt; master
+</span></span><span style=display:flex><span>Branch master set up to track remote branch master from git@github.com:saukymo/saukymo.github.io.git.
+</span></span><span style=display:flex><span>INFO  Deploy <span style=font-weight:700>done</span>: git
+</span></span><span style=display:flex><span>======================Auto Backup Begin===========================
+</span></span><span style=display:flex><span>Already on <span style=font-style:italic>&#39;source&#39;</span>
+</span></span><span style=display:flex><span>M	<span style=font-style:italic>&#34;source/_posts/Hexo\345\222\214Github\346\220\255\345\273\272Blog.md&#34;</span>
+</span></span><span style=display:flex><span>M	themes/next
+</span></span><span style=display:flex><span>[source 1786b36] From auto backup script<span>&#39;</span>s commit
+</span></span><span style=display:flex><span> 1 file changed, 5 insertions(+)
+</span></span><span style=display:flex><span>To git@github.com:saukymo/saukymo.github.io.git
+</span></span><span style=display:flex><span>   49ab33a..1786b36  source -&gt; source
+</span></span><span style=display:flex><span>==================Auto Backup Complete============================
+</span></span></code></pre></div><h2 id=压缩静态资源>压缩静态资源
+<a class=heading-link href=#%e5%8e%8b%e7%bc%a9%e9%9d%99%e6%80%81%e8%b5%84%e6%ba%90><i class="fa fa-link" aria-hidden=true></i></a></h2><p>安装<a href=https://github.com/unhealthy/hexo-all-minifier>hexo-all-minifier</a></p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>$ npm install hexo-all-minifier --save
+</span></span></code></pre></div><p>然后 <code>hexo g</code>时就会自动压缩静态资源</p><h2 id=使用pandoc解析>使用pandoc解析
+<a class=heading-link href=#%e4%bd%bf%e7%94%a8pandoc%e8%a7%a3%e6%9e%90><i class="fa fa-link" aria-hidden=true></i></a></h2><p><a href=http://pandoc.org/>pandoc</a>是一个比markdown更加强大的解析工具，使用它可以避免<code>MathJax</code>和<code>markdown</code>冲突的问题，而且二者的语法也大同小异。</p><p>首先安装<code>pandoc</code>：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>brew install pandoc
+</span></span></code></pre></div><p>然后用<code>npm</code>安装<code>hexo-renderer-pandoc</code>：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>npm install hexo-renderer-pandoc --save
+</span></span></code></pre></div><p>这里我不知道怎么设置<code>Hexo</code>使用哪一个解析器，所以我直接删掉了另一个解析器<code>hexo-renderer-marked</code></p><p>此时，新生成的页面里，所有的公式应该都不需要转义下划线了。</p><p>但是，<code>pandoc</code>对表格的支持没有<code>markdown</code>那么智能，<code>-</code>的数目和表格的宽度严格相关，两端也需要用<code>|</code>闭合，才能正常显示。坏处自然是设置更加麻烦了，好处则是有利于微调。不过暂时还不清楚什么时候表格里的内容会溢出，什么时候会自动换行。</p><p>据说<code>pandoc</code>可以用来写论文，之后可以尝试一下。</p><h2 id=设置侧边栏头像>设置侧边栏头像
+<a class=heading-link href=#%e8%ae%be%e7%bd%ae%e4%be%a7%e8%be%b9%e6%a0%8f%e5%a4%b4%e5%83%8f><i class="fa fa-link" aria-hidden=true></i></a></h2><p>参考<a href=https://github.com/iissnan/hexo-theme-next/wiki/%E8%AE%BE%E7%BD%AE%E4%BE%A7%E8%BE%B9%E6%A0%8F%E5%A4%B4%E5%83%8F>Next wiki</a></p></div><footer></footer></article></section></div><footer class=footer><section class=container>©
 2016 -
 2022
 无生
 ·
-Powered by <a href=https://gohugo.io/>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/>Coder</a>.
-</section>
-</footer>
-</main>
-<script src=/js/coder.min.39a51230dce2ac866c049b52573e38bf60666af4bc63c1bdf203b9b2d95b1cd6.js integrity="sha256-OaUSMNzirIZsBJtSVz44v2BmavS8Y8G98gO5stlbHNY="></script>
-</body>
-</html>
+Powered by <a href=https://gohugo.io/>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/>Coder</a>.</section></footer></main><script src=/js/coder.min.8fb86376a16e684af472a329aef502dbebcfab65ce264e9750d144912947c602.js integrity="sha256-j7hjdqFuaEr0cqMprvUC2+vPq2XOJk6XUNFEkSlHxgI="></script></body></html>

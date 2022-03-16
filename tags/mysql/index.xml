@@ -2,5 +2,4 @@
 Table设置 Create和Update的自动记录时间触发 这个其实在用Postgresql的时候就已经用过了，结果发现Mysql更加简单。
 created_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 多主键限制 Ivita里uid和date共同作为主键，所以需要给他们俩一起添加一个唯一性限制。
 UNIQUE KEY (uid, date) SQL语句 分组求和并排序 业务需求本来求和周年月的每日数据，然后返回一个排名，不过之后这个功能没有意义了，就没有用到这个功能了。这里贴一个更好的：
-SELECT orderNumber, FORMAT(SUM(quantityOrdered * priceEach),2) total FROM orderdetails GROUP BY orderNumber ORDER BY SUM(quantityOrdered * priceEach) DESC; 插入重复则更新 很方便的一个功能，本来要写两条还要写代码判断的现在一句话就能解决了，不过Ivita用的Mysql版本不支持Json，所以不知道如果有的字段是Json的话，是不是依然还是那么方便。在Ivita里我把Json字段单独处理的。
-insert into steps (uid, date, count, calory, kilo) values (${id}, ${value}, ${data[&amp;#39;count&amp;#39;]}, ${data[&amp;#39;calory&amp;#39;]}, ${data[&amp;#39;kilo&amp;#39;]}) on duplicate key update count=count+values(count), calory=calory+values(calory), kilo=kilo+values(kilo);</description></item></channel></rss>
+SELECT orderNumber, FORMAT(SUM(quantityOrdered * priceEach),2) total FROM orderdetails GROUP BY orderNumber ORDER BY SUM(quantityOrdered * priceEach) DESC; 插入重复则更新 很方便的一个功能，本来要写两条还要写代码判断的现在一句话就能解决了，不过Ivita用的Mysql版本不支持Json，所以不知道如果有的字段是Json的话，是不是依然还是那么方便。在Ivita里我把Json字段单独处理的。</description></item></channel></rss>

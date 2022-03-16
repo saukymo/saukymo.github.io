@@ -1,142 +1,36 @@
-<!doctype html><html lang=en>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta http-equiv=content-language content="en">
-<meta name=color-scheme content="light dark">
-<meta name=author content="无生">
-<meta name=description content="背景    之前用了一段时间的Lantern，虽然很好用，但是流量消耗得太快，跑了一天就超过了80%。正好早上登上了budgetvm的vps整了下数据库，所以就想顺便再把代理捣鼓一下。
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=content-language content="en"><meta name=color-scheme content="light dark"><meta name=author content="无生"><meta name=description content="背景    之前用了一段时间的Lantern，虽然很好用，但是流量消耗得太快，跑了一天就超过了80%。正好早上登上了budgetvm的vps整了下数据库，所以就想顺便再把代理捣鼓一下。
 经过    借着Lantern剩下的一点流量，没费多少功夫就搜到了神器shadowsocks，但是很遗憾，似乎作者停止更新了。不过好在wiki还是完整的，开始按照wiki折腾了很久，不得要领。遂请教胡神，胡神很给力的给了给了一套教程Get Through the Firewall in Scientific Method。按照教程捣鼓了一番，还是不得要领。最后在胡神亲自带领下，终于成功翻墙，于是写下这篇笔记记录一下方法。
 基本按照这个图来
 +-------------------------------------+ | Server A(大陆以外) | | 运行shadowsocks-python服务端 | | 对外提供的SS IP为ip1，端口为port1 | +--------------+----------------------+ | | | +--------------+-------------------------------------------+ | 本机 | | 运行shadowsocks-python客户端 + switchOmega socks5代理 | +----------------------------------------------------------+  本来为了方便使用，应该是在墙内设置一个Server B，然后在B上运行shadowsocks客户端，同时添加cow的二级代理，转成http代理，然后就方便使用了，但是测试了半天没有成功，改用上面的这种简化的方法。缺点在于本机需要运行客户端才可以开启代理。不过都设置好之后也还算方便。
 服务器端(墙外VPS)安装和配置    首先安装shadowsocks，因为绑定1000以下端口和后台运行都是需要sudo权限的，所以需要直接在系统库中安装会比较方便一点。
-sudo pip install shadowsocks 安装完之后就可以直接运行ssserver命令了。 首先写服务端的配置文件shadowsocks.json：
-{ &#34;server&#34;:&#34;▇▇.▇▇.▇▇.▇▇&#34;, &#34;server_port&#34;:9000, &#34;password&#34;:&#34;FUCKXXX&#34;, &#34;timeout&#34;:300, &#34;method&#34;:&#34;aes-256-cfb&#34; } 然后运行
-ssserver -c shadowsocks.json 或者后台运行，可能需要sudo权限">
-<meta name=keywords content="blog,developer,personal">
-<meta name=twitter:card content="summary">
-<meta name=twitter:title content="vps + shadowsocks + switchOmega科学上网">
-<meta name=twitter:description content="背景    之前用了一段时间的Lantern，虽然很好用，但是流量消耗得太快，跑了一天就超过了80%。正好早上登上了budgetvm的vps整了下数据库，所以就想顺便再把代理捣鼓一下。
+ sudo pip install shadowsocks 安装完之后就可以直接运行ssserver命令了。 首先写服务端的配置文件shadowsocks.json：
+{  &#34;server&#34;:&#34;▇▇.▇▇.▇▇.▇▇&#34;,  &#34;server_port&#34;:9000,  &#34;password&#34;:&#34;FUCKXXX&#34;,  &#34;timeout&#34;:300,  &#34;method&#34;:&#34;aes-256-cfb&#34; } 然后运行"><meta name=keywords content="blog,developer,personal"><meta name=twitter:card content="summary"><meta name=twitter:title content="vps + shadowsocks + switchOmega科学上网"><meta name=twitter:description content="背景    之前用了一段时间的Lantern，虽然很好用，但是流量消耗得太快，跑了一天就超过了80%。正好早上登上了budgetvm的vps整了下数据库，所以就想顺便再把代理捣鼓一下。
 经过    借着Lantern剩下的一点流量，没费多少功夫就搜到了神器shadowsocks，但是很遗憾，似乎作者停止更新了。不过好在wiki还是完整的，开始按照wiki折腾了很久，不得要领。遂请教胡神，胡神很给力的给了给了一套教程Get Through the Firewall in Scientific Method。按照教程捣鼓了一番，还是不得要领。最后在胡神亲自带领下，终于成功翻墙，于是写下这篇笔记记录一下方法。
 基本按照这个图来
 +-------------------------------------+ | Server A(大陆以外) | | 运行shadowsocks-python服务端 | | 对外提供的SS IP为ip1，端口为port1 | +--------------+----------------------+ | | | +--------------+-------------------------------------------+ | 本机 | | 运行shadowsocks-python客户端 + switchOmega socks5代理 | +----------------------------------------------------------+  本来为了方便使用，应该是在墙内设置一个Server B，然后在B上运行shadowsocks客户端，同时添加cow的二级代理，转成http代理，然后就方便使用了，但是测试了半天没有成功，改用上面的这种简化的方法。缺点在于本机需要运行客户端才可以开启代理。不过都设置好之后也还算方便。
 服务器端(墙外VPS)安装和配置    首先安装shadowsocks，因为绑定1000以下端口和后台运行都是需要sudo权限的，所以需要直接在系统库中安装会比较方便一点。
-sudo pip install shadowsocks 安装完之后就可以直接运行ssserver命令了。 首先写服务端的配置文件shadowsocks.json：
-{ &#34;server&#34;:&#34;▇▇.▇▇.▇▇.▇▇&#34;, &#34;server_port&#34;:9000, &#34;password&#34;:&#34;FUCKXXX&#34;, &#34;timeout&#34;:300, &#34;method&#34;:&#34;aes-256-cfb&#34; } 然后运行
-ssserver -c shadowsocks.json 或者后台运行，可能需要sudo权限">
-<meta property="og:title" content="vps + shadowsocks + switchOmega科学上网">
-<meta property="og:description" content="背景    之前用了一段时间的Lantern，虽然很好用，但是流量消耗得太快，跑了一天就超过了80%。正好早上登上了budgetvm的vps整了下数据库，所以就想顺便再把代理捣鼓一下。
+ sudo pip install shadowsocks 安装完之后就可以直接运行ssserver命令了。 首先写服务端的配置文件shadowsocks.json：
+{  &#34;server&#34;:&#34;▇▇.▇▇.▇▇.▇▇&#34;,  &#34;server_port&#34;:9000,  &#34;password&#34;:&#34;FUCKXXX&#34;,  &#34;timeout&#34;:300,  &#34;method&#34;:&#34;aes-256-cfb&#34; } 然后运行"><meta property="og:title" content="vps + shadowsocks + switchOmega科学上网"><meta property="og:description" content="背景    之前用了一段时间的Lantern，虽然很好用，但是流量消耗得太快，跑了一天就超过了80%。正好早上登上了budgetvm的vps整了下数据库，所以就想顺便再把代理捣鼓一下。
 经过    借着Lantern剩下的一点流量，没费多少功夫就搜到了神器shadowsocks，但是很遗憾，似乎作者停止更新了。不过好在wiki还是完整的，开始按照wiki折腾了很久，不得要领。遂请教胡神，胡神很给力的给了给了一套教程Get Through the Firewall in Scientific Method。按照教程捣鼓了一番，还是不得要领。最后在胡神亲自带领下，终于成功翻墙，于是写下这篇笔记记录一下方法。
 基本按照这个图来
 +-------------------------------------+ | Server A(大陆以外) | | 运行shadowsocks-python服务端 | | 对外提供的SS IP为ip1，端口为port1 | +--------------+----------------------+ | | | +--------------+-------------------------------------------+ | 本机 | | 运行shadowsocks-python客户端 + switchOmega socks5代理 | +----------------------------------------------------------+  本来为了方便使用，应该是在墙内设置一个Server B，然后在B上运行shadowsocks客户端，同时添加cow的二级代理，转成http代理，然后就方便使用了，但是测试了半天没有成功，改用上面的这种简化的方法。缺点在于本机需要运行客户端才可以开启代理。不过都设置好之后也还算方便。
 服务器端(墙外VPS)安装和配置    首先安装shadowsocks，因为绑定1000以下端口和后台运行都是需要sudo权限的，所以需要直接在系统库中安装会比较方便一点。
-sudo pip install shadowsocks 安装完之后就可以直接运行ssserver命令了。 首先写服务端的配置文件shadowsocks.json：
-{ &#34;server&#34;:&#34;▇▇.▇▇.▇▇.▇▇&#34;, &#34;server_port&#34;:9000, &#34;password&#34;:&#34;FUCKXXX&#34;, &#34;timeout&#34;:300, &#34;method&#34;:&#34;aes-256-cfb&#34; } 然后运行
-ssserver -c shadowsocks.json 或者后台运行，可能需要sudo权限">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://blog.mkdef.com/posts/vps-shadowsocks-switchomega%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2016-08-18T14:55:11+08:00">
-<meta property="article:modified_time" content="2016-08-18T14:55:11+08:00">
-<title>
-vps + shadowsocks + switchOmega科学上网 · Coder
-</title>
-<link rel=canonical href=https://blog.mkdef.com/posts/vps-shadowsocks-switchomega%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/>
-<link rel=preload href="/fonts/forkawesome-webfont.woff2?v=1.2.0" as=font type=font/woff2 crossorigin>
-<link rel=stylesheet href=/css/coder.min.d9fddbffe6f27e69985dc5fe0471cdb0e57fbf4775714bc3d847accb08f4a1f6.css integrity="sha256-2f3b/+byfmmYXcX+BHHNsOV/v0d1cUvD2Eesywj0ofY=" crossorigin=anonymous media=screen>
-<link rel=stylesheet href=/css/coder-dark.min.002ee2378e14c7a68f1f0a53d9694ed252090987c4e768023fac694a4fc5f793.css integrity="sha256-AC7iN44Ux6aPHwpT2WlO0lIJCYfE52gCP6xpSk/F95M=" crossorigin=anonymous media=screen>
-<link rel=icon type=image/png href=/images/favicon-32x32.png sizes=32x32>
-<link rel=icon type=image/png href=/images/favicon-16x16.png sizes=16x16>
-<link rel=apple-touch-icon href=/images/apple-touch-icon.png>
-<link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png>
-<meta name=generator content="Hugo 0.92.0">
-</head>
-<body class="preload-transitions colorscheme-auto">
-<div class=float-container>
-<a id=dark-mode-toggle class=colorscheme-toggle>
-<i class="fa fa-adjust fa-fw" aria-hidden=true></i>
-</a>
-</div>
-<main class=wrapper>
-<nav class=navigation>
-<section class=container>
-<a class=navigation-title href=/>
-Coder
-</a>
+ sudo pip install shadowsocks 安装完之后就可以直接运行ssserver命令了。 首先写服务端的配置文件shadowsocks.json：
+{  &#34;server&#34;:&#34;▇▇.▇▇.▇▇.▇▇&#34;,  &#34;server_port&#34;:9000,  &#34;password&#34;:&#34;FUCKXXX&#34;,  &#34;timeout&#34;:300,  &#34;method&#34;:&#34;aes-256-cfb&#34; } 然后运行"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.mkdef.com/posts/vps-shadowsocks-switchomega%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2016-08-18T14:55:11+08:00"><meta property="article:modified_time" content="2016-08-18T14:55:11+08:00"><title>vps + shadowsocks + switchOmega科学上网 · Coder</title><link rel=canonical href=https://blog.mkdef.com/posts/vps-shadowsocks-switchomega%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/><link rel=preload href="/fonts/forkawesome-webfont.woff2?v=1.2.0" as=font type=font/woff2 crossorigin><link rel=stylesheet href=/css/coder.min.d9fddbffe6f27e69985dc5fe0471cdb0e57fbf4775714bc3d847accb08f4a1f6.css integrity="sha256-2f3b/+byfmmYXcX+BHHNsOV/v0d1cUvD2Eesywj0ofY=" crossorigin=anonymous media=screen><link rel=stylesheet href=/css/coder-dark.min.002ee2378e14c7a68f1f0a53d9694ed252090987c4e768023fac694a4fc5f793.css integrity="sha256-AC7iN44Ux6aPHwpT2WlO0lIJCYfE52gCP6xpSk/F95M=" crossorigin=anonymous media=screen><link rel=icon type=image/png href=/images/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/images/favicon-16x16.png sizes=16x16><link rel=apple-touch-icon href=/images/apple-touch-icon.png><link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png><meta name=generator content="Hugo 0.94.2"></head><body class="preload-transitions colorscheme-auto"><div class=float-container><a id=dark-mode-toggle class=colorscheme-toggle><i class="fa fa-adjust fa-fw" aria-hidden=true></i></a></div><main class=wrapper><nav class=navigation><section class=container><a class=navigation-title href=/>Coder</a>
 <input type=checkbox id=menu-toggle>
-<label class="menu-button float-right" for=menu-toggle>
-<i class="fa fa-bars fa-fw" aria-hidden=true></i>
-</label>
-<ul class=navigation-list>
-<li class=navigation-item>
-<a class=navigation-link href=/posts/>Blog</a>
-</li>
-<li class=navigation-item>
-<a class=navigation-link href=/about/>About</a>
-</li>
-</ul>
-</section>
-</nav>
-<div class=content>
-<section class="container post">
-<article>
-<header>
-<div class=post-title>
-<h1 class=title>
-<a class=title-link href=https://blog.mkdef.com/posts/vps-shadowsocks-switchomega%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/>
-vps + shadowsocks + switchOmega科学上网
-</a>
-</h1>
-</div>
-<div class=post-meta>
-<div class=date>
-<span class=posted-on>
-<i class="fa fa-calendar" aria-hidden=true></i>
-<time datetime=2016-08-18T14:55:11+08:00>
-August 18, 2016
-</time>
-</span>
-<span class=reading-time>
-<i class="fa fa-clock-o" aria-hidden=true></i>
-One-minute read
-</span>
-</div>
-<div class=tags>
-<i class="fa fa-tag" aria-hidden=true></i>
-<span class=tag>
-<a href=/tags/shadowsocks/>shadowsocks</a>
-</span>
+<label class="menu-button float-right" for=menu-toggle><i class="fa fa-bars fa-fw" aria-hidden=true></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=/posts/>Blog</a></li><li class=navigation-item><a class=navigation-link href=/about/>About</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title><a class=title-link href=https://blog.mkdef.com/posts/vps-shadowsocks-switchomega%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/>vps + shadowsocks + switchOmega科学上网</a></h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fa fa-calendar" aria-hidden=true></i>
+<time datetime=2016-08-18T14:55:11+08:00>August 18, 2016</time></span>
+<span class=reading-time><i class="fa fa-clock-o" aria-hidden=true></i>
+One-minute read</span></div><div class=tags><i class="fa fa-tag" aria-hidden=true></i>
+<span class=tag><a href=/tags/shadowsocks/>shadowsocks</a></span>
 <span class=separator>•</span>
-<span class=tag>
-<a href=/tags/switchomega/>SwitchOmega</a>
-</span>
+<span class=tag><a href=/tags/switchomega/>SwitchOmega</a></span>
 <span class=separator>•</span>
-<span class=tag>
-<a href=/tags/gfw/>GFW</a>
-</span>
+<span class=tag><a href=/tags/gfw/>GFW</a></span>
 <span class=separator>•</span>
-<span class=tag>
-<a href=/tags/socks5/>socks5</a>
-</span></div>
-</div>
-</header>
-<div>
-<h2 id=背景>
-背景
-<a class=heading-link href=#%e8%83%8c%e6%99%af>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p>之前用了一段时间的<code>Lantern</code>，虽然很好用，但是流量消耗得太快，跑了一天就超过了80%。正好早上登上了<code>budgetvm</code>的vps整了下数据库，所以就想顺便再把代理捣鼓一下。</p>
-<p><img src=/uploads/shadowsocks.png alt></p>
-<h2 id=经过>
-经过
-<a class=heading-link href=#%e7%bb%8f%e8%bf%87>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p>借着<code>Lantern</code>剩下的一点流量，没费多少功夫就搜到了神器<a href=https://github.com/shadowsocks/shadowsocks>shadowsocks</a>，但是很遗憾，似乎作者停止更新了。不过好在wiki还是完整的，开始按照wiki折腾了很久，不得要领。遂请教胡神，胡神很给力的给了给了一套教程<a href=https://github.com/sjtug/kxsw/wiki>Get Through the Firewall in Scientific Method</a>。按照教程捣鼓了一番，还是不得要领。最后在胡神亲自带领下，终于成功翻墙，于是写下这篇笔记记录一下方法。</p>
-<p>基本按照这个图来</p>
-<pre><code>+-------------------------------------+
+<span class=tag><a href=/tags/socks5/>socks5</a></span></div></div></header><div><h2 id=背景>背景
+<a class=heading-link href=#%e8%83%8c%e6%99%af><i class="fa fa-link" aria-hidden=true></i></a></h2><p>之前用了一段时间的<code>Lantern</code>，虽然很好用，但是流量消耗得太快，跑了一天就超过了80%。正好早上登上了<code>budgetvm</code>的vps整了下数据库，所以就想顺便再把代理捣鼓一下。</p><p><img src=/uploads/shadowsocks.png alt></p><h2 id=经过>经过
+<a class=heading-link href=#%e7%bb%8f%e8%bf%87><i class="fa fa-link" aria-hidden=true></i></a></h2><p>借着<code>Lantern</code>剩下的一点流量，没费多少功夫就搜到了神器<a href=https://github.com/shadowsocks/shadowsocks>shadowsocks</a>，但是很遗憾，似乎作者停止更新了。不过好在wiki还是完整的，开始按照wiki折腾了很久，不得要领。遂请教胡神，胡神很给力的给了给了一套教程<a href=https://github.com/sjtug/kxsw/wiki>Get Through the Firewall in Scientific Method</a>。按照教程捣鼓了一番，还是不得要领。最后在胡神亲自带领下，终于成功翻墙，于是写下这篇笔记记录一下方法。</p><p>基本按照这个图来</p><pre><code>+-------------------------------------+
 |       Server A(大陆以外)             |
 |    运行shadowsocks-python服务端      |
 | 对外提供的SS IP为ip1，端口为port1      |
@@ -148,80 +42,33 @@ One-minute read
 |     本机                                                 |
 | 运行shadowsocks-python客户端 + switchOmega socks5代理     |
 +----------------------------------------------------------+
-</code></pre>
-<p>本来为了方便使用，应该是在墙内设置一个Server B，然后在B上运行<code>shadowsocks</code>客户端，同时添加<code>cow</code>的二级代理，转成<code>http</code>代理，然后就方便使用了，但是测试了半天没有成功，改用上面的这种简化的方法。缺点在于本机需要运行客户端才可以开启代理。不过都设置好之后也还算方便。</p>
-<h2 id=服务器端墙外vps安装和配置>
-服务器端(墙外VPS)安装和配置
-<a class=heading-link href=#%e6%9c%8d%e5%8a%a1%e5%99%a8%e7%ab%af%e5%a2%99%e5%a4%96vps%e5%ae%89%e8%a3%85%e5%92%8c%e9%85%8d%e7%bd%ae>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p>首先安装<code>shadowsocks</code>，因为绑定1000以下端口和后台运行都是需要<code>sudo</code>权限的，所以需要直接在系统库中安装会比较方便一点。</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>    sudo pip install shadowsocks
-</code></pre></div><p>安装完之后就可以直接运行<code>ssserver</code>命令了。
-首先写服务端的配置文件<code>shadowsocks.json</code>：</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
-        <span style=font-weight:700>&#34;server&#34;</span>:<span style=font-style:italic>&#34;▇▇.▇▇.▇▇.▇▇&#34;</span>,
-        <span style=font-weight:700>&#34;server_port&#34;</span>:9000,
-        <span style=font-weight:700>&#34;password&#34;</span>:<span style=font-style:italic>&#34;FUCKXXX&#34;</span>,
-        <span style=font-weight:700>&#34;timeout&#34;</span>:300,
-        <span style=font-weight:700>&#34;method&#34;</span>:<span style=font-style:italic>&#34;aes-256-cfb&#34;</span>
-}
-</code></pre></div><p>然后运行</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>    ssserver -c shadowsocks.json
-</code></pre></div><p>或者后台运行，可能需要<code>sudo</code>权限</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>    ssserver -c shadowsocks.json -d start
-</code></pre></div><p>这个时候服务器端的配置就完成了。</p>
-<h2 id=客户端本机或国内vps配置>
-客户端(本机或国内VPS)配置
-<a class=heading-link href=#%e5%ae%a2%e6%88%b7%e7%ab%af%e6%9c%ac%e6%9c%ba%e6%88%96%e5%9b%bd%e5%86%85vps%e9%85%8d%e7%bd%ae>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p>安装和运行方式同上，只有配置文件略有不同</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
-        <span style=font-weight:700>&#34;server&#34;</span>:<span style=font-style:italic>&#34;▇▇.▇▇.▇▇.▇▇&#34;</span>,
-        <span style=font-weight:700>&#34;server_port&#34;</span>:9000,
-        <span style=font-weight:700>&#34;local_address&#34;</span>:<span style=font-style:italic>&#34;127.0.0.1&#34;</span>,
-        <span style=font-weight:700>&#34;local_port&#34;</span>:443,
-        <span style=font-weight:700>&#34;password&#34;</span>:<span style=font-style:italic>&#34;FUCKXXX&#34;</span>,
-        <span style=font-weight:700>&#34;timeout&#34;</span>:300,
-        <span style=font-weight:700>&#34;method&#34;</span>:<span style=font-style:italic>&#34;aes-256-cfb&#34;</span>
-}
-</code></pre></div><p>这样一来，本机就有了一个ip为<code>127.0.0.1</code>，端口为<code>443</code>的<code>socks5</code>代理了。</p>
-<h2 id=switchomega配置>
-SwitchOmega配置
-<a class=heading-link href=#switchomega%e9%85%8d%e7%bd%ae>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p><code>SwitchOmega</code>需要先翻墙在<code>Chrome</code>商店进行安装，安装完之后添加刚才设置好的<code>socks5</code>代理即可。</p>
-<p>但是<code>SwitchOmega</code>还需要设置自动代理，这样可以直接访问国内的网站而不用代理。打开插件的设置页面，选择<code>auto switch</code>，在<code>Rule list</code>中选择<code>AutoProxy</code>，然后在网址填入<code>https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt</code>。点下载配置即可。</p>
-<p>此时应该可以顺利翻墙了。</p>
-<h2 id=dns污染>
-DNS污染
-<a class=heading-link href=#dns%e6%b1%a1%e6%9f%93>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p>这个概念我还没有搞清楚，也没有去折腾相关的解决方案，使用了胡神给的一个据说没有被污染的DNS，然后就能成功访问<code>Google</code>了。</p>
-</div>
-<footer>
-</footer>
-</article>
-</section>
-</div>
-<footer class=footer>
-<section class=container>
-©
+</code></pre><p>本来为了方便使用，应该是在墙内设置一个Server B，然后在B上运行<code>shadowsocks</code>客户端，同时添加<code>cow</code>的二级代理，转成<code>http</code>代理，然后就方便使用了，但是测试了半天没有成功，改用上面的这种简化的方法。缺点在于本机需要运行客户端才可以开启代理。不过都设置好之后也还算方便。</p><h2 id=服务器端墙外vps安装和配置>服务器端(墙外VPS)安装和配置
+<a class=heading-link href=#%e6%9c%8d%e5%8a%a1%e5%99%a8%e7%ab%af%e5%a2%99%e5%a4%96vps%e5%ae%89%e8%a3%85%e5%92%8c%e9%85%8d%e7%bd%ae><i class="fa fa-link" aria-hidden=true></i></a></h2><p>首先安装<code>shadowsocks</code>，因为绑定1000以下端口和后台运行都是需要<code>sudo</code>权限的，所以需要直接在系统库中安装会比较方便一点。</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>    sudo pip install shadowsocks
+</span></span></code></pre></div><p>安装完之后就可以直接运行<code>ssserver</code>命令了。
+首先写服务端的配置文件<code>shadowsocks.json</code>：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>        <span style=font-weight:700>&#34;server&#34;</span>:<span style=font-style:italic>&#34;▇▇.▇▇.▇▇.▇▇&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=font-weight:700>&#34;server_port&#34;</span>:9000,
+</span></span><span style=display:flex><span>        <span style=font-weight:700>&#34;password&#34;</span>:<span style=font-style:italic>&#34;FUCKXXX&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=font-weight:700>&#34;timeout&#34;</span>:300,
+</span></span><span style=display:flex><span>        <span style=font-weight:700>&#34;method&#34;</span>:<span style=font-style:italic>&#34;aes-256-cfb&#34;</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>然后运行</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>    ssserver -c shadowsocks.json
+</span></span></code></pre></div><p>或者后台运行，可能需要<code>sudo</code>权限</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>    ssserver -c shadowsocks.json -d start
+</span></span></code></pre></div><p>这个时候服务器端的配置就完成了。</p><h2 id=客户端本机或国内vps配置>客户端(本机或国内VPS)配置
+<a class=heading-link href=#%e5%ae%a2%e6%88%b7%e7%ab%af%e6%9c%ac%e6%9c%ba%e6%88%96%e5%9b%bd%e5%86%85vps%e9%85%8d%e7%bd%ae><i class="fa fa-link" aria-hidden=true></i></a></h2><p>安装和运行方式同上，只有配置文件略有不同</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>        <span style=font-weight:700>&#34;server&#34;</span>:<span style=font-style:italic>&#34;▇▇.▇▇.▇▇.▇▇&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=font-weight:700>&#34;server_port&#34;</span>:9000,
+</span></span><span style=display:flex><span>        <span style=font-weight:700>&#34;local_address&#34;</span>:<span style=font-style:italic>&#34;127.0.0.1&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=font-weight:700>&#34;local_port&#34;</span>:443,
+</span></span><span style=display:flex><span>        <span style=font-weight:700>&#34;password&#34;</span>:<span style=font-style:italic>&#34;FUCKXXX&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=font-weight:700>&#34;timeout&#34;</span>:300,
+</span></span><span style=display:flex><span>        <span style=font-weight:700>&#34;method&#34;</span>:<span style=font-style:italic>&#34;aes-256-cfb&#34;</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>这样一来，本机就有了一个ip为<code>127.0.0.1</code>，端口为<code>443</code>的<code>socks5</code>代理了。</p><h2 id=switchomega配置>SwitchOmega配置
+<a class=heading-link href=#switchomega%e9%85%8d%e7%bd%ae><i class="fa fa-link" aria-hidden=true></i></a></h2><p><code>SwitchOmega</code>需要先翻墙在<code>Chrome</code>商店进行安装，安装完之后添加刚才设置好的<code>socks5</code>代理即可。</p><p>但是<code>SwitchOmega</code>还需要设置自动代理，这样可以直接访问国内的网站而不用代理。打开插件的设置页面，选择<code>auto switch</code>，在<code>Rule list</code>中选择<code>AutoProxy</code>，然后在网址填入<code>https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt</code>。点下载配置即可。</p><p>此时应该可以顺利翻墙了。</p><h2 id=dns污染>DNS污染
+<a class=heading-link href=#dns%e6%b1%a1%e6%9f%93><i class="fa fa-link" aria-hidden=true></i></a></h2><p>这个概念我还没有搞清楚，也没有去折腾相关的解决方案，使用了胡神给的一个据说没有被污染的DNS，然后就能成功访问<code>Google</code>了。</p></div><footer></footer></article></section></div><footer class=footer><section class=container>©
 2016 -
 2022
 无生
 ·
-Powered by <a href=https://gohugo.io/>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/>Coder</a>.
-</section>
-</footer>
-</main>
-<script src=/js/coder.min.39a51230dce2ac866c049b52573e38bf60666af4bc63c1bdf203b9b2d95b1cd6.js integrity="sha256-OaUSMNzirIZsBJtSVz44v2BmavS8Y8G98gO5stlbHNY="></script>
-</body>
-</html>
+Powered by <a href=https://gohugo.io/>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/>Coder</a>.</section></footer></main><script src=/js/coder.min.8fb86376a16e684af472a329aef502dbebcfab65ce264e9750d144912947c602.js integrity="sha256-j7hjdqFuaEr0cqMprvUC2+vPq2XOJk6XUNFEkSlHxgI="></script></body></html>

@@ -27,4 +27,4 @@ tushare TuShare是一个免费、开源的python财经数据接口包。它的�
 PyPy的下载和安装 首先在官网的下载页面下载最新版本的PyPy：
 wget https://bitbucket.org/pypy/pypy/downloads/pypy-5.0.1-linux64.tar.bz2 然后解压放到任意位置，并用PyPy的作为virtualenv的解释器。
 virtualenv -p /path/to/pypy/bin/pypy env source env/bin/activate 此时运行python就能看到PyPy的信息了：
-Python 2.7.10 (bbd45126bc69, Mar 18 2016, 21:35:08) [PyPy 5.0.1 with GCC 4.8.4] on linux2 Type &amp;#34;help&amp;#34;, &amp;#34;copyright&amp;#34;, &amp;#34;credits&amp;#34; or &amp;#34;license&amp;#34; for more information.</description></item></channel></rss>
+Python 2.7.10 (bbd45126bc69, Mar 18 2016, 21:35:08) [PyPy 5.0.1 with GCC 4.</description></item></channel></rss>

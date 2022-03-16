@@ -1,0 +1,150 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=content-language content="en"><meta name=color-scheme content="light dark"><meta name=author content="无生"><meta name=description content="起因    在B站上看了3b1b的科普视频，介绍了wordle游戏中的一些信息论原理。在视频里，作者实现了一个solver，并且直观地介绍了它的原理。不过在视频的结尾提到了通过多探索一步，提升了solver的效果。当时看到这里我就在想，难道这个方法并不是最优解？很快就能发现，视频中的每一步guess，都是基于当前的最优值，所以这只是一个简单的贪心算法，很可能不是最优的。当然，视频的主要目的还是直观的介绍信息熵等概念，解法是不是最优并不重要。
+后来，我在评论中看到了一个Leader Board, 里面给出了最优解，并且提供了一些解法自己的介绍链接. 然后通过这个名单，我才发现这个Wordle这个游戏还有Hard模式，然后Hard模式的平均猜测次数‘理所当然地’比普通模式的多。然而，后面发现，这里其实提示了一个非常大的坑，这个坑会导致普通模式错过最优解，具体关于这个坑的介绍在本文的最后面。
+游戏介绍    Wordle 的游戏规则很简单，玩家每次猜测一个包含5个字母的单词，然后游戏会反馈一个结果，这个结果也包含5位，每个位置有三种颜色，绿色表示该字母正确且位置正确，黄色表示字母正确但是位置不对，灰色表示答案不包含这个字母，最后要求玩家在5次内猜到出这个单词。
+思考了一下这个玩法，很容易联想到以前玩过的小游戏猜数字，每次猜测一个四位数字，游戏返回结果XAXB，A代表有几个位置数字和位置都正确，B代表猜对了数字，但是位置不对。
+比较这两个游戏，有三个地方是明显的区别：
+ 结果的pattern不一样 猜测的字符wordle可以重复，猜数字不能 wordle要求猜测的5个字符是一个valid的单词，而猜数字没有限制  但是这些区别都不本质，我们可以很容易地把这两个游戏抽象成一个游戏。
+ 首先，定义一个游戏猜测的全集，对于wordle来说，是5个字母的单词表，对于猜数字来说，是所有的4位数字。 玩家给出一个猜测，游戏根据规则的不同会反馈不同的pattern，事实上这可以看做将当前所有可能的结果，根据pattern过滤出符合反馈的，缩小下一轮的猜测范围。 最后不断重复上一个步骤，直到pattern满足胜利条件。  需要注意的是，按照这种模式，给出新的猜测仅与当前可能的结果有关，与之前的猜测和反馈都没有关系。 所以基于这种交互，我们可以定义两个类 Checker 和 Solver :
+Checker 相当于游戏的裁判，每一轮的结果以及游戏是否结束都是Checker说了算. Solver 相当于玩家，每一轮根据当前可能的猜测范围提供一个guess，然后根据Checker反馈的结果更新猜测范围。
+class Checker:  # 根据 target 计算当前 guess 的结果  def check(self, target: str, guess: str) -> str:  pass   def is_success(self, pattern) -> bool:  pass  class Solver:  def guess(self) -> str:  pass   def update(self, guess: str, pattern: str):  pass 评估策略    想要比较解法的好坏，首先需要合理地评价一个解法。这个游戏通常有两个维度来评价："><meta name=keywords content="blog,developer,personal"><meta name=twitter:card content="summary"><meta name=twitter:title content="Wordle"><meta name=twitter:description content="起因    在B站上看了3b1b的科普视频，介绍了wordle游戏中的一些信息论原理。在视频里，作者实现了一个solver，并且直观地介绍了它的原理。不过在视频的结尾提到了通过多探索一步，提升了solver的效果。当时看到这里我就在想，难道这个方法并不是最优解？很快就能发现，视频中的每一步guess，都是基于当前的最优值，所以这只是一个简单的贪心算法，很可能不是最优的。当然，视频的主要目的还是直观的介绍信息熵等概念，解法是不是最优并不重要。
+后来，我在评论中看到了一个Leader Board, 里面给出了最优解，并且提供了一些解法自己的介绍链接. 然后通过这个名单，我才发现这个Wordle这个游戏还有Hard模式，然后Hard模式的平均猜测次数‘理所当然地’比普通模式的多。然而，后面发现，这里其实提示了一个非常大的坑，这个坑会导致普通模式错过最优解，具体关于这个坑的介绍在本文的最后面。
+游戏介绍    Wordle 的游戏规则很简单，玩家每次猜测一个包含5个字母的单词，然后游戏会反馈一个结果，这个结果也包含5位，每个位置有三种颜色，绿色表示该字母正确且位置正确，黄色表示字母正确但是位置不对，灰色表示答案不包含这个字母，最后要求玩家在5次内猜到出这个单词。
+思考了一下这个玩法，很容易联想到以前玩过的小游戏猜数字，每次猜测一个四位数字，游戏返回结果XAXB，A代表有几个位置数字和位置都正确，B代表猜对了数字，但是位置不对。
+比较这两个游戏，有三个地方是明显的区别：
+ 结果的pattern不一样 猜测的字符wordle可以重复，猜数字不能 wordle要求猜测的5个字符是一个valid的单词，而猜数字没有限制  但是这些区别都不本质，我们可以很容易地把这两个游戏抽象成一个游戏。
+ 首先，定义一个游戏猜测的全集，对于wordle来说，是5个字母的单词表，对于猜数字来说，是所有的4位数字。 玩家给出一个猜测，游戏根据规则的不同会反馈不同的pattern，事实上这可以看做将当前所有可能的结果，根据pattern过滤出符合反馈的，缩小下一轮的猜测范围。 最后不断重复上一个步骤，直到pattern满足胜利条件。  需要注意的是，按照这种模式，给出新的猜测仅与当前可能的结果有关，与之前的猜测和反馈都没有关系。 所以基于这种交互，我们可以定义两个类 Checker 和 Solver :
+Checker 相当于游戏的裁判，每一轮的结果以及游戏是否结束都是Checker说了算. Solver 相当于玩家，每一轮根据当前可能的猜测范围提供一个guess，然后根据Checker反馈的结果更新猜测范围。
+class Checker:  # 根据 target 计算当前 guess 的结果  def check(self, target: str, guess: str) -> str:  pass   def is_success(self, pattern) -> bool:  pass  class Solver:  def guess(self) -> str:  pass   def update(self, guess: str, pattern: str):  pass 评估策略    想要比较解法的好坏，首先需要合理地评价一个解法。这个游戏通常有两个维度来评价："><meta property="og:title" content="Wordle"><meta property="og:description" content="起因    在B站上看了3b1b的科普视频，介绍了wordle游戏中的一些信息论原理。在视频里，作者实现了一个solver，并且直观地介绍了它的原理。不过在视频的结尾提到了通过多探索一步，提升了solver的效果。当时看到这里我就在想，难道这个方法并不是最优解？很快就能发现，视频中的每一步guess，都是基于当前的最优值，所以这只是一个简单的贪心算法，很可能不是最优的。当然，视频的主要目的还是直观的介绍信息熵等概念，解法是不是最优并不重要。
+后来，我在评论中看到了一个Leader Board, 里面给出了最优解，并且提供了一些解法自己的介绍链接. 然后通过这个名单，我才发现这个Wordle这个游戏还有Hard模式，然后Hard模式的平均猜测次数‘理所当然地’比普通模式的多。然而，后面发现，这里其实提示了一个非常大的坑，这个坑会导致普通模式错过最优解，具体关于这个坑的介绍在本文的最后面。
+游戏介绍    Wordle 的游戏规则很简单，玩家每次猜测一个包含5个字母的单词，然后游戏会反馈一个结果，这个结果也包含5位，每个位置有三种颜色，绿色表示该字母正确且位置正确，黄色表示字母正确但是位置不对，灰色表示答案不包含这个字母，最后要求玩家在5次内猜到出这个单词。
+思考了一下这个玩法，很容易联想到以前玩过的小游戏猜数字，每次猜测一个四位数字，游戏返回结果XAXB，A代表有几个位置数字和位置都正确，B代表猜对了数字，但是位置不对。
+比较这两个游戏，有三个地方是明显的区别：
+ 结果的pattern不一样 猜测的字符wordle可以重复，猜数字不能 wordle要求猜测的5个字符是一个valid的单词，而猜数字没有限制  但是这些区别都不本质，我们可以很容易地把这两个游戏抽象成一个游戏。
+ 首先，定义一个游戏猜测的全集，对于wordle来说，是5个字母的单词表，对于猜数字来说，是所有的4位数字。 玩家给出一个猜测，游戏根据规则的不同会反馈不同的pattern，事实上这可以看做将当前所有可能的结果，根据pattern过滤出符合反馈的，缩小下一轮的猜测范围。 最后不断重复上一个步骤，直到pattern满足胜利条件。  需要注意的是，按照这种模式，给出新的猜测仅与当前可能的结果有关，与之前的猜测和反馈都没有关系。 所以基于这种交互，我们可以定义两个类 Checker 和 Solver :
+Checker 相当于游戏的裁判，每一轮的结果以及游戏是否结束都是Checker说了算. Solver 相当于玩家，每一轮根据当前可能的猜测范围提供一个guess，然后根据Checker反馈的结果更新猜测范围。
+class Checker:  # 根据 target 计算当前 guess 的结果  def check(self, target: str, guess: str) -> str:  pass   def is_success(self, pattern) -> bool:  pass  class Solver:  def guess(self) -> str:  pass   def update(self, guess: str, pattern: str):  pass 评估策略    想要比较解法的好坏，首先需要合理地评价一个解法。这个游戏通常有两个维度来评价："><meta property="og:type" content="article"><meta property="og:url" content="https://blog.mkdef.com/posts/wordle/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-03-16T14:48:07+08:00"><meta property="article:modified_time" content="2022-03-16T14:48:07+08:00"><title>Wordle · Coder</title><link rel=canonical href=https://blog.mkdef.com/posts/wordle/><link rel=preload href="/fonts/forkawesome-webfont.woff2?v=1.2.0" as=font type=font/woff2 crossorigin><link rel=stylesheet href=/css/coder.min.d9fddbffe6f27e69985dc5fe0471cdb0e57fbf4775714bc3d847accb08f4a1f6.css integrity="sha256-2f3b/+byfmmYXcX+BHHNsOV/v0d1cUvD2Eesywj0ofY=" crossorigin=anonymous media=screen><link rel=stylesheet href=/css/coder-dark.min.002ee2378e14c7a68f1f0a53d9694ed252090987c4e768023fac694a4fc5f793.css integrity="sha256-AC7iN44Ux6aPHwpT2WlO0lIJCYfE52gCP6xpSk/F95M=" crossorigin=anonymous media=screen><link rel=icon type=image/png href=/images/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/images/favicon-16x16.png sizes=16x16><link rel=apple-touch-icon href=/images/apple-touch-icon.png><link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png><meta name=generator content="Hugo 0.94.2"></head><body class="preload-transitions colorscheme-auto"><div class=float-container><a id=dark-mode-toggle class=colorscheme-toggle><i class="fa fa-adjust fa-fw" aria-hidden=true></i></a></div><main class=wrapper><nav class=navigation><section class=container><a class=navigation-title href=/>Coder</a>
+<input type=checkbox id=menu-toggle>
+<label class="menu-button float-right" for=menu-toggle><i class="fa fa-bars fa-fw" aria-hidden=true></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=/posts/>Blog</a></li><li class=navigation-item><a class=navigation-link href=/about/>About</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title><a class=title-link href=https://blog.mkdef.com/posts/wordle/>Wordle</a></h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fa fa-calendar" aria-hidden=true></i>
+<time datetime=2022-03-16T14:48:07+08:00>March 16, 2022</time></span>
+<span class=reading-time><i class="fa fa-clock-o" aria-hidden=true></i>
+2-minute read</span></div><div class=tags><i class="fa fa-tag" aria-hidden=true></i>
+<span class=tag><a href=/tags/python/>Python</a></span></div></div></header><div><h3 id=起因>起因
+<a class=heading-link href=#%e8%b5%b7%e5%9b%a0><i class="fa fa-link" aria-hidden=true></i></a></h3><p>在B站上看了3b1b的<a href=https://www.bilibili.com/video/BV1zZ4y1k7Jw>科普视频</a>，介绍了wordle游戏中的一些信息论原理。在视频里，作者实现了一个solver，并且直观地介绍了它的原理。不过在视频的结尾提到了通过多探索一步，提升了solver的效果。当时看到这里我就在想，难道这个方法并不是最优解？很快就能发现，视频中的每一步guess，都是基于当前的最优值，所以这只是一个简单的贪心算法，很可能不是最优的。当然，视频的主要目的还是直观的介绍信息熵等概念，解法是不是最优并不重要。</p><p>后来，我在评论中看到了一个<a href=https://freshman.dev/wordle/#/leaderboard>Leader Board</a>, 里面给出了最优解，并且提供了一些解法自己的介绍链接. 然后通过这个名单，我才发现这个Wordle这个游戏还有Hard模式，然后Hard模式的平均猜测次数‘理所当然地’比普通模式的多。然而，后面发现，这里其实提示了一个非常大的坑，这个坑会导致普通模式错过最优解，具体关于这个坑的介绍在本文的最后面。</p><h3 id=游戏介绍>游戏介绍
+<a class=heading-link href=#%e6%b8%b8%e6%88%8f%e4%bb%8b%e7%bb%8d><i class="fa fa-link" aria-hidden=true></i></a></h3><p>Wordle 的游戏规则很简单，玩家每次猜测一个包含5个字母的单词，然后游戏会反馈一个结果，这个结果也包含5位，每个位置有三种颜色，绿色表示该字母正确且位置正确，黄色表示字母正确但是位置不对，灰色表示答案不包含这个字母，最后要求玩家在5次内猜到出这个单词。</p><p>思考了一下这个玩法，很容易联想到以前玩过的小游戏猜数字，每次猜测一个四位数字，游戏返回结果<code>XAXB</code>，A代表有几个位置数字和位置都正确，B代表猜对了数字，但是位置不对。</p><p>比较这两个游戏，有三个地方是明显的区别：</p><ol><li>结果的pattern不一样</li><li>猜测的字符wordle可以重复，猜数字不能</li><li>wordle要求猜测的5个字符是一个valid的单词，而猜数字没有限制</li></ol><p>但是这些区别都不本质，我们可以很容易地把这两个游戏抽象成一个游戏。</p><ol><li>首先，定义一个游戏猜测的全集，对于wordle来说，是5个字母的单词表，对于猜数字来说，是所有的4位数字。</li><li>玩家给出一个猜测，游戏根据规则的不同会反馈不同的pattern，事实上这可以看做将当前所有可能的结果，根据pattern过滤出符合反馈的，缩小下一轮的猜测范围。</li><li>最后不断重复上一个步骤，直到pattern满足胜利条件。</li></ol><p>需要注意的是，按照这种模式，给出新的猜测仅与当前可能的结果有关，与之前的猜测和反馈都没有关系。
+所以基于这种交互，我们可以定义两个类 <code>Checker</code> 和 <code>Solver</code> :</p><p><code>Checker</code> 相当于游戏的裁判，每一轮的结果以及游戏是否结束都是<code>Checker</code>说了算.
+<code>Solver</code> 相当于玩家，每一轮根据当前可能的猜测范围提供一个guess，然后根据Checker反馈的结果更新猜测范围。</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-py data-lang=py><span style=display:flex><span><span style=font-weight:700>class</span> <span style=font-weight:700>Checker</span>:
+</span></span><span style=display:flex><span>    <span style=font-style:italic># 根据 target 计算当前 guess 的结果</span>
+</span></span><span style=display:flex><span>    <span style=font-weight:700>def</span> check(self, target: str, guess: str) -&gt; str:
+</span></span><span style=display:flex><span>        <span style=font-weight:700>pass</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=font-weight:700>def</span> is_success(self, pattern) -&gt; bool:
+</span></span><span style=display:flex><span>        <span style=font-weight:700>pass</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=font-weight:700>class</span> <span style=font-weight:700>Solver</span>:
+</span></span><span style=display:flex><span>    <span style=font-weight:700>def</span> guess(self) -&gt; str:
+</span></span><span style=display:flex><span>        <span style=font-weight:700>pass</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=font-weight:700>def</span> update(self, guess: str, pattern: str):
+</span></span><span style=display:flex><span>        <span style=font-weight:700>pass</span>
+</span></span></code></pre></div><h3 id=评估策略>评估策略
+<a class=heading-link href=#%e8%af%84%e4%bc%b0%e7%ad%96%e7%95%a5><i class="fa fa-link" aria-hidden=true></i></a></h3><p>想要比较解法的好坏，首先需要合理地评价一个解法。这个游戏通常有两个维度来评价：</p><ol><li>平均猜测次数</li><li>最大猜测次数</li></ol><p>通常，我们采用第一种来评估一个策略的好坏。</p><p>同时，根据上面定义的<code>Checker</code> 和 <code>Solver</code>，我们可以定义一个 <code>Evaluator</code>，他相当于一个评测机，遍历所有可能的结果让<code>Solver</code>猜，然后统计他的表现。</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=font-weight:700>class</span> <span style=font-weight:700>Evaluator</span>:
+</span></span><span style=display:flex><span>    <span style=font-weight:700>def</span> evaluate(self):
+</span></span><span style=display:flex><span>        results = []
+</span></span><span style=display:flex><span>        <span style=font-weight:700>for</span> target <span style=font-weight:700>in</span> self.full_set:
+</span></span><span style=display:flex><span>            solver = self.solver_type(self.checker, self.full_set, self.max_length)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>            current = 0
+</span></span><span style=display:flex><span>            <span style=font-weight:700>while</span> <span style=font-weight:700>True</span>:
+</span></span><span style=display:flex><span>                current += 1
+</span></span><span style=display:flex><span>                guess = solver.guess()
+</span></span><span style=display:flex><span>                pattern = self.checker.check(target, guess)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>                <span style=font-weight:700>if</span> self.checker.is_success(pattern):
+</span></span><span style=display:flex><span>                    <span style=font-weight:700>break</span>
+</span></span><span style=display:flex><span>                <span style=font-weight:700>else</span>:
+</span></span><span style=display:flex><span>                    solver.update(guess, pattern)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>            results.append(current)
+</span></span><span style=display:flex><span>        
+</span></span><span style=display:flex><span>        print(<span style=font-style:italic>f</span><span style=font-style:italic>&#34;Avg: </span><span style=font-weight:700;font-style:italic>{</span>sum(results) / len(results)<span style=font-weight:700;font-style:italic>}</span><span style=font-style:italic>&#34;</span>)
+</span></span><span style=display:flex><span>        print(<span style=font-style:italic>f</span><span style=font-style:italic>&#34;Max: </span><span style=font-weight:700;font-style:italic>{</span>max(results)<span style=font-weight:700;font-style:italic>}</span><span style=font-style:italic>&#34;</span>)
+</span></span></code></pre></div><p>注意这里去掉了Solver猜不出来的处理代码，限制最大猜测次数即可。</p><h3 id=启发式策略>启发式策略
+<a class=heading-link href=#%e5%90%af%e5%8f%91%e5%bc%8f%e7%ad%96%e7%95%a5><i class="fa fa-link" aria-hidden=true></i></a></h3><p>既然是启发式，自然不是最优的。先来两个baseline算法：</p><ol><li>每次取可能结果里最小的</li><li>可能结果里随机取一个</li></ol><p>大部分情况下，随机的表现都比第一种好。</p><p>我们一般怎么评估一个猜测好不好呢？这里主要就是视频中的知识了，我们希望一个猜测的信息量最大。</p><p>在解释信息量之前，我们需要先定义熵的概念，熵代表不确定性。</p><p>假如猜测前有四种可能且四种可能是等概率的，那么此时熵是最大值(因为不确定性最高)。</p><p>如果猜完之后，只剩下唯一一种可能了，即结果已经确定了，那么这个猜测的信息量最大。所以我们可以认为信息量等于消除不确定性的大小。</p><p>那么我们在猜之前，能评估哪种猜测的效果最好吗？</p><p>其实，在<code>Checker</code>告诉我们结果之前，我们可以通过假设结果，来评估我们这次的猜测。</p><p>以猜数字游戏为例，假如目前还剩'1111&rsquo;, &lsquo;1112&rsquo;, &lsquo;1121&rsquo;, &lsquo;1122&rsquo; 四种可能，那么对于猜测 1111 来说</p><ol><li>如果结果是 1111，反馈即为 4A0B</li><li>如果结果是 1112，反馈即为 3A1B</li><li>如果结果是 1121，反馈即为 3A1B</li><li>如果结果是 1122，反馈即为 2A2B</li></ol><p>所以我们分成了三种反馈：</p><ol><li>4A0B -> 1111</li><li>3A1B -> 1112, 1121</li><li>2A2B -> 1122</li></ol><p>在猜之前，我们的信息熵是2bit，猜完之后我们的预期信息熵是1bit，所以这个猜测的预期信息量是1bit</p><p>但是如果换成猜测1112会怎么样呢？</p><ol><li>如果结果是 1111，反馈即为 3A0B</li><li>如果结果是 1112，反馈即为 4A0B</li><li>如果结果是 1121，反馈即为 2A2B</li><li>如果结果是 1122，反馈即为 3A1B</li></ol><p>所以我们分成了四种反馈，每种反馈都能唯一确定结果，所以我们的预期信息熵就是0bit，那么这个预期信息量自然就是2bit了。</p><p>所以，从信息量的角度来看，1112 是比 1111 更好的一种猜测。</p><h2 id=最优解>最优解
+<a class=heading-link href=#%e6%9c%80%e4%bc%98%e8%a7%a3><i class="fa fa-link" aria-hidden=true></i></a></h2><p>前面提到，上面的算法本质上只是一个贪心算法，不错，但是还不是最优。</p><p>对于最优解，我们目前需要通过暴力搜索，走完全部的分支才能得到。如何搜索呢？以下给出一个基本框架：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-py data-lang=py><span style=display:flex><span><span style=font-weight:700>def</span> dfs(current: int, availables: Set[str]):
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    results = {}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=font-style:italic># 遍历每一种guess</span>
+</span></span><span style=display:flex><span>    <span style=font-weight:700>for</span> idx, guess <span style=font-weight:700>in</span> enumerate(full_set):
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=font-style:italic># 假设所有可能的答案，得到下一步的猜测范围</span>
+</span></span><span style=display:flex><span>        pattern_results = defaultdict(set)
+</span></span><span style=display:flex><span>        <span style=font-weight:700>for</span> target <span style=font-weight:700>in</span> availables:
+</span></span><span style=display:flex><span>            pattern = checker.check(target, guess)
+</span></span><span style=display:flex><span>            pattern_results[pattern].add(target)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=font-weight:700>for</span> pattern, pattern_availables <span style=font-weight:700>in</span> pattern_results.items():
+</span></span><span style=display:flex><span>            <span style=font-weight:700>if</span> <span style=font-weight:700>not</span> checker.is_success(pattern):
+</span></span><span style=display:flex><span>                <span style=font-style:italic># 猜对了是搜索的终止条件</span>
+</span></span><span style=display:flex><span>                results[guess][pattern] = dfs(current + 1, pattern_availables)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=font-style:italic># 评估 best guess</span>
+</span></span><span style=display:flex><span>    best_guess = find_best(results)
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=font-weight:700>return</span> best_guess
+</span></span></code></pre></div><p>对于每一棵搜索子树，我们需要返回两个值, 一个是当前子树的最优决策树，另一个是在这种决策下，总的猜测次数。
+那么对于当前节点来说，我们首先通过比较每个guess的猜测次数，得到best_guess，然后他的决策树即为：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>{best_guess: best_sub_decision_tree}
+</span></span></code></pre></div><p>注意，这里的best_sub_decision_tree是包含best_guess所有的pattern子树的 <code>{pattern: sub_decision_tree}</code></p><p>这里给一棵猜测两位数，每位3个字符的一颗决策树：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=font-weight:700>&#34;01&#34;</span>: {
+</span></span><span style=display:flex><span>        <span style=font-weight:700>&#34;GB&#34;</span>: {
+</span></span><span style=display:flex><span>            <span style=font-weight:700>&#34;00&#34;</span>: {
+</span></span><span style=display:flex><span>                <span style=font-weight:700>&#34;GG&#34;</span>: {},
+</span></span><span style=display:flex><span>                <span style=font-weight:700>&#34;GY&#34;</span>: {
+</span></span><span style=display:flex><span>                    <span style=font-weight:700>&#34;02&#34;</span>: {
+</span></span><span style=display:flex><span>                        <span style=font-weight:700>&#34;GG&#34;</span>: {}
+</span></span><span style=display:flex><span>                    }
+</span></span><span style=display:flex><span>                }
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>        <span style=font-weight:700>&#34;GG&#34;</span>: {},
+</span></span><span style=display:flex><span>        <span style=font-weight:700>&#34;YY&#34;</span>: {
+</span></span><span style=display:flex><span>            <span style=font-weight:700>&#34;10&#34;</span>: {
+</span></span><span style=display:flex><span>                <span style=font-weight:700>&#34;GG&#34;</span>: {}
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>        <span style=font-weight:700>&#34;BG&#34;</span>: {
+</span></span><span style=display:flex><span>            <span style=font-weight:700>&#34;11&#34;</span>: {
+</span></span><span style=display:flex><span>                <span style=font-weight:700>&#34;GG&#34;</span>: {},
+</span></span><span style=display:flex><span>                <span style=font-weight:700>&#34;YG&#34;</span>: {
+</span></span><span style=display:flex><span>                    <span style=font-weight:700>&#34;21&#34;</span>: {
+</span></span><span style=display:flex><span>                        <span style=font-weight:700>&#34;GG&#34;</span>: {}
+</span></span><span style=display:flex><span>                    }
+</span></span><span style=display:flex><span>                }
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>        <span style=font-weight:700>&#34;BY&#34;</span>: {
+</span></span><span style=display:flex><span>            <span style=font-weight:700>&#34;12&#34;</span>: {
+</span></span><span style=display:flex><span>                <span style=font-weight:700>&#34;GG&#34;</span>: {}
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>        <span style=font-weight:700>&#34;YB&#34;</span>: {
+</span></span><span style=display:flex><span>            <span style=font-weight:700>&#34;20&#34;</span>: {
+</span></span><span style=display:flex><span>                <span style=font-weight:700>&#34;GG&#34;</span>: {}
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>        <span style=font-weight:700>&#34;BB&#34;</span>: {
+</span></span><span style=display:flex><span>            <span style=font-weight:700>&#34;22&#34;</span>: {
+</span></span><span style=display:flex><span>                <span style=font-weight:700>&#34;GG&#34;</span>: {}
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>使用过程也很简单，上来先猜01，然后根据反馈的pattern进入对应的子树，然后猜测子树的父节点。注意，这里pattern的子节点只有一个。</p><h2 id=大坑>大坑
+<a class=heading-link href=#%e5%a4%a7%e5%9d%91><i class="fa fa-link" aria-hidden=true></i></a></h2><p>这里大坑主要是在上面dfs过程的第一步，这里枚举所有的guess时，枚举的范围是 full_set 还是当前可行解。</p><p>一开始，我想当然的觉得是当前可行解，但是发现，wordle的Hard模式其实就是限制了猜测必须是个可行解。然而这会导致猜测效率的降低。这也是为什么<a href=https://github.com/petertseng/wordle-rs>wordle-rs</a>会强调他的代码只考虑了2315可能的结果，但是考虑了12972种可能的guess.</p><p>这里举一个反例，假如我们猜测一个2位数，目前已知十位数是1，那么还剩10~19十种可能</p><p>如果我们只猜<code>1x</code>，那么每次只能排除一个数，最差可能需要10次才能才对。
+但是如果我们猜<code>23</code>，<code>45</code>这种组合，虽然结果一定不对，但是信息量比<code>1x</code>要大。</p><p>所以，在搜索过程中，枚举guess时，需要枚举fullset。但是，这样会导致搜索空间膨胀得非常大，优化就变得非常重要了。关于优化的部分我们留到下一篇再来记录。</p></div><footer></footer></article><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css integrity=sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js integrity=sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous onload='renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}]})'></script></section></div><footer class=footer><section class=container>©
+2016 -
+2022
+无生
+·
+Powered by <a href=https://gohugo.io/>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/>Coder</a>.</section></footer></main><script src=/js/coder.min.8fb86376a16e684af472a329aef502dbebcfab65ce264e9750d144912947c602.js integrity="sha256-j7hjdqFuaEr0cqMprvUC2+vPq2XOJk6XUNFEkSlHxgI="></script></body></html>

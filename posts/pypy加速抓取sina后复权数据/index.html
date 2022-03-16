@@ -1,276 +1,115 @@
-<!doctype html><html lang=en>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta http-equiv=content-language content="en">
-<meta name=color-scheme content="light dark">
-<meta name=author content="无生">
-<meta name=description content="pypy    PyPy是一个独立的解析器， 通过即时编译(JIT,Just-in-time)代码避免逐行解释执行来提升运行速度。我们一般使用的Python一般是使用C实现的,所以一般又叫CPython。PyPy采用python实现，速度最快可以达到CPython的10倍左右。
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=content-language content="en"><meta name=color-scheme content="light dark"><meta name=author content="无生"><meta name=description content="pypy    PyPy是一个独立的解析器， 通过即时编译(JIT,Just-in-time)代码避免逐行解释执行来提升运行速度。我们一般使用的Python一般是使用C实现的,所以一般又叫CPython。PyPy采用python实现，速度最快可以达到CPython的10倍左右。
 PyPy对纯Python的模块支持的非常好，支持的模块可以在这里看到。但是PyPy对C模块的支持还不是很好，主要是对numpy的支持完成度还不够高，所以常用的一些科学运算库也就都不兼容PyPy了。所以个人感觉PyPy主要是应用在服务器和爬虫上。
 multiprocessing.dummy    multiprocessing.dummy和multiprocessing是两个执行并行任务的库，其中前者是多线程库，后者是多进程库，但是具有相同的api，所以可以很方便的在多线程和多进程之间切换。
 由于GIL的原因，Python的多线程其实是单线程交替执行的，所以对于CPU密集的任务来说，多线程其实并不会有很好的效果。但是对于IO密集型的任务，多线程实现简单轻量也有很好的加速效果，值得一试。
 举一个简单的爬取网页的例子：
-import urllib2 from multiprocessing.dummy import Pool as ThreadPool urls = [] pool = ThreadPool(4) results = pool.map(urllib2.urlopen, urls) pool.close() pool.join() 这个例子采用了4个线程，通过pool.map()来分发任务，结果依次保存在results中，其中pool.join()是等待所有线程结束之后再执行后续的代码。
+import urllib2 from multiprocessing.dummy import Pool as ThreadPool  urls = []  pool = ThreadPool(4) results = pool.map(urllib2.urlopen, urls)  pool.close() pool.join() 这个例子采用了4个线程，通过pool.map()来分发任务，结果依次保存在results中，其中pool.join()是等待所有线程结束之后再执行后续的代码。
 tushare    TuShare是一个免费、开源的python财经数据接口包。它的数据也是从网上各种数据源抓取整理过来的，并且采用统一的结构，返回pandas的dataframe。并且它整合了通联的数据，所以这个包的数据数量和质量都是很不错的。
 我的任务是采集A股市场的复权数据，tushare本来可以轻松完成这个任务，但是速度特别慢， 2800支个股4个线程采集需要将近50分钟的时间，对于一个需要每天运行一次的程序来说时间有点长。通过查看源代码，发现其实它是抓取的sina的复权数据页面，而且是每支股票单独抓取的，所以它一共调了将近3K次api来请求整个html页面，然后从中解析出数据。(其实是6K次，因为新浪那个页面是按季度来查询的，然后当时正好跨越了第一和第二两个季度)
 于是自然想试试用PyPy来加速了，加上之前也没有用过PyPy，正好通过这个机会来测试一下PyPy的效果。
 PyPy的下载和安装    首先在官网的下载页面下载最新版本的PyPy：
 wget https://bitbucket.org/pypy/pypy/downloads/pypy-5.0.1-linux64.tar.bz2 然后解压放到任意位置，并用PyPy的作为virtualenv的解释器。
 virtualenv -p /path/to/pypy/bin/pypy env source env/bin/activate 此时运行python就能看到PyPy的信息了：
-Python 2.7.10 (bbd45126bc69, Mar 18 2016, 21:35:08) [PyPy 5.0.1 with GCC 4.8.4] on linux2 Type &#34;help&#34;, &#34;copyright&#34;, &#34;credits&#34; or &#34;license&#34; for more information.">
-<meta name=keywords content="blog,developer,personal">
-<meta name=twitter:card content="summary">
-<meta name=twitter:title content="pypy加速抓取Sina后复权数据">
-<meta name=twitter:description content="pypy    PyPy是一个独立的解析器， 通过即时编译(JIT,Just-in-time)代码避免逐行解释执行来提升运行速度。我们一般使用的Python一般是使用C实现的,所以一般又叫CPython。PyPy采用python实现，速度最快可以达到CPython的10倍左右。
+Python 2.7.10 (bbd45126bc69, Mar 18 2016, 21:35:08) [PyPy 5.0.1 with GCC 4."><meta name=keywords content="blog,developer,personal"><meta name=twitter:card content="summary"><meta name=twitter:title content="pypy加速抓取Sina后复权数据"><meta name=twitter:description content="pypy    PyPy是一个独立的解析器， 通过即时编译(JIT,Just-in-time)代码避免逐行解释执行来提升运行速度。我们一般使用的Python一般是使用C实现的,所以一般又叫CPython。PyPy采用python实现，速度最快可以达到CPython的10倍左右。
 PyPy对纯Python的模块支持的非常好，支持的模块可以在这里看到。但是PyPy对C模块的支持还不是很好，主要是对numpy的支持完成度还不够高，所以常用的一些科学运算库也就都不兼容PyPy了。所以个人感觉PyPy主要是应用在服务器和爬虫上。
 multiprocessing.dummy    multiprocessing.dummy和multiprocessing是两个执行并行任务的库，其中前者是多线程库，后者是多进程库，但是具有相同的api，所以可以很方便的在多线程和多进程之间切换。
 由于GIL的原因，Python的多线程其实是单线程交替执行的，所以对于CPU密集的任务来说，多线程其实并不会有很好的效果。但是对于IO密集型的任务，多线程实现简单轻量也有很好的加速效果，值得一试。
 举一个简单的爬取网页的例子：
-import urllib2 from multiprocessing.dummy import Pool as ThreadPool urls = [] pool = ThreadPool(4) results = pool.map(urllib2.urlopen, urls) pool.close() pool.join() 这个例子采用了4个线程，通过pool.map()来分发任务，结果依次保存在results中，其中pool.join()是等待所有线程结束之后再执行后续的代码。
+import urllib2 from multiprocessing.dummy import Pool as ThreadPool  urls = []  pool = ThreadPool(4) results = pool.map(urllib2.urlopen, urls)  pool.close() pool.join() 这个例子采用了4个线程，通过pool.map()来分发任务，结果依次保存在results中，其中pool.join()是等待所有线程结束之后再执行后续的代码。
 tushare    TuShare是一个免费、开源的python财经数据接口包。它的数据也是从网上各种数据源抓取整理过来的，并且采用统一的结构，返回pandas的dataframe。并且它整合了通联的数据，所以这个包的数据数量和质量都是很不错的。
 我的任务是采集A股市场的复权数据，tushare本来可以轻松完成这个任务，但是速度特别慢， 2800支个股4个线程采集需要将近50分钟的时间，对于一个需要每天运行一次的程序来说时间有点长。通过查看源代码，发现其实它是抓取的sina的复权数据页面，而且是每支股票单独抓取的，所以它一共调了将近3K次api来请求整个html页面，然后从中解析出数据。(其实是6K次，因为新浪那个页面是按季度来查询的，然后当时正好跨越了第一和第二两个季度)
 于是自然想试试用PyPy来加速了，加上之前也没有用过PyPy，正好通过这个机会来测试一下PyPy的效果。
 PyPy的下载和安装    首先在官网的下载页面下载最新版本的PyPy：
 wget https://bitbucket.org/pypy/pypy/downloads/pypy-5.0.1-linux64.tar.bz2 然后解压放到任意位置，并用PyPy的作为virtualenv的解释器。
 virtualenv -p /path/to/pypy/bin/pypy env source env/bin/activate 此时运行python就能看到PyPy的信息了：
-Python 2.7.10 (bbd45126bc69, Mar 18 2016, 21:35:08) [PyPy 5.0.1 with GCC 4.8.4] on linux2 Type &#34;help&#34;, &#34;copyright&#34;, &#34;credits&#34; or &#34;license&#34; for more information.">
-<meta property="og:title" content="pypy加速抓取Sina后复权数据">
-<meta property="og:description" content="pypy    PyPy是一个独立的解析器， 通过即时编译(JIT,Just-in-time)代码避免逐行解释执行来提升运行速度。我们一般使用的Python一般是使用C实现的,所以一般又叫CPython。PyPy采用python实现，速度最快可以达到CPython的10倍左右。
+Python 2.7.10 (bbd45126bc69, Mar 18 2016, 21:35:08) [PyPy 5.0.1 with GCC 4."><meta property="og:title" content="pypy加速抓取Sina后复权数据"><meta property="og:description" content="pypy    PyPy是一个独立的解析器， 通过即时编译(JIT,Just-in-time)代码避免逐行解释执行来提升运行速度。我们一般使用的Python一般是使用C实现的,所以一般又叫CPython。PyPy采用python实现，速度最快可以达到CPython的10倍左右。
 PyPy对纯Python的模块支持的非常好，支持的模块可以在这里看到。但是PyPy对C模块的支持还不是很好，主要是对numpy的支持完成度还不够高，所以常用的一些科学运算库也就都不兼容PyPy了。所以个人感觉PyPy主要是应用在服务器和爬虫上。
 multiprocessing.dummy    multiprocessing.dummy和multiprocessing是两个执行并行任务的库，其中前者是多线程库，后者是多进程库，但是具有相同的api，所以可以很方便的在多线程和多进程之间切换。
 由于GIL的原因，Python的多线程其实是单线程交替执行的，所以对于CPU密集的任务来说，多线程其实并不会有很好的效果。但是对于IO密集型的任务，多线程实现简单轻量也有很好的加速效果，值得一试。
 举一个简单的爬取网页的例子：
-import urllib2 from multiprocessing.dummy import Pool as ThreadPool urls = [] pool = ThreadPool(4) results = pool.map(urllib2.urlopen, urls) pool.close() pool.join() 这个例子采用了4个线程，通过pool.map()来分发任务，结果依次保存在results中，其中pool.join()是等待所有线程结束之后再执行后续的代码。
+import urllib2 from multiprocessing.dummy import Pool as ThreadPool  urls = []  pool = ThreadPool(4) results = pool.map(urllib2.urlopen, urls)  pool.close() pool.join() 这个例子采用了4个线程，通过pool.map()来分发任务，结果依次保存在results中，其中pool.join()是等待所有线程结束之后再执行后续的代码。
 tushare    TuShare是一个免费、开源的python财经数据接口包。它的数据也是从网上各种数据源抓取整理过来的，并且采用统一的结构，返回pandas的dataframe。并且它整合了通联的数据，所以这个包的数据数量和质量都是很不错的。
 我的任务是采集A股市场的复权数据，tushare本来可以轻松完成这个任务，但是速度特别慢， 2800支个股4个线程采集需要将近50分钟的时间，对于一个需要每天运行一次的程序来说时间有点长。通过查看源代码，发现其实它是抓取的sina的复权数据页面，而且是每支股票单独抓取的，所以它一共调了将近3K次api来请求整个html页面，然后从中解析出数据。(其实是6K次，因为新浪那个页面是按季度来查询的，然后当时正好跨越了第一和第二两个季度)
 于是自然想试试用PyPy来加速了，加上之前也没有用过PyPy，正好通过这个机会来测试一下PyPy的效果。
 PyPy的下载和安装    首先在官网的下载页面下载最新版本的PyPy：
 wget https://bitbucket.org/pypy/pypy/downloads/pypy-5.0.1-linux64.tar.bz2 然后解压放到任意位置，并用PyPy的作为virtualenv的解释器。
 virtualenv -p /path/to/pypy/bin/pypy env source env/bin/activate 此时运行python就能看到PyPy的信息了：
-Python 2.7.10 (bbd45126bc69, Mar 18 2016, 21:35:08) [PyPy 5.0.1 with GCC 4.8.4] on linux2 Type &#34;help&#34;, &#34;copyright&#34;, &#34;credits&#34; or &#34;license&#34; for more information.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://blog.mkdef.com/posts/pypy%E5%8A%A0%E9%80%9F%E6%8A%93%E5%8F%96sina%E5%90%8E%E5%A4%8D%E6%9D%83%E6%95%B0%E6%8D%AE/"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2016-04-14T14:07:36+08:00">
-<meta property="article:modified_time" content="2016-04-14T14:07:36+08:00">
-<title>
-pypy加速抓取Sina后复权数据 · Coder
-</title>
-<link rel=canonical href=https://blog.mkdef.com/posts/pypy%E5%8A%A0%E9%80%9F%E6%8A%93%E5%8F%96sina%E5%90%8E%E5%A4%8D%E6%9D%83%E6%95%B0%E6%8D%AE/>
-<link rel=preload href="/fonts/forkawesome-webfont.woff2?v=1.2.0" as=font type=font/woff2 crossorigin>
-<link rel=stylesheet href=/css/coder.min.d9fddbffe6f27e69985dc5fe0471cdb0e57fbf4775714bc3d847accb08f4a1f6.css integrity="sha256-2f3b/+byfmmYXcX+BHHNsOV/v0d1cUvD2Eesywj0ofY=" crossorigin=anonymous media=screen>
-<link rel=stylesheet href=/css/coder-dark.min.002ee2378e14c7a68f1f0a53d9694ed252090987c4e768023fac694a4fc5f793.css integrity="sha256-AC7iN44Ux6aPHwpT2WlO0lIJCYfE52gCP6xpSk/F95M=" crossorigin=anonymous media=screen>
-<link rel=icon type=image/png href=/images/favicon-32x32.png sizes=32x32>
-<link rel=icon type=image/png href=/images/favicon-16x16.png sizes=16x16>
-<link rel=apple-touch-icon href=/images/apple-touch-icon.png>
-<link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png>
-<meta name=generator content="Hugo 0.92.0">
-</head>
-<body class="preload-transitions colorscheme-auto">
-<div class=float-container>
-<a id=dark-mode-toggle class=colorscheme-toggle>
-<i class="fa fa-adjust fa-fw" aria-hidden=true></i>
-</a>
-</div>
-<main class=wrapper>
-<nav class=navigation>
-<section class=container>
-<a class=navigation-title href=/>
-Coder
-</a>
+Python 2.7.10 (bbd45126bc69, Mar 18 2016, 21:35:08) [PyPy 5.0.1 with GCC 4."><meta property="og:type" content="article"><meta property="og:url" content="https://blog.mkdef.com/posts/pypy%E5%8A%A0%E9%80%9F%E6%8A%93%E5%8F%96sina%E5%90%8E%E5%A4%8D%E6%9D%83%E6%95%B0%E6%8D%AE/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2016-04-14T14:07:36+08:00"><meta property="article:modified_time" content="2016-04-14T14:07:36+08:00"><title>pypy加速抓取Sina后复权数据 · Coder</title><link rel=canonical href=https://blog.mkdef.com/posts/pypy%E5%8A%A0%E9%80%9F%E6%8A%93%E5%8F%96sina%E5%90%8E%E5%A4%8D%E6%9D%83%E6%95%B0%E6%8D%AE/><link rel=preload href="/fonts/forkawesome-webfont.woff2?v=1.2.0" as=font type=font/woff2 crossorigin><link rel=stylesheet href=/css/coder.min.d9fddbffe6f27e69985dc5fe0471cdb0e57fbf4775714bc3d847accb08f4a1f6.css integrity="sha256-2f3b/+byfmmYXcX+BHHNsOV/v0d1cUvD2Eesywj0ofY=" crossorigin=anonymous media=screen><link rel=stylesheet href=/css/coder-dark.min.002ee2378e14c7a68f1f0a53d9694ed252090987c4e768023fac694a4fc5f793.css integrity="sha256-AC7iN44Ux6aPHwpT2WlO0lIJCYfE52gCP6xpSk/F95M=" crossorigin=anonymous media=screen><link rel=icon type=image/png href=/images/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/images/favicon-16x16.png sizes=16x16><link rel=apple-touch-icon href=/images/apple-touch-icon.png><link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png><meta name=generator content="Hugo 0.94.2"></head><body class="preload-transitions colorscheme-auto"><div class=float-container><a id=dark-mode-toggle class=colorscheme-toggle><i class="fa fa-adjust fa-fw" aria-hidden=true></i></a></div><main class=wrapper><nav class=navigation><section class=container><a class=navigation-title href=/>Coder</a>
 <input type=checkbox id=menu-toggle>
-<label class="menu-button float-right" for=menu-toggle>
-<i class="fa fa-bars fa-fw" aria-hidden=true></i>
-</label>
-<ul class=navigation-list>
-<li class=navigation-item>
-<a class=navigation-link href=/posts/>Blog</a>
-</li>
-<li class=navigation-item>
-<a class=navigation-link href=/about/>About</a>
-</li>
-</ul>
-</section>
-</nav>
-<div class=content>
-<section class="container post">
-<article>
-<header>
-<div class=post-title>
-<h1 class=title>
-<a class=title-link href=https://blog.mkdef.com/posts/pypy%E5%8A%A0%E9%80%9F%E6%8A%93%E5%8F%96sina%E5%90%8E%E5%A4%8D%E6%9D%83%E6%95%B0%E6%8D%AE/>
-pypy加速抓取Sina后复权数据
-</a>
-</h1>
-</div>
-<div class=post-meta>
-<div class=date>
-<span class=posted-on>
-<i class="fa fa-calendar" aria-hidden=true></i>
-<time datetime=2016-04-14T14:07:36+08:00>
-April 14, 2016
-</time>
-</span>
-<span class=reading-time>
-<i class="fa fa-clock-o" aria-hidden=true></i>
-One-minute read
-</span>
-</div>
-<div class=tags>
-<i class="fa fa-tag" aria-hidden=true></i>
-<span class=tag>
-<a href=/tags/pypy/>pypy</a>
-</span>
+<label class="menu-button float-right" for=menu-toggle><i class="fa fa-bars fa-fw" aria-hidden=true></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=/posts/>Blog</a></li><li class=navigation-item><a class=navigation-link href=/about/>About</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title><a class=title-link href=https://blog.mkdef.com/posts/pypy%E5%8A%A0%E9%80%9F%E6%8A%93%E5%8F%96sina%E5%90%8E%E5%A4%8D%E6%9D%83%E6%95%B0%E6%8D%AE/>pypy加速抓取Sina后复权数据</a></h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fa fa-calendar" aria-hidden=true></i>
+<time datetime=2016-04-14T14:07:36+08:00>April 14, 2016</time></span>
+<span class=reading-time><i class="fa fa-clock-o" aria-hidden=true></i>
+One-minute read</span></div><div class=tags><i class="fa fa-tag" aria-hidden=true></i>
+<span class=tag><a href=/tags/pypy/>pypy</a></span>
 <span class=separator>•</span>
-<span class=tag>
-<a href=/tags/python/>Python</a>
-</span>
+<span class=tag><a href=/tags/python/>Python</a></span>
 <span class=separator>•</span>
-<span class=tag>
-<a href=/tags/multiprocessing/>multiprocessing</a>
-</span>
+<span class=tag><a href=/tags/multiprocessing/>multiprocessing</a></span>
 <span class=separator>•</span>
-<span class=tag>
-<a href=/tags/%E7%88%AC%E8%99%AB/>爬虫</a>
-</span></div>
-</div>
-</header>
-<div>
-<h2 id=pypy>
-pypy
-<a class=heading-link href=#pypy>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p><a href=http://pypy.org/>PyPy</a>是一个独立的解析器， 通过即时编译(JIT,Just-in-time)代码避免逐行解释执行来提升运行速度。我们一般使用的Python一般是使用C实现的,所以一般又叫CPython。PyPy采用python实现，速度最快可以达到CPython的10倍左右。</p>
-<p>PyPy对纯Python的模块支持的非常好，支持的模块可以在<a href=http://packages.pypy.org/>这里</a>看到。但是PyPy对C模块的支持还不是很好，主要是对numpy的支持完成度还不够高，所以常用的一些科学运算库也就都不兼容PyPy了。所以个人感觉PyPy主要是应用在服务器和爬虫上。</p>
-<h2 id=multiprocessingdummy>
-multiprocessing.dummy
-<a class=heading-link href=#multiprocessingdummy>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p><code>multiprocessing.dummy</code>和<code>multiprocessing</code>是两个执行并行任务的库，其中前者是多线程库，后者是多进程库，但是具有相同的api，所以可以很方便的在多线程和多进程之间切换。</p>
-<p>由于GIL的原因，Python的多线程其实是单线程交替执行的，所以对于CPU密集的任务来说，多线程其实并不会有很好的效果。但是对于IO密集型的任务，多线程实现简单轻量也有很好的加速效果，值得一试。</p>
-<p>举一个简单的爬取网页的例子：</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=font-weight:700>import</span> <span style=font-weight:700>urllib2</span> 
-<span style=font-weight:700>from</span> <span style=font-weight:700>multiprocessing.dummy</span> <span style=font-weight:700>import</span> Pool <span style=font-weight:700>as</span> ThreadPool 
-
-urls = []
-
-pool = ThreadPool(4) 
-results = pool.map(urllib2.urlopen, urls)
-
-pool.close() 
-pool.join()
-</code></pre></div><p>这个例子采用了4个线程，通过<code>pool.map()</code>来分发任务，结果依次保存在<code>results</code>中，其中<code>pool.join()</code>是等待所有线程结束之后再执行后续的代码。</p>
-<h2 id=tushare>
-tushare
-<a class=heading-link href=#tushare>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p><a href=http://tushare.org/>TuShare</a>是一个免费、开源的python财经数据接口包。它的数据也是从网上各种数据源抓取整理过来的，并且采用统一的结构，返回pandas的dataframe。并且它整合了通联的数据，所以这个包的数据数量和质量都是很不错的。</p>
-<p>我的任务是采集A股市场的复权数据，tushare本来可以轻松完成这个任务，但是速度特别慢，
-2800支个股4个线程采集需要将近50分钟的时间，对于一个需要每天运行一次的程序来说时间有点长。通过查看源代码，发现其实它是抓取的<a href="http://vip.stock.finance.sina.com.cn/corp/go.php/vMS_FuQuanMarketHistory/stockid/600900.phtml?year=2016&jidu=1">sina的复权数据页面</a>，而且是每支股票单独抓取的，所以它一共调了将近3K次api来请求整个html页面，然后从中解析出数据。(其实是6K次，因为新浪那个页面是按季度来查询的，然后当时正好跨越了第一和第二两个季度)</p>
-<p>于是自然想试试用PyPy来加速了，加上之前也没有用过PyPy，正好通过这个机会来测试一下PyPy的效果。</p>
-<h2 id=pypy的下载和安装>
-PyPy的下载和安装
-<a class=heading-link href=#pypy%e7%9a%84%e4%b8%8b%e8%bd%bd%e5%92%8c%e5%ae%89%e8%a3%85>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p>首先在官网的<a href=http://pypy.org/download.html>下载</a>页面下载最新版本的PyPy：</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>wget https://bitbucket.org/pypy/pypy/downloads/pypy-5.0.1-linux64.tar.bz2
-</code></pre></div><p>然后解压放到任意位置，并用PyPy的作为virtualenv的解释器。</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>virtualenv -p /path/to/pypy/bin/pypy env
-source env/bin/activate
-</code></pre></div><p>此时运行python就能看到PyPy的信息了：</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>Python 2.7.10 (bbd45126bc69, Mar 18 2016, 21:35:08)
-[PyPy 5.0.1 with GCC 4.8.4] on linux2
-Type &#34;help&#34;, &#34;copyright&#34;, &#34;credits&#34; or &#34;license&#34; for more information.
-</code></pre></div><p>此时就可以通过<code>pip</code>来安装各种需要用到的第三方包了，这里主要是用到<code>lxml</code>，通过这个包可以很容易的解析html页面，从而提取出表格中的数据。</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python> <span style=font-weight:700>from</span> <span style=font-weight:700>io</span> <span style=font-weight:700>import</span> StringIO
- <span style=font-weight:700>from</span> <span style=font-weight:700>lxml</span> <span style=font-weight:700>import</span> html
- <span style=font-weight:700>from</span> <span style=font-weight:700>urllib2</span> <span style=font-weight:700>import</span> urlopen, Request
- 
- <span style=font-weight:700>def</span> get_h_data(share, quarters):
-      data = {}
-      <span style=font-weight:700>for</span> y, q <span style=font-weight:700>in</span> quarters:
-          url = <span style=font-style:italic>&#34;http://vip.stock.finance.sina.com.cn/corp/go.php/vMS_FuQuanMarketHistory/stockid/</span><span style=font-weight:700;font-style:italic>%s</span><span style=font-style:italic>.phtml?year=</span><span style=font-weight:700;font-style:italic>%d</span><span style=font-style:italic>&amp;jidu=</span><span style=font-weight:700;font-style:italic>%d</span><span style=font-style:italic>&#34;</span>%(share.get(<span style=font-style:italic>&#39;code&#39;</span>), y, q)
-          request = Request(url)
-          text = urlopen(request, timeout=10).read()
-          text = text.decode(<span style=font-style:italic>&#39;GBK&#39;</span>)
-          page = html.parse(StringIO(text))
-          table = page.xpath(<span style=font-style:italic>&#39;//*[@id=</span><span style=font-weight:700;font-style:italic>\&#34;</span><span style=font-style:italic>FundHoldSharesTable</span><span style=font-weight:700;font-style:italic>\&#34;</span><span style=font-style:italic>]/tr&#39;</span>)
-
-          <span style=font-weight:700>for</span> tr <span style=font-weight:700>in</span> table[1:]:
-              date = tr[0].text_content().strip()
-                  data[date] = tr[3].text_content()
-
-      share[<span style=font-style:italic>&#34;data&#34;</span>] = data
-      <span style=font-weight:700>return</span> share
-</code></pre></div><p>可以看到，通过<code>lxml</code>来解析html页面是非常方便的，这个地方由于Sina本身的表格是没有<code>&lt;tbody></code>标签的，所以只能通过<code>&lt;tr></code>标签来提取数据，然后把第一行表格头去掉，由于我只需要收盘价，所以直接取的<code>tr[3]</code>的内容。</p>
-<p>事实上，如果这里使用<code>pandas</code>，可以通过<code>read_html()</code>来直接将表格转换成<code>pandas.DataFrame</code>。但是由于PyPy不支持<code>pandas</code>，所以这里的数据只能手工提取出来。</p>
-<h2 id=exception-and-retry>
-Exception and Retry
-<a class=heading-link href=#exception-and-retry>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p>由于这里需要通过网络请求第三方的数据，所以为了避免因为各种意外情况导致的错误，我们需要用<code>try</code>把请求的部分包起来，使得即使个别数据出现了错误或者某一次请求意外地没有成功时，我们能够继续请求其他的数据或者重复请求失败的数据。</p>
-<p>之所以把这一块单独写出来，是因为一开始自己写了一个很丑陋的<code>Retry</code>过程，当时就觉得这么简单的功能应该有更加优雅的实现，结果很快就看到了一个不错的实现方式，所以这里把这个更好的方法写下来。</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=font-weight:700>for</span> _ <span style=font-weight:700>in</span> range(3):
-	<span style=font-weight:700>try</span>:
-		<span style=font-style:italic># Do some thing </span>
-		<span style=font-weight:700>break</span>
-	<span style=font-weight:700>except</span> <span style=font-weight:700>Exception</span> <span style=font-weight:700>as</span> e:
-		print e
-		
-	<span style=font-weight:700>else</span>:
-		<span style=font-style:italic># Continue do something</span>
-		<span style=font-weight:700>pass</span>
-</code></pre></div><p>这样就可以很简单实现重复3次的功能了！</p>
-<h2 id=functoolspartial>
-functools.partial
-<a class=heading-link href=#functoolspartial>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p>这里<code>get_h_data</code>含有两个参数，但是<code>pool.map()</code>只能传一个参数，当然我们也能很简单的将并行的函数改写成一个参数的新函数，但是我们可以通过<code>functools.partial</code>来更加优雅的封装它。</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=font-weight:700>import</span> <span style=font-weight:700>functools</span>
-
-quart_get_h_data = functools.partial(get_h_data, quarters=quarters)
-</code></pre></div><p>然后<code>quart_get_h_data()</code>就可以当做只有一个参数的函数来使用了！</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>pool = ThreadPool(4)
-result = pool.map(quart_get_h_data, share_list)
-pool.close()
-pool.join()
-</code></pre></div><p>使用PyPy运行的程序抓取时间只需要5分钟！是之前的10倍。当然由于程序实现的方法也不一样，所以这个10倍并不准确，但是由于时(lan)间(ai)原(fa)因(zuo)，我也不去比较PyPy和Cython的效率差别了。</p>
-<h2 id=总结>
-总结
-<a class=heading-link href=#%e6%80%bb%e7%bb%93>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p>这次的爬虫很好的解决了爬数据的效率问题，可以看到PyPy安装使用简单，效率超级高，虽然使用限制较大，但是对于第三方依赖较小的程序，PyPy绝对是一个很好的选择。</p>
-<p>目前PyPy的开发团队主要的工作就是在支持<code>numpy</code>，如果能够完美的支持<code>numpy</code>，那么Python的速度问题也就能得到很好的解决，以后用Python做科学计算也就更加方便了。</p>
-</div>
-<footer>
-</footer>
-</article>
-</section>
-</div>
-<footer class=footer>
-<section class=container>
-©
+<span class=tag><a href=/tags/%E7%88%AC%E8%99%AB/>爬虫</a></span></div></div></header><div><h2 id=pypy>pypy
+<a class=heading-link href=#pypy><i class="fa fa-link" aria-hidden=true></i></a></h2><p><a href=http://pypy.org/>PyPy</a>是一个独立的解析器， 通过即时编译(JIT,Just-in-time)代码避免逐行解释执行来提升运行速度。我们一般使用的Python一般是使用C实现的,所以一般又叫CPython。PyPy采用python实现，速度最快可以达到CPython的10倍左右。</p><p>PyPy对纯Python的模块支持的非常好，支持的模块可以在<a href=http://packages.pypy.org/>这里</a>看到。但是PyPy对C模块的支持还不是很好，主要是对numpy的支持完成度还不够高，所以常用的一些科学运算库也就都不兼容PyPy了。所以个人感觉PyPy主要是应用在服务器和爬虫上。</p><h2 id=multiprocessingdummy>multiprocessing.dummy
+<a class=heading-link href=#multiprocessingdummy><i class="fa fa-link" aria-hidden=true></i></a></h2><p><code>multiprocessing.dummy</code>和<code>multiprocessing</code>是两个执行并行任务的库，其中前者是多线程库，后者是多进程库，但是具有相同的api，所以可以很方便的在多线程和多进程之间切换。</p><p>由于GIL的原因，Python的多线程其实是单线程交替执行的，所以对于CPU密集的任务来说，多线程其实并不会有很好的效果。但是对于IO密集型的任务，多线程实现简单轻量也有很好的加速效果，值得一试。</p><p>举一个简单的爬取网页的例子：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=font-weight:700>import</span> <span style=font-weight:700>urllib2</span> 
+</span></span><span style=display:flex><span><span style=font-weight:700>from</span> <span style=font-weight:700>multiprocessing.dummy</span> <span style=font-weight:700>import</span> Pool <span style=font-weight:700>as</span> ThreadPool 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>urls = []
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>pool = ThreadPool(4) 
+</span></span><span style=display:flex><span>results = pool.map(urllib2.urlopen, urls)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>pool.close() 
+</span></span><span style=display:flex><span>pool.join()
+</span></span></code></pre></div><p>这个例子采用了4个线程，通过<code>pool.map()</code>来分发任务，结果依次保存在<code>results</code>中，其中<code>pool.join()</code>是等待所有线程结束之后再执行后续的代码。</p><h2 id=tushare>tushare
+<a class=heading-link href=#tushare><i class="fa fa-link" aria-hidden=true></i></a></h2><p><a href=http://tushare.org/>TuShare</a>是一个免费、开源的python财经数据接口包。它的数据也是从网上各种数据源抓取整理过来的，并且采用统一的结构，返回pandas的dataframe。并且它整合了通联的数据，所以这个包的数据数量和质量都是很不错的。</p><p>我的任务是采集A股市场的复权数据，tushare本来可以轻松完成这个任务，但是速度特别慢，
+2800支个股4个线程采集需要将近50分钟的时间，对于一个需要每天运行一次的程序来说时间有点长。通过查看源代码，发现其实它是抓取的<a href="http://vip.stock.finance.sina.com.cn/corp/go.php/vMS_FuQuanMarketHistory/stockid/600900.phtml?year=2016&jidu=1">sina的复权数据页面</a>，而且是每支股票单独抓取的，所以它一共调了将近3K次api来请求整个html页面，然后从中解析出数据。(其实是6K次，因为新浪那个页面是按季度来查询的，然后当时正好跨越了第一和第二两个季度)</p><p>于是自然想试试用PyPy来加速了，加上之前也没有用过PyPy，正好通过这个机会来测试一下PyPy的效果。</p><h2 id=pypy的下载和安装>PyPy的下载和安装
+<a class=heading-link href=#pypy%e7%9a%84%e4%b8%8b%e8%bd%bd%e5%92%8c%e5%ae%89%e8%a3%85><i class="fa fa-link" aria-hidden=true></i></a></h2><p>首先在官网的<a href=http://pypy.org/download.html>下载</a>页面下载最新版本的PyPy：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>wget https://bitbucket.org/pypy/pypy/downloads/pypy-5.0.1-linux64.tar.bz2
+</span></span></code></pre></div><p>然后解压放到任意位置，并用PyPy的作为virtualenv的解释器。</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>virtualenv -p /path/to/pypy/bin/pypy env
+</span></span><span style=display:flex><span>source env/bin/activate
+</span></span></code></pre></div><p>此时运行python就能看到PyPy的信息了：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>Python 2.7.10 (bbd45126bc69, Mar 18 2016, 21:35:08)
+</span></span><span style=display:flex><span>[PyPy 5.0.1 with GCC 4.8.4] on linux2
+</span></span><span style=display:flex><span>Type &#34;help&#34;, &#34;copyright&#34;, &#34;credits&#34; or &#34;license&#34; for more information.
+</span></span></code></pre></div><p>此时就可以通过<code>pip</code>来安装各种需要用到的第三方包了，这里主要是用到<code>lxml</code>，通过这个包可以很容易的解析html页面，从而提取出表格中的数据。</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span> <span style=font-weight:700>from</span> <span style=font-weight:700>io</span> <span style=font-weight:700>import</span> StringIO
+</span></span><span style=display:flex><span> <span style=font-weight:700>from</span> <span style=font-weight:700>lxml</span> <span style=font-weight:700>import</span> html
+</span></span><span style=display:flex><span> <span style=font-weight:700>from</span> <span style=font-weight:700>urllib2</span> <span style=font-weight:700>import</span> urlopen, Request
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span> <span style=font-weight:700>def</span> get_h_data(share, quarters):
+</span></span><span style=display:flex><span>      data = {}
+</span></span><span style=display:flex><span>      <span style=font-weight:700>for</span> y, q <span style=font-weight:700>in</span> quarters:
+</span></span><span style=display:flex><span>          url = <span style=font-style:italic>&#34;http://vip.stock.finance.sina.com.cn/corp/go.php/vMS_FuQuanMarketHistory/stockid/</span><span style=font-weight:700;font-style:italic>%s</span><span style=font-style:italic>.phtml?year=</span><span style=font-weight:700;font-style:italic>%d</span><span style=font-style:italic>&amp;jidu=</span><span style=font-weight:700;font-style:italic>%d</span><span style=font-style:italic>&#34;</span>%(share.get(<span style=font-style:italic>&#39;code&#39;</span>), y, q)
+</span></span><span style=display:flex><span>          request = Request(url)
+</span></span><span style=display:flex><span>          text = urlopen(request, timeout=10).read()
+</span></span><span style=display:flex><span>          text = text.decode(<span style=font-style:italic>&#39;GBK&#39;</span>)
+</span></span><span style=display:flex><span>          page = html.parse(StringIO(text))
+</span></span><span style=display:flex><span>          table = page.xpath(<span style=font-style:italic>&#39;//*[@id=</span><span style=font-weight:700;font-style:italic>\&#34;</span><span style=font-style:italic>FundHoldSharesTable</span><span style=font-weight:700;font-style:italic>\&#34;</span><span style=font-style:italic>]/tr&#39;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>          <span style=font-weight:700>for</span> tr <span style=font-weight:700>in</span> table[1:]:
+</span></span><span style=display:flex><span>              date = tr[0].text_content().strip()
+</span></span><span style=display:flex><span>                  data[date] = tr[3].text_content()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      share[<span style=font-style:italic>&#34;data&#34;</span>] = data
+</span></span><span style=display:flex><span>      <span style=font-weight:700>return</span> share
+</span></span></code></pre></div><p>可以看到，通过<code>lxml</code>来解析html页面是非常方便的，这个地方由于Sina本身的表格是没有<code>&lt;tbody></code>标签的，所以只能通过<code>&lt;tr></code>标签来提取数据，然后把第一行表格头去掉，由于我只需要收盘价，所以直接取的<code>tr[3]</code>的内容。</p><p>事实上，如果这里使用<code>pandas</code>，可以通过<code>read_html()</code>来直接将表格转换成<code>pandas.DataFrame</code>。但是由于PyPy不支持<code>pandas</code>，所以这里的数据只能手工提取出来。</p><h2 id=exception-and-retry>Exception and Retry
+<a class=heading-link href=#exception-and-retry><i class="fa fa-link" aria-hidden=true></i></a></h2><p>由于这里需要通过网络请求第三方的数据，所以为了避免因为各种意外情况导致的错误，我们需要用<code>try</code>把请求的部分包起来，使得即使个别数据出现了错误或者某一次请求意外地没有成功时，我们能够继续请求其他的数据或者重复请求失败的数据。</p><p>之所以把这一块单独写出来，是因为一开始自己写了一个很丑陋的<code>Retry</code>过程，当时就觉得这么简单的功能应该有更加优雅的实现，结果很快就看到了一个不错的实现方式，所以这里把这个更好的方法写下来。</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=font-weight:700>for</span> _ <span style=font-weight:700>in</span> range(3):
+</span></span><span style=display:flex><span>	<span style=font-weight:700>try</span>:
+</span></span><span style=display:flex><span>		<span style=font-style:italic># Do some thing </span>
+</span></span><span style=display:flex><span>		<span style=font-weight:700>break</span>
+</span></span><span style=display:flex><span>	<span style=font-weight:700>except</span> <span style=font-weight:700>Exception</span> <span style=font-weight:700>as</span> e:
+</span></span><span style=display:flex><span>		print e
+</span></span><span style=display:flex><span>		
+</span></span><span style=display:flex><span>	<span style=font-weight:700>else</span>:
+</span></span><span style=display:flex><span>		<span style=font-style:italic># Continue do something</span>
+</span></span><span style=display:flex><span>		<span style=font-weight:700>pass</span>
+</span></span></code></pre></div><p>这样就可以很简单实现重复3次的功能了！</p><h2 id=functoolspartial>functools.partial
+<a class=heading-link href=#functoolspartial><i class="fa fa-link" aria-hidden=true></i></a></h2><p>这里<code>get_h_data</code>含有两个参数，但是<code>pool.map()</code>只能传一个参数，当然我们也能很简单的将并行的函数改写成一个参数的新函数，但是我们可以通过<code>functools.partial</code>来更加优雅的封装它。</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=font-weight:700>import</span> <span style=font-weight:700>functools</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>quart_get_h_data = functools.partial(get_h_data, quarters=quarters)
+</span></span></code></pre></div><p>然后<code>quart_get_h_data()</code>就可以当做只有一个参数的函数来使用了！</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>pool = ThreadPool(4)
+</span></span><span style=display:flex><span>result = pool.map(quart_get_h_data, share_list)
+</span></span><span style=display:flex><span>pool.close()
+</span></span><span style=display:flex><span>pool.join()
+</span></span></code></pre></div><p>使用PyPy运行的程序抓取时间只需要5分钟！是之前的10倍。当然由于程序实现的方法也不一样，所以这个10倍并不准确，但是由于时(lan)间(ai)原(fa)因(zuo)，我也不去比较PyPy和Cython的效率差别了。</p><h2 id=总结>总结
+<a class=heading-link href=#%e6%80%bb%e7%bb%93><i class="fa fa-link" aria-hidden=true></i></a></h2><p>这次的爬虫很好的解决了爬数据的效率问题，可以看到PyPy安装使用简单，效率超级高，虽然使用限制较大，但是对于第三方依赖较小的程序，PyPy绝对是一个很好的选择。</p><p>目前PyPy的开发团队主要的工作就是在支持<code>numpy</code>，如果能够完美的支持<code>numpy</code>，那么Python的速度问题也就能得到很好的解决，以后用Python做科学计算也就更加方便了。</p></div><footer></footer></article></section></div><footer class=footer><section class=container>©
 2016 -
 2022
 无生
 ·
-Powered by <a href=https://gohugo.io/>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/>Coder</a>.
-</section>
-</footer>
-</main>
-<script src=/js/coder.min.39a51230dce2ac866c049b52573e38bf60666af4bc63c1bdf203b9b2d95b1cd6.js integrity="sha256-OaUSMNzirIZsBJtSVz44v2BmavS8Y8G98gO5stlbHNY="></script>
-</body>
-</html>
+Powered by <a href=https://gohugo.io/>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/>Coder</a>.</section></footer></main><script src=/js/coder.min.8fb86376a16e684af472a329aef502dbebcfab65ce264e9750d144912947c602.js integrity="sha256-j7hjdqFuaEr0cqMprvUC2+vPq2XOJk6XUNFEkSlHxgI="></script></body></html>

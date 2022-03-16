@@ -3,4 +3,4 @@
 首先是真的很不习惯npm和nodejs，之前接触得很少，加上没想到Hexo即使是官方流程走下来，都会有各种报错，没能说服自己无视，又无力折腾。 二来是在折腾LeetCode Notebook in Rust 时，发现Hexo没有可以用的主题，折腾了很多要么丑，要么就是自己魔改了流程。 承接上条，既然Halfrost用的Hugo+hugobook，那当然最简单的思路就是跟进了。试用下来非常丝滑，于是干脆把blog一并迁移，并且更新一篇文章。 安装Hugo Hugo是通过brew安装的，这一点已经观感上已经比Hexo强很多了。即使换成Python，需要我通过Pip安装的tool我也觉得很膈应。
 brew install hugo 安装主题 git submodule add https://github.com/luizdepra/hugo-coder.git themes/hugo-coder 拷贝旧文档 需要用到latex的地方加上
 math: true Github action 这一步偷懒cat其他项目的配置，多复制了一个%在文件末尾，导致github action找不到 public%目录，但是他又不报错，导致浪费将近一个小时…
-name: github pages on: push: branches: - main # Set a branch to deploy pull_request: jobs: deploy: runs-on: ubuntu-20.04 steps: - uses: actions/checkout@v2 with: submodules: true # Fetch Hugo themes (true OR recursive) fetch-depth: 0 # Fetch all history for .</description></item></channel></rss>
+name: github pages on: push: branches: - main # Set a branch to deploy pull_request: jobs: deploy: runs-on: ubuntu-20.</description></item></channel></rss>

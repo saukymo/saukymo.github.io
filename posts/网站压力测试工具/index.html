@@ -1,445 +1,225 @@
-<!doctype html><html lang=en>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta http-equiv=content-language content="en">
-<meta name=color-scheme content="light dark">
-<meta name=author content="无生">
-<meta name=description content="项目介绍    pyWebTest是一个性能和负载测试工具，采用纯python编写，可以并发地对目标网站生成请求，测试响应时间和吞吐量，并生成完整的测试报告。
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=content-language content="en"><meta name=color-scheme content="light dark"><meta name=author content="无生"><meta name=description content="项目介绍    pyWebTest是一个性能和负载测试工具，采用纯python编写，可以并发地对目标网站生成请求，测试响应时间和吞吐量，并生成完整的测试报告。
 通过简单地修改测试部分的代码，可以很快的实现对远程API的压力测试，事实上，可以通过编写测试脚本，实现很多复杂的测试计划。
 测试报告通过标准输出给出。(文件和网页形式的报告功能没有实现)
 使用说明    下载和安装    pyWebTest可以通过Git下载完整的源代码，并且不需要额外的设置就可以直接运行。
 $ git clone git@github.com:saukymo/pyWebTest.git $ cd pyWebTest $ python main.py -h 使用方法    通过-h参数可以看到简单的参数介绍，一共有4个可选参数，-a是并发进程数，默认模拟两个用户请求网；，-d是测试时间，超过时间测试中止，设定时间之后的请求会被忽略，默认持续10秒；-i是统计时对数据采用的分段数，默认将整个测试分成10段统计；-r是启动进程的时间，所有的并发将在启动时间内均匀的开始，平稳地增加，启动时间到达后，达到预先设定的并发进程数，默认为0秒，即一开始就达到最大负载进行测试。-u是测试的目标网站，不能省略。
-$ python main.py -h usage: main.py [-h] [-a [A]] [-d [D]] [-i [I]] [-r [R]] -u U optional arguments: -h, --help show this help message and exit -a [A] number of agents -d [D] test duration in seconds -i [I] number of time-seriels interval -r [R] rampup in seconds -u U test target url 测试和报告样例    样例测试选择百度作为测试对象，一共产生20个用户模拟请求，测试一共持续30秒，统计分成10段，即3秒统计分析一次。启动时间10秒，即每0.">
-<meta name=keywords content="blog,developer,personal">
-<meta name=twitter:card content="summary">
-<meta name=twitter:title content="网站压力测试工具pyWebTest">
-<meta name=twitter:description content="项目介绍    pyWebTest是一个性能和负载测试工具，采用纯python编写，可以并发地对目标网站生成请求，测试响应时间和吞吐量，并生成完整的测试报告。
+$ python main.py -h usage: main.py [-h] [-a [A]] [-d [D]] [-i [I]] [-r [R]] -u U  optional arguments:  -h, --help show this help message and exit  -a [A] number of agents  -d [D] test duration in seconds  -i [I] number of time-seriels interval  -r [R] rampup in seconds  -u U test target url 测试和报告样例    样例测试选择百度作为测试对象，一共产生20个用户模拟请求，测试一共持续30秒，统计分成10段，即3秒统计分析一次。启动时间10秒，即每0."><meta name=keywords content="blog,developer,personal"><meta name=twitter:card content="summary"><meta name=twitter:title content="网站压力测试工具pyWebTest"><meta name=twitter:description content="项目介绍    pyWebTest是一个性能和负载测试工具，采用纯python编写，可以并发地对目标网站生成请求，测试响应时间和吞吐量，并生成完整的测试报告。
 通过简单地修改测试部分的代码，可以很快的实现对远程API的压力测试，事实上，可以通过编写测试脚本，实现很多复杂的测试计划。
 测试报告通过标准输出给出。(文件和网页形式的报告功能没有实现)
 使用说明    下载和安装    pyWebTest可以通过Git下载完整的源代码，并且不需要额外的设置就可以直接运行。
 $ git clone git@github.com:saukymo/pyWebTest.git $ cd pyWebTest $ python main.py -h 使用方法    通过-h参数可以看到简单的参数介绍，一共有4个可选参数，-a是并发进程数，默认模拟两个用户请求网；，-d是测试时间，超过时间测试中止，设定时间之后的请求会被忽略，默认持续10秒；-i是统计时对数据采用的分段数，默认将整个测试分成10段统计；-r是启动进程的时间，所有的并发将在启动时间内均匀的开始，平稳地增加，启动时间到达后，达到预先设定的并发进程数，默认为0秒，即一开始就达到最大负载进行测试。-u是测试的目标网站，不能省略。
-$ python main.py -h usage: main.py [-h] [-a [A]] [-d [D]] [-i [I]] [-r [R]] -u U optional arguments: -h, --help show this help message and exit -a [A] number of agents -d [D] test duration in seconds -i [I] number of time-seriels interval -r [R] rampup in seconds -u U test target url 测试和报告样例    样例测试选择百度作为测试对象，一共产生20个用户模拟请求，测试一共持续30秒，统计分成10段，即3秒统计分析一次。启动时间10秒，即每0.">
-<meta property="og:title" content="网站压力测试工具pyWebTest">
-<meta property="og:description" content="项目介绍    pyWebTest是一个性能和负载测试工具，采用纯python编写，可以并发地对目标网站生成请求，测试响应时间和吞吐量，并生成完整的测试报告。
+$ python main.py -h usage: main.py [-h] [-a [A]] [-d [D]] [-i [I]] [-r [R]] -u U  optional arguments:  -h, --help show this help message and exit  -a [A] number of agents  -d [D] test duration in seconds  -i [I] number of time-seriels interval  -r [R] rampup in seconds  -u U test target url 测试和报告样例    样例测试选择百度作为测试对象，一共产生20个用户模拟请求，测试一共持续30秒，统计分成10段，即3秒统计分析一次。启动时间10秒，即每0."><meta property="og:title" content="网站压力测试工具pyWebTest"><meta property="og:description" content="项目介绍    pyWebTest是一个性能和负载测试工具，采用纯python编写，可以并发地对目标网站生成请求，测试响应时间和吞吐量，并生成完整的测试报告。
 通过简单地修改测试部分的代码，可以很快的实现对远程API的压力测试，事实上，可以通过编写测试脚本，实现很多复杂的测试计划。
 测试报告通过标准输出给出。(文件和网页形式的报告功能没有实现)
 使用说明    下载和安装    pyWebTest可以通过Git下载完整的源代码，并且不需要额外的设置就可以直接运行。
 $ git clone git@github.com:saukymo/pyWebTest.git $ cd pyWebTest $ python main.py -h 使用方法    通过-h参数可以看到简单的参数介绍，一共有4个可选参数，-a是并发进程数，默认模拟两个用户请求网；，-d是测试时间，超过时间测试中止，设定时间之后的请求会被忽略，默认持续10秒；-i是统计时对数据采用的分段数，默认将整个测试分成10段统计；-r是启动进程的时间，所有的并发将在启动时间内均匀的开始，平稳地增加，启动时间到达后，达到预先设定的并发进程数，默认为0秒，即一开始就达到最大负载进行测试。-u是测试的目标网站，不能省略。
-$ python main.py -h usage: main.py [-h] [-a [A]] [-d [D]] [-i [I]] [-r [R]] -u U optional arguments: -h, --help show this help message and exit -a [A] number of agents -d [D] test duration in seconds -i [I] number of time-seriels interval -r [R] rampup in seconds -u U test target url 测试和报告样例    样例测试选择百度作为测试对象，一共产生20个用户模拟请求，测试一共持续30秒，统计分成10段，即3秒统计分析一次。启动时间10秒，即每0.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://blog.mkdef.com/posts/%E7%BD%91%E7%AB%99%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7/"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2016-07-18T23:55:39+08:00">
-<meta property="article:modified_time" content="2016-07-18T23:55:39+08:00">
-<title>
-网站压力测试工具pyWebTest · Coder
-</title>
-<link rel=canonical href=https://blog.mkdef.com/posts/%E7%BD%91%E7%AB%99%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7/>
-<link rel=preload href="/fonts/forkawesome-webfont.woff2?v=1.2.0" as=font type=font/woff2 crossorigin>
-<link rel=stylesheet href=/css/coder.min.d9fddbffe6f27e69985dc5fe0471cdb0e57fbf4775714bc3d847accb08f4a1f6.css integrity="sha256-2f3b/+byfmmYXcX+BHHNsOV/v0d1cUvD2Eesywj0ofY=" crossorigin=anonymous media=screen>
-<link rel=stylesheet href=/css/coder-dark.min.002ee2378e14c7a68f1f0a53d9694ed252090987c4e768023fac694a4fc5f793.css integrity="sha256-AC7iN44Ux6aPHwpT2WlO0lIJCYfE52gCP6xpSk/F95M=" crossorigin=anonymous media=screen>
-<link rel=icon type=image/png href=/images/favicon-32x32.png sizes=32x32>
-<link rel=icon type=image/png href=/images/favicon-16x16.png sizes=16x16>
-<link rel=apple-touch-icon href=/images/apple-touch-icon.png>
-<link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png>
-<meta name=generator content="Hugo 0.92.0">
-</head>
-<body class="preload-transitions colorscheme-auto">
-<div class=float-container>
-<a id=dark-mode-toggle class=colorscheme-toggle>
-<i class="fa fa-adjust fa-fw" aria-hidden=true></i>
-</a>
-</div>
-<main class=wrapper>
-<nav class=navigation>
-<section class=container>
-<a class=navigation-title href=/>
-Coder
-</a>
+$ python main.py -h usage: main.py [-h] [-a [A]] [-d [D]] [-i [I]] [-r [R]] -u U  optional arguments:  -h, --help show this help message and exit  -a [A] number of agents  -d [D] test duration in seconds  -i [I] number of time-seriels interval  -r [R] rampup in seconds  -u U test target url 测试和报告样例    样例测试选择百度作为测试对象，一共产生20个用户模拟请求，测试一共持续30秒，统计分成10段，即3秒统计分析一次。启动时间10秒，即每0."><meta property="og:type" content="article"><meta property="og:url" content="https://blog.mkdef.com/posts/%E7%BD%91%E7%AB%99%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2016-07-18T23:55:39+08:00"><meta property="article:modified_time" content="2016-07-18T23:55:39+08:00"><title>网站压力测试工具pyWebTest · Coder</title><link rel=canonical href=https://blog.mkdef.com/posts/%E7%BD%91%E7%AB%99%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7/><link rel=preload href="/fonts/forkawesome-webfont.woff2?v=1.2.0" as=font type=font/woff2 crossorigin><link rel=stylesheet href=/css/coder.min.d9fddbffe6f27e69985dc5fe0471cdb0e57fbf4775714bc3d847accb08f4a1f6.css integrity="sha256-2f3b/+byfmmYXcX+BHHNsOV/v0d1cUvD2Eesywj0ofY=" crossorigin=anonymous media=screen><link rel=stylesheet href=/css/coder-dark.min.002ee2378e14c7a68f1f0a53d9694ed252090987c4e768023fac694a4fc5f793.css integrity="sha256-AC7iN44Ux6aPHwpT2WlO0lIJCYfE52gCP6xpSk/F95M=" crossorigin=anonymous media=screen><link rel=icon type=image/png href=/images/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/images/favicon-16x16.png sizes=16x16><link rel=apple-touch-icon href=/images/apple-touch-icon.png><link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png><meta name=generator content="Hugo 0.94.2"></head><body class="preload-transitions colorscheme-auto"><div class=float-container><a id=dark-mode-toggle class=colorscheme-toggle><i class="fa fa-adjust fa-fw" aria-hidden=true></i></a></div><main class=wrapper><nav class=navigation><section class=container><a class=navigation-title href=/>Coder</a>
 <input type=checkbox id=menu-toggle>
-<label class="menu-button float-right" for=menu-toggle>
-<i class="fa fa-bars fa-fw" aria-hidden=true></i>
-</label>
-<ul class=navigation-list>
-<li class=navigation-item>
-<a class=navigation-link href=/posts/>Blog</a>
-</li>
-<li class=navigation-item>
-<a class=navigation-link href=/about/>About</a>
-</li>
-</ul>
-</section>
-</nav>
-<div class=content>
-<section class="container post">
-<article>
-<header>
-<div class=post-title>
-<h1 class=title>
-<a class=title-link href=https://blog.mkdef.com/posts/%E7%BD%91%E7%AB%99%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7/>
-网站压力测试工具pyWebTest
-</a>
-</h1>
-</div>
-<div class=post-meta>
-<div class=date>
-<span class=posted-on>
-<i class="fa fa-calendar" aria-hidden=true></i>
-<time datetime=2016-07-18T23:55:39+08:00>
-July 18, 2016
-</time>
-</span>
-<span class=reading-time>
-<i class="fa fa-clock-o" aria-hidden=true></i>
-4-minute read
-</span>
-</div>
-<div class=tags>
-<i class="fa fa-tag" aria-hidden=true></i>
-<span class=tag>
-<a href=/tags/python/>Python</a>
-</span>
+<label class="menu-button float-right" for=menu-toggle><i class="fa fa-bars fa-fw" aria-hidden=true></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=/posts/>Blog</a></li><li class=navigation-item><a class=navigation-link href=/about/>About</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title><a class=title-link href=https://blog.mkdef.com/posts/%E7%BD%91%E7%AB%99%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7/>网站压力测试工具pyWebTest</a></h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fa fa-calendar" aria-hidden=true></i>
+<time datetime=2016-07-18T23:55:39+08:00>July 18, 2016</time></span>
+<span class=reading-time><i class="fa fa-clock-o" aria-hidden=true></i>
+4-minute read</span></div><div class=tags><i class="fa fa-tag" aria-hidden=true></i>
+<span class=tag><a href=/tags/python/>Python</a></span>
 <span class=separator>•</span>
-<span class=tag>
-<a href=/tags/thread/>Thread</a>
-</span>
+<span class=tag><a href=/tags/thread/>Thread</a></span>
 <span class=separator>•</span>
-<span class=tag>
-<a href=/tags/pypy/>PyPy</a>
-</span></div>
-</div>
-</header>
-<div>
-<h2 id=项目介绍>
-项目介绍
-<a class=heading-link href=#%e9%a1%b9%e7%9b%ae%e4%bb%8b%e7%bb%8d>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p>pyWebTest是一个性能和负载测试工具，采用纯python编写，可以并发地对目标网站生成请求，测试响应时间和吞吐量，并生成完整的测试报告。</p>
-<p>通过简单地修改测试部分的代码，可以很快的实现对远程API的压力测试，事实上，可以通过编写测试脚本，实现很多复杂的测试计划。</p>
-<p>测试报告通过标准输出给出。(文件和网页形式的报告功能没有实现)</p>
-<h2 id=使用说明>
-使用说明
-<a class=heading-link href=#%e4%bd%bf%e7%94%a8%e8%af%b4%e6%98%8e>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<h3 id=下载和安装>
-下载和安装
-<a class=heading-link href=#%e4%b8%8b%e8%bd%bd%e5%92%8c%e5%ae%89%e8%a3%85>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h3>
-<p>pyWebTest可以通过Git下载完整的源代码，并且不需要额外的设置就可以直接运行。</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ git clone git@github.com:saukymo/pyWebTest.git
-$ cd pyWebTest
-$ python main.py -h
-</code></pre></div><h3 id=使用方法>
-使用方法
-<a class=heading-link href=#%e4%bd%bf%e7%94%a8%e6%96%b9%e6%b3%95>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h3>
-<p>通过<code>-h</code>参数可以看到简单的参数介绍，一共有4个可选参数，<code>-a</code>是并发进程数，默认模拟两个用户请求网；，<code>-d</code>是测试时间，超过时间测试中止，设定时间之后的请求会被忽略，默认持续10秒；<code>-i</code>是统计时对数据采用的分段数，默认将整个测试分成10段统计；<code>-r</code>是启动进程的时间，所有的并发将在启动时间内均匀的开始，平稳地增加，启动时间到达后，达到预先设定的并发进程数，默认为0秒，即一开始就达到最大负载进行测试。<code>-u</code>是测试的目标网站，不能省略。</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ python main.py -h
-usage: main.py [-h] [-a [A]] [-d [D]] [-i [I]] [-r [R]] -u U
-
-optional arguments:
-  -h, --help  show this help message and exit
-  -a [A]      number of agents
-  -d [D]      test duration in seconds
-  -i [I]      number of time-seriels interval
-  -r [R]      rampup in seconds
-  -u U        test target url
-</code></pre></div><h3 id=测试和报告样例>
-测试和报告样例
-<a class=heading-link href=#%e6%b5%8b%e8%af%95%e5%92%8c%e6%8a%a5%e5%91%8a%e6%a0%b7%e4%be%8b>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h3>
-<p>样例测试选择百度作为测试对象，一共产生20个用户模拟请求，测试一共持续30秒，统计分成10段，即3秒统计分析一次。启动时间10秒，即每0.5秒增加一个新的用户。测试的报告如下：</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>python main.py -a 20 -d 30 -i 10 -r 10 -u http://www.baidu.com
-
-===Summary===
-transactions: 1788 hits
-errors: 0
-runtime: 30 secs
-rampup: 10 secs
-time-series interval: 3.000 secs
-
-test start: 2016-07-19 00:18:13
-test finish: 2016-07-19 00:18:43
-
-===All Transactions===
-Response Time Summary (secs):
-  count	    avg	    min	  50pct	  80pct	  90pct	    max	  stdev
-   1773	  0.283	  0.123	  0.293	  0.351	  0.396	  0.509	  0.076
-
-Interval Details (secs):
-interval	  count	    avg	    min	  50pct	  80pct	  90pct	    max	  stdev
-       0	     65	  0.155	  0.123	  0.160	  0.167	  0.169	  0.191	  0.015
-       1	    171	  0.164	  0.124	  0.163	  0.173	  0.193	  0.254	  0.022
-       2	    194	  0.230	  0.124	  0.245	  0.252	  0.258	  0.349	  0.040
-       3	    192	  0.306	  0.222	  0.299	  0.352	  0.400	  0.458	  0.055
-       4	    196	  0.308	  0.231	  0.299	  0.352	  0.396	  0.509	  0.056
-       5	    193	  0.313	  0.242	  0.300	  0.354	  0.399	  0.452	  0.054
-       6	    190	  0.312	  0.242	  0.300	  0.352	  0.399	  0.506	  0.058
-       7	    190	  0.314	  0.243	  0.302	  0.355	  0.402	  0.509	  0.058
-       8	    192	  0.313	  0.240	  0.301	  0.357	  0.403	  0.506	  0.061
-       9	    190	  0.316	  0.241	  0.299	  0.359	  0.405	  0.508	  0.069
-
-===Agent Details===
-Agent	Starttime	Requests	Errors	Bytes received	Avg Response Time(secs)	Avg throughput(req/sec)
-    0	     0.00	     118	     0	      11705655	                  0.256	                  3.904
-    1	     0.50	     113	     0	      11211349	                  0.263	                  3.801
-    2	     1.00	     112	     0	      11110130	                  0.259	                  3.859
-    3	     1.50	     109	     0	      10812108	                  0.263	                  3.805
-    4	     2.00	     107	     0	      10613035	                  0.263	                  3.802
-    5	     2.50	     100	     0	       9920078	                  0.276	                  3.627
-    6	     3.00	     100	     0	       9920273	                  0.272	                  3.680
-    7	     3.51	      95	     0	       9425688	                  0.281	                  3.555
-    8	     4.01	      94	     0	       9324440	                  0.278	                  3.599
-    9	     4.51	      89	     0	       8828827	                  0.287	                  3.488
-   10	     5.01	      86	     0	       8531848	                  0.291	                  3.438
-   11	     5.51	      82	     0	       8133568	                  0.299	                  3.345
-   12	     6.01	      83	     0	       8233050	                  0.290	                  3.442
-   13	     6.51	      79	     0	       7837821	                  0.298	                  3.359
-   14	     7.01	      76	     0	       7538452	                  0.306	                  3.270
-   15	     7.51	      75	     0	       7438603	                  0.302	                  3.314
-   16	     8.01	      70	     0	       6944360	                  0.316	                  3.165
-   17	     8.51	      72	     0	       7141987	                  0.301	                  3.316
-   18	     9.01	      67	     0	       6645907	                  0.314	                  3.181
-   19	     9.51	      66	     0	       6547565	                  0.311	                  3.217
-</code></pre></div><h2 id=项目模块和实现>
-项目模块和实现
-<a class=heading-link href=#%e9%a1%b9%e7%9b%ae%e6%a8%a1%e5%9d%97%e5%92%8c%e5%ae%9e%e7%8e%b0>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<h3 id=运行参数分析>
-运行参数分析
-<a class=heading-link href=#%e8%bf%90%e8%a1%8c%e5%8f%82%e6%95%b0%e5%88%86%e6%9e%90>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h3>
-<p>参数分析采用python的<code>argparse</code>模块，通过这个模块，可以很简单的增加可以设置的参数，可以设置参数类型，并且自动生成帮助文档。代码如下：</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>arg_parser = argparse.ArgumentParser()
-
-arg_parser.add_argument(<span style=font-style:italic>&#39;-a&#39;</span>, nargs=<span style=font-style:italic>&#39;?&#39;</span>, help=<span style=font-style:italic>&#39;number of agents&#39;</span>, default=2)
-arg_parser.add_argument(<span style=font-style:italic>&#39;-d&#39;</span>, nargs=<span style=font-style:italic>&#39;?&#39;</span>, help=<span style=font-style:italic>&#39;test duration in seconds&#39;</span>, default=10)
-arg_parser.add_argument(<span style=font-style:italic>&#39;-i&#39;</span>, nargs=<span style=font-style:italic>&#39;?&#39;</span>, help=<span style=font-style:italic>&#39;number of time-seriels interval&#39;</span>, default=10)
-arg_parser.add_argument(<span style=font-style:italic>&#39;-r&#39;</span>, nargs=<span style=font-style:italic>&#39;?&#39;</span>, help=<span style=font-style:italic>&#39;rampup in seconds&#39;</span>, default=0.0)
-arg_parser.add_argument(<span style=font-style:italic>&#39;-u&#39;</span>, help=<span style=font-style:italic>&#39;test target url&#39;</span>, required=<span style=font-weight:700>True</span>) 
-args = vars(arg_parser.parse_args())
-</code></pre></div><p><code>args</code>就是一个包含所有参数的字典了，例如通过<code>args.get('i')</code>就可以获取用户运行时设置的参数i了。</p>
-<h3 id=进程间通信>
-进程间通信
-<a class=heading-link href=#%e8%bf%9b%e7%a8%8b%e9%97%b4%e9%80%9a%e4%bf%a1>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h3>
-<p>虽然经过测试发现，多线程与多进程版本差别不大，所以最后改用多线程完成了整个项目，但在一开始还是使用的多进程版本。那么每个进程进行测试的结果就需要通过进程间通信的方式共享出来。这里采用生产者消费者模式的<code>Queue</code>来实现。</p>
-<p>首先需要定义一个<code>QueueReader</code>类来充当消费者的形式，并在测试开始前开启这个进程，并且设置<code>daemon</code>属性为<code>True</code>，这样这个进程就会随着主进程结束一起结束。</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>queue = multiprocessing.Queue()
-queue_reader = QueueReader(queue)
-queue_reader.daemon = <span style=font-weight:700>True</span>
-queue_reader.start()
-</code></pre></div><p>在每个测试进程中，将结果通过<code>Queue.put</code>方法将结果放到队列中。</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>self.queue.put(fields)
-</code></pre></div><p>队列满时，会产生<code>Queue.Full</code>错误，测试进程挂起，等待队列被消耗，队列空时，产生<code>Queue.Empty</code>错误，读取进程等待一小段时间(这里设置为0.05秒)</p>
-<h3 id=测试进程管理>
-测试进程管理
-<a class=heading-link href=#%e6%b5%8b%e8%af%95%e8%bf%9b%e7%a8%8b%e7%ae%a1%e7%90%86>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h3>
-<p>首先，将每个进程的预先设置好，然后启动一个全局的计时器，之后再依次开始每个进程的测试。</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>threads = []
-<span style=font-weight:700>for</span> idx <span style=font-weight:700>in</span> range(self.num_threads):
-    agent = Agent(self.queue, idx, self.run_time)
-    agent.daemon = <span style=font-weight:700>True</span>
-    threads.append(agent)
-
-<span style=font-weight:700>for</span> idx, agent <span style=font-weight:700>in</span> enumerate(threads):
-    spacing = 1.0 * self.rampup / self.num_threads
-    <span style=font-weight:700>if</span> idx &gt; 0:
-        time.sleep(spacing)
-    agent.start()
-
-<span style=font-weight:700>for</span> agent <span style=font-weight:700>in</span> threads:
-    agent.join()
-</code></pre></div><p>其中，<code>rampup</code>的功能是在第二个循环中实现的，首先计算每个进程的平均启动时间，然后等待足够的时间后再启动一个新的进程即可。</p>
-<h3 id=测试进程实现>
-测试进程实现
-<a class=heading-link href=#%e6%b5%8b%e8%af%95%e8%bf%9b%e7%a8%8b%e5%ae%9e%e7%8e%b0>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h3>
-<p>测试进程的部分其实很简单，其中真正的请求部分只有三行：</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>connect = urllib2.urlopen(url)
-content = connect.read()
-resp_data = len(content)
-</code></pre></div><p>通过修改这个部分的代码，可以实现对API的请求测试，也可以实现各种复杂的测试计划。</p>
-<p>整个测试进程的框架如下：</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>elapsed_time = 0
-
-<span style=font-weight:700>while</span> elapsed_time &lt; self.run_time:
-    error = <span style=font-style:italic>&#39;&#39;</span>
-    start = time.time()
-
-    <span style=font-weight:700>try</span>:
-        <span style=font-style:italic># 测试部分代码</span>
-    <span style=font-weight:700>except</span> <span style=font-weight:700>Exception</span>, e:
-        error = str(e)
-
-    run_time = time.time() - start
-    elapsed_time = time.time() - UNION_START_TIME
-
-    <span style=font-style:italic># 测试结果field统计，然后将结果放到Queue中</span>
-    Queue.put(field)
-</code></pre></div><h3 id=测试结果的统计>
-测试结果的统计
-<a class=heading-link href=#%e6%b5%8b%e8%af%95%e7%bb%93%e6%9e%9c%e7%9a%84%e7%bb%9f%e8%ae%a1>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h3>
-<p>统计分两个部分进行。一个是从每个进程的角度分析，统计每个进程的平均响应时间和吞吐量。这个在每个进程完成所有测试之后统计即可，在设置了<code>rampup</code>参数时，这个统计可以看出测试机器的性能对结果的影响，例如在进程较少时，平均响应时间较短，进程较多时，平均响应时间较长。</p>
-<p>另外一个则是从时间分段的角度进行分析，统计不同阶段的响应时间及其分布情况，这个需要记录所有的测试结果之后，根据测试的时间分组统计。这个统计可以看出目标网站的性能情况，看出不同阶段，请求进程数不同时，目标网站的响应时间变化。</p>
-<p>由于这部分代码零散的分布在测试的各个阶段，所以就不贴代码了。</p>
-<p>如果目标网站的响应时间较长，而测试时间较短，可能出现某个时间成功响应次数为0的情况，这个时候统计函数会出错，所以需要给它们都加上一个特殊判断，这里采用装饰器的方法判断：</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=font-weight:700>def</span> validator(func):
-    <span style=font-weight:700>def</span> _func(*args, **kargs):
-        <span style=font-weight:700>if</span> len(args[0]) == 0:
-            <span style=font-weight:700>return</span> 0.0
-        <span style=font-weight:700>return</span> func(*args, **kargs)
-    <span style=font-weight:700>return</span> _func
-
-@validator
-<span style=font-weight:700>def</span> minarg(seq):
-    <span style=font-weight:700>return</span> min(seq)
-
-@validator
-<span style=font-weight:700>def</span> maxarg(seq):
-    <span style=font-weight:700>return</span> max(seq)
-
-@validator
-<span style=font-weight:700>def</span> average(seq):
-    avg = (float(sum(seq)) / len(seq))
-    <span style=font-weight:700>return</span> avg
-
-@validator
-<span style=font-weight:700>def</span> standard_dev(seq):
-    avg = average(seq)
-    sdsq = sum([(i - avg) ** 2 <span style=font-weight:700>for</span> i <span style=font-weight:700>in</span> seq])
-    <span style=font-weight:700>try</span>:
-        stdev = (sdsq / (len(seq) - 1)) ** .5
-    <span style=font-weight:700>except</span> <span style=font-weight:700>ZeroDivisionError</span>:
-        stdev = 0
-    <span style=font-weight:700>return</span> stdev
-
-@validator
-<span style=font-weight:700>def</span> percentile(seq, percentile):
-    i = int(len(seq) * (percentile / 100.0))
-    seq.sort()
-    <span style=font-weight:700>return</span> seq[i]
-</code></pre></div><h3 id=测试报告生成>
-测试报告生成
-<a class=heading-link href=#%e6%b5%8b%e8%af%95%e6%8a%a5%e5%91%8a%e7%94%9f%e6%88%90>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h3>
-<p>由于没有简单的重定向方法，新增加一个报告生成的方式需要大量重复代码，所以只完成了标准输出的方式。</p>
-<p>报告分为三个部分：</p>
-<ol>
-<li>测试总体概览，包括测试的时间、参数等等；</li>
-<li>时间分段的响应时间统计；</li>
-<li>测试进程的响应时间统计；</li>
-</ol>
-<p>输出部分的代码如下：</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>print <span style=font-style:italic>&#34;</span><span style=font-weight:700;font-style:italic>\n</span><span style=font-style:italic>===Summary===&#34;</span>
-print <span style=font-style:italic>&#34;transactions: </span><span style=font-weight:700;font-style:italic>%d</span><span style=font-style:italic> hits&#34;</span> % (queue_reader.trans_count)
-print <span style=font-style:italic>&#34;errors: </span><span style=font-weight:700;font-style:italic>%d</span><span style=font-style:italic>&#34;</span> % (queue_reader.error_count)
-print <span style=font-style:italic>&#34;runtime: </span><span style=font-weight:700;font-style:italic>%d</span><span style=font-style:italic> secs&#34;</span> % (test_duration)
-print <span style=font-style:italic>&#34;rampup: </span><span style=font-weight:700;font-style:italic>%d</span><span style=font-style:italic> secs&#34;</span> % (int(args.get(<span style=font-style:italic>&#39;r&#39;</span>)))
-print <span style=font-style:italic>&#34;time-series interval: </span><span style=font-weight:700;font-style:italic>%0.3f</span><span style=font-style:italic> secs&#34;</span> % (interval_time)
-print <span style=font-style:italic>&#34;&#34;</span>
-
-print <span style=font-style:italic>&#34;test start: </span><span style=font-weight:700;font-style:italic>%s</span><span style=font-style:italic>&#34;</span> % (datetime.fromtimestamp(test_start_timestamp).strftime(<span style=font-style:italic>&#34;%Y-%m-</span><span style=font-weight:700;font-style:italic>%d</span><span style=font-style:italic> %H:%M:%S&#34;</span>))
-print <span style=font-style:italic>&#34;test finish: </span><span style=font-weight:700;font-style:italic>%s</span><span style=font-style:italic>&#34;</span> % (datetime.fromtimestamp(test_end_timestamp).strftime(<span style=font-style:italic>&#34;%Y-%m-</span><span style=font-weight:700;font-style:italic>%d</span><span style=font-style:italic> %H:%M:%S&#34;</span>))
-print <span style=font-style:italic>&#34;</span><span style=font-weight:700;font-style:italic>\n</span><span style=font-style:italic>===All Transactions===&#34;</span>
-print <span style=font-style:italic>&#34;Response Time Summary (secs):&#34;</span>
-print <span style=font-style:italic>&#34;</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-style:italic>&#34;</span> % (<span style=font-style:italic>&#34;count&#34;</span>, <span style=font-style:italic>&#34;avg&#34;</span>, <span style=font-style:italic>&#34;min&#34;</span>, <span style=font-style:italic>&#34;50pct&#34;</span>, <span style=font-style:italic>&#34;80pct&#34;</span>, <span style=font-style:italic>&#34;90pct&#34;</span>, <span style=font-style:italic>&#34;max&#34;</span>, <span style=font-style:italic>&#34;stdev&#34;</span>)
-print <span style=font-style:italic>&#34;</span><span style=font-weight:700;font-style:italic>%7d</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-weight:700;font-style:italic>\n</span><span style=font-style:italic>&#34;</span> % (len(all_run_time), average(all_run_time), minarg(all_run_time), percentile(all_run_time, 50),\
- percentile(all_run_time, 80), percentile(all_run_time, 90), maxarg(all_run_time), standard_dev(all_run_time))
-
-print <span style=font-style:italic>&#34;Interval Details (secs):&#34;</span>
-print <span style=font-style:italic>&#34;</span><span style=font-weight:700;font-style:italic>%8s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-style:italic>&#34;</span> % (<span style=font-style:italic>&#34;interval&#34;</span>, <span style=font-style:italic>&#34;count&#34;</span>, <span style=font-style:italic>&#34;avg&#34;</span>, <span style=font-style:italic>&#34;min&#34;</span>, <span style=font-style:italic>&#34;50pct&#34;</span>, <span style=font-style:italic>&#34;80pct&#34;</span>, <span style=font-style:italic>&#34;90pct&#34;</span>, <span style=font-style:italic>&#34;max&#34;</span>, <span style=font-style:italic>&#34;stdev&#34;</span>)
-<span style=font-weight:700>for</span> interval_num <span style=font-weight:700>in</span> range(interval):
-    interval_list = interval_run_time[interval_num]
-    print <span style=font-style:italic>&#34;</span><span style=font-weight:700;font-style:italic>%8d</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7d</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-style:italic>&#34;</span> % (interval_num, len(interval_list), average(interval_list), minarg(interval_list), percentile(interval_list, 50),\
- percentile(interval_list, 80), percentile(interval_list, 90), maxarg(interval_list), standard_dev(interval_list))
-
-print <span style=font-style:italic>&#34;</span><span style=font-weight:700;font-style:italic>\n</span><span style=font-style:italic>===Agent Details===&#34;</span>
-print <span style=font-style:italic>&#34;Agent</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-style:italic>Starttime</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-style:italic>Requests</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-style:italic>Errors</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-style:italic>Bytes received</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-style:italic>Avg Response Time(secs)</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-style:italic>Avg throughput(req/sec)&#34;</span>
-<span style=font-weight:700>for</span> agent_detail <span style=font-weight:700>in</span> ag.details:
-    print agent_detail 
-</code></pre></div><h2 id=性能优化和提速>
-性能优化和提速
-<a class=heading-link href=#%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96%e5%92%8c%e6%8f%90%e9%80%9f>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p><code>Python</code>本身的效率不是很高，这一点有可能会对测试结果产生影响。另外，由于默认的<code>Python</code>解释器存在<code>GIL</code>的问题，在多线程的情况下会出现严重的性能问题。所以需要一些方法来提高整个测试程序的运行速度。</p>
-<p>需要注意的是，默认的测试代码比较简单，对计算能力要求不高，属于<code>IO密集型</code>的任务，任务的瓶颈在于网速，所以要求不高时，默认的<code>Python</code>完全能够胜任。</p>
-<h3 id=采用pypy提速>
-采用PyPy提速
-<a class=heading-link href=#%e9%87%87%e7%94%a8pypy%e6%8f%90%e9%80%9f>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h3>
-<p><code>PyPy</code>是一个独立的解析器， 通过即时编译(JIT,Just-in-time)代码避免逐行解释执行来提升运行速度。由于我们的项目采用纯<code>Python</code>编写实现，所以可以简单的通过替换使用<code>PyPy</code>的解释器来达到提速的效果。</p>
-<p>首先下载最新版本的<code>PyPy</code>：</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>wget https://bitbucket.org/pypy/pypy/downloads/pypy2-v5.3.1-linux64.tar.bz2
-</code></pre></div><p>解压后，用新的解释器来执行程序即可。</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>/path/to/pypy/bin/pypy main.py -h
-</code></pre></div><p>但是这样仍然存在<code>GIL</code>的问题，可以通过使用<code>pypy-stm</code>版本来解决这个问题，安装和使用的方法与普通版的一样。</p>
-<h3 id=不同版本的解释器测试结果比较>
-不同版本的解释器测试结果比较
-<a class=heading-link href=#%e4%b8%8d%e5%90%8c%e7%89%88%e6%9c%ac%e7%9a%84%e8%a7%a3%e9%87%8a%e5%99%a8%e6%b5%8b%e8%af%95%e7%bb%93%e6%9e%9c%e6%af%94%e8%be%83>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h3>
-<p>测试目标网站还是<code>www.baidu.com</code>。测试参数为20个并发进程，持续30秒，无启动时间。统计分为10段。测试使用的命令如下：</p>
-<div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ python main.py -a 20 -d 30 -i 10 -u http://www.baidu.com
-$ pypy-stm/bin/pypy-stm main.py  -a 20 -d 30 -i 10 -u http://www.baidu.com
-$ pypy/bin/pypy main.py  -a 10 -d 30 -i 10 -u http://www.baidu.com
-</code></pre></div><p>在测试时间内，三个版本分别完成的请求数为1938，2033，1828次。</p>
-<p>三个版本相差不多，而且由于测试时间较短，而新建进程开销较大，所以<code>pypy</code>的速度甚至慢于原版<code>Python</code>，而<code>pypy-stm</code>版本速度最快。</p>
-<h2 id=存在的问题>
-存在的问题
-<a class=heading-link href=#%e5%ad%98%e5%9c%a8%e7%9a%84%e9%97%ae%e9%a2%98>
-<i class="fa fa-link" aria-hidden=true></i>
-</a>
-</h2>
-<p>这个程序在我的<code>Macbook pro</code>上的结果比较奇怪，当进程数增加时，平均响应时间会显著减少，多次测试和分析之后发现应该是性能原因导致的，但是系统资源并没有被完全利用。而同样的代码在阿里云的<code>Ubuntu</code>服务器上运行正常，猜测是由于系统的多进程API差异导致的。目前没有发现解决方法。</p>
-</div>
-<footer>
-</footer>
-</article>
-</section>
-</div>
-<footer class=footer>
-<section class=container>
-©
+<span class=tag><a href=/tags/pypy/>PyPy</a></span></div></div></header><div><h2 id=项目介绍>项目介绍
+<a class=heading-link href=#%e9%a1%b9%e7%9b%ae%e4%bb%8b%e7%bb%8d><i class="fa fa-link" aria-hidden=true></i></a></h2><p>pyWebTest是一个性能和负载测试工具，采用纯python编写，可以并发地对目标网站生成请求，测试响应时间和吞吐量，并生成完整的测试报告。</p><p>通过简单地修改测试部分的代码，可以很快的实现对远程API的压力测试，事实上，可以通过编写测试脚本，实现很多复杂的测试计划。</p><p>测试报告通过标准输出给出。(文件和网页形式的报告功能没有实现)</p><h2 id=使用说明>使用说明
+<a class=heading-link href=#%e4%bd%bf%e7%94%a8%e8%af%b4%e6%98%8e><i class="fa fa-link" aria-hidden=true></i></a></h2><h3 id=下载和安装>下载和安装
+<a class=heading-link href=#%e4%b8%8b%e8%bd%bd%e5%92%8c%e5%ae%89%e8%a3%85><i class="fa fa-link" aria-hidden=true></i></a></h3><p>pyWebTest可以通过Git下载完整的源代码，并且不需要额外的设置就可以直接运行。</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ git clone git@github.com:saukymo/pyWebTest.git
+</span></span><span style=display:flex><span>$ cd pyWebTest
+</span></span><span style=display:flex><span>$ python main.py -h
+</span></span></code></pre></div><h3 id=使用方法>使用方法
+<a class=heading-link href=#%e4%bd%bf%e7%94%a8%e6%96%b9%e6%b3%95><i class="fa fa-link" aria-hidden=true></i></a></h3><p>通过<code>-h</code>参数可以看到简单的参数介绍，一共有4个可选参数，<code>-a</code>是并发进程数，默认模拟两个用户请求网；，<code>-d</code>是测试时间，超过时间测试中止，设定时间之后的请求会被忽略，默认持续10秒；<code>-i</code>是统计时对数据采用的分段数，默认将整个测试分成10段统计；<code>-r</code>是启动进程的时间，所有的并发将在启动时间内均匀的开始，平稳地增加，启动时间到达后，达到预先设定的并发进程数，默认为0秒，即一开始就达到最大负载进行测试。<code>-u</code>是测试的目标网站，不能省略。</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ python main.py -h
+</span></span><span style=display:flex><span>usage: main.py [-h] [-a [A]] [-d [D]] [-i [I]] [-r [R]] -u U
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>optional arguments:
+</span></span><span style=display:flex><span>  -h, --help  show this help message and exit
+</span></span><span style=display:flex><span>  -a [A]      number of agents
+</span></span><span style=display:flex><span>  -d [D]      test duration in seconds
+</span></span><span style=display:flex><span>  -i [I]      number of time-seriels interval
+</span></span><span style=display:flex><span>  -r [R]      rampup in seconds
+</span></span><span style=display:flex><span>  -u U        test target url
+</span></span></code></pre></div><h3 id=测试和报告样例>测试和报告样例
+<a class=heading-link href=#%e6%b5%8b%e8%af%95%e5%92%8c%e6%8a%a5%e5%91%8a%e6%a0%b7%e4%be%8b><i class="fa fa-link" aria-hidden=true></i></a></h3><p>样例测试选择百度作为测试对象，一共产生20个用户模拟请求，测试一共持续30秒，统计分成10段，即3秒统计分析一次。启动时间10秒，即每0.5秒增加一个新的用户。测试的报告如下：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>python main.py -a 20 -d 30 -i 10 -r 10 -u http://www.baidu.com
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>===Summary===
+</span></span><span style=display:flex><span>transactions: 1788 hits
+</span></span><span style=display:flex><span>errors: 0
+</span></span><span style=display:flex><span>runtime: 30 secs
+</span></span><span style=display:flex><span>rampup: 10 secs
+</span></span><span style=display:flex><span>time-series interval: 3.000 secs
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>test start: 2016-07-19 00:18:13
+</span></span><span style=display:flex><span>test finish: 2016-07-19 00:18:43
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>===All Transactions===
+</span></span><span style=display:flex><span>Response Time Summary (secs):
+</span></span><span style=display:flex><span>  count	    avg	    min	  50pct	  80pct	  90pct	    max	  stdev
+</span></span><span style=display:flex><span>   1773	  0.283	  0.123	  0.293	  0.351	  0.396	  0.509	  0.076
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Interval Details (secs):
+</span></span><span style=display:flex><span>interval	  count	    avg	    min	  50pct	  80pct	  90pct	    max	  stdev
+</span></span><span style=display:flex><span>       0	     65	  0.155	  0.123	  0.160	  0.167	  0.169	  0.191	  0.015
+</span></span><span style=display:flex><span>       1	    171	  0.164	  0.124	  0.163	  0.173	  0.193	  0.254	  0.022
+</span></span><span style=display:flex><span>       2	    194	  0.230	  0.124	  0.245	  0.252	  0.258	  0.349	  0.040
+</span></span><span style=display:flex><span>       3	    192	  0.306	  0.222	  0.299	  0.352	  0.400	  0.458	  0.055
+</span></span><span style=display:flex><span>       4	    196	  0.308	  0.231	  0.299	  0.352	  0.396	  0.509	  0.056
+</span></span><span style=display:flex><span>       5	    193	  0.313	  0.242	  0.300	  0.354	  0.399	  0.452	  0.054
+</span></span><span style=display:flex><span>       6	    190	  0.312	  0.242	  0.300	  0.352	  0.399	  0.506	  0.058
+</span></span><span style=display:flex><span>       7	    190	  0.314	  0.243	  0.302	  0.355	  0.402	  0.509	  0.058
+</span></span><span style=display:flex><span>       8	    192	  0.313	  0.240	  0.301	  0.357	  0.403	  0.506	  0.061
+</span></span><span style=display:flex><span>       9	    190	  0.316	  0.241	  0.299	  0.359	  0.405	  0.508	  0.069
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>===Agent Details===
+</span></span><span style=display:flex><span>Agent	Starttime	Requests	Errors	Bytes received	Avg Response Time(secs)	Avg throughput(req/sec)
+</span></span><span style=display:flex><span>    0	     0.00	     118	     0	      11705655	                  0.256	                  3.904
+</span></span><span style=display:flex><span>    1	     0.50	     113	     0	      11211349	                  0.263	                  3.801
+</span></span><span style=display:flex><span>    2	     1.00	     112	     0	      11110130	                  0.259	                  3.859
+</span></span><span style=display:flex><span>    3	     1.50	     109	     0	      10812108	                  0.263	                  3.805
+</span></span><span style=display:flex><span>    4	     2.00	     107	     0	      10613035	                  0.263	                  3.802
+</span></span><span style=display:flex><span>    5	     2.50	     100	     0	       9920078	                  0.276	                  3.627
+</span></span><span style=display:flex><span>    6	     3.00	     100	     0	       9920273	                  0.272	                  3.680
+</span></span><span style=display:flex><span>    7	     3.51	      95	     0	       9425688	                  0.281	                  3.555
+</span></span><span style=display:flex><span>    8	     4.01	      94	     0	       9324440	                  0.278	                  3.599
+</span></span><span style=display:flex><span>    9	     4.51	      89	     0	       8828827	                  0.287	                  3.488
+</span></span><span style=display:flex><span>   10	     5.01	      86	     0	       8531848	                  0.291	                  3.438
+</span></span><span style=display:flex><span>   11	     5.51	      82	     0	       8133568	                  0.299	                  3.345
+</span></span><span style=display:flex><span>   12	     6.01	      83	     0	       8233050	                  0.290	                  3.442
+</span></span><span style=display:flex><span>   13	     6.51	      79	     0	       7837821	                  0.298	                  3.359
+</span></span><span style=display:flex><span>   14	     7.01	      76	     0	       7538452	                  0.306	                  3.270
+</span></span><span style=display:flex><span>   15	     7.51	      75	     0	       7438603	                  0.302	                  3.314
+</span></span><span style=display:flex><span>   16	     8.01	      70	     0	       6944360	                  0.316	                  3.165
+</span></span><span style=display:flex><span>   17	     8.51	      72	     0	       7141987	                  0.301	                  3.316
+</span></span><span style=display:flex><span>   18	     9.01	      67	     0	       6645907	                  0.314	                  3.181
+</span></span><span style=display:flex><span>   19	     9.51	      66	     0	       6547565	                  0.311	                  3.217
+</span></span></code></pre></div><h2 id=项目模块和实现>项目模块和实现
+<a class=heading-link href=#%e9%a1%b9%e7%9b%ae%e6%a8%a1%e5%9d%97%e5%92%8c%e5%ae%9e%e7%8e%b0><i class="fa fa-link" aria-hidden=true></i></a></h2><h3 id=运行参数分析>运行参数分析
+<a class=heading-link href=#%e8%bf%90%e8%a1%8c%e5%8f%82%e6%95%b0%e5%88%86%e6%9e%90><i class="fa fa-link" aria-hidden=true></i></a></h3><p>参数分析采用python的<code>argparse</code>模块，通过这个模块，可以很简单的增加可以设置的参数，可以设置参数类型，并且自动生成帮助文档。代码如下：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>arg_parser = argparse.ArgumentParser()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>arg_parser.add_argument(<span style=font-style:italic>&#39;-a&#39;</span>, nargs=<span style=font-style:italic>&#39;?&#39;</span>, help=<span style=font-style:italic>&#39;number of agents&#39;</span>, default=2)
+</span></span><span style=display:flex><span>arg_parser.add_argument(<span style=font-style:italic>&#39;-d&#39;</span>, nargs=<span style=font-style:italic>&#39;?&#39;</span>, help=<span style=font-style:italic>&#39;test duration in seconds&#39;</span>, default=10)
+</span></span><span style=display:flex><span>arg_parser.add_argument(<span style=font-style:italic>&#39;-i&#39;</span>, nargs=<span style=font-style:italic>&#39;?&#39;</span>, help=<span style=font-style:italic>&#39;number of time-seriels interval&#39;</span>, default=10)
+</span></span><span style=display:flex><span>arg_parser.add_argument(<span style=font-style:italic>&#39;-r&#39;</span>, nargs=<span style=font-style:italic>&#39;?&#39;</span>, help=<span style=font-style:italic>&#39;rampup in seconds&#39;</span>, default=0.0)
+</span></span><span style=display:flex><span>arg_parser.add_argument(<span style=font-style:italic>&#39;-u&#39;</span>, help=<span style=font-style:italic>&#39;test target url&#39;</span>, required=<span style=font-weight:700>True</span>) 
+</span></span><span style=display:flex><span>args = vars(arg_parser.parse_args())
+</span></span></code></pre></div><p><code>args</code>就是一个包含所有参数的字典了，例如通过<code>args.get('i')</code>就可以获取用户运行时设置的参数i了。</p><h3 id=进程间通信>进程间通信
+<a class=heading-link href=#%e8%bf%9b%e7%a8%8b%e9%97%b4%e9%80%9a%e4%bf%a1><i class="fa fa-link" aria-hidden=true></i></a></h3><p>虽然经过测试发现，多线程与多进程版本差别不大，所以最后改用多线程完成了整个项目，但在一开始还是使用的多进程版本。那么每个进程进行测试的结果就需要通过进程间通信的方式共享出来。这里采用生产者消费者模式的<code>Queue</code>来实现。</p><p>首先需要定义一个<code>QueueReader</code>类来充当消费者的形式，并在测试开始前开启这个进程，并且设置<code>daemon</code>属性为<code>True</code>，这样这个进程就会随着主进程结束一起结束。</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>queue = multiprocessing.Queue()
+</span></span><span style=display:flex><span>queue_reader = QueueReader(queue)
+</span></span><span style=display:flex><span>queue_reader.daemon = <span style=font-weight:700>True</span>
+</span></span><span style=display:flex><span>queue_reader.start()
+</span></span></code></pre></div><p>在每个测试进程中，将结果通过<code>Queue.put</code>方法将结果放到队列中。</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>self.queue.put(fields)
+</span></span></code></pre></div><p>队列满时，会产生<code>Queue.Full</code>错误，测试进程挂起，等待队列被消耗，队列空时，产生<code>Queue.Empty</code>错误，读取进程等待一小段时间(这里设置为0.05秒)</p><h3 id=测试进程管理>测试进程管理
+<a class=heading-link href=#%e6%b5%8b%e8%af%95%e8%bf%9b%e7%a8%8b%e7%ae%a1%e7%90%86><i class="fa fa-link" aria-hidden=true></i></a></h3><p>首先，将每个进程的预先设置好，然后启动一个全局的计时器，之后再依次开始每个进程的测试。</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>threads = []
+</span></span><span style=display:flex><span><span style=font-weight:700>for</span> idx <span style=font-weight:700>in</span> range(self.num_threads):
+</span></span><span style=display:flex><span>    agent = Agent(self.queue, idx, self.run_time)
+</span></span><span style=display:flex><span>    agent.daemon = <span style=font-weight:700>True</span>
+</span></span><span style=display:flex><span>    threads.append(agent)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=font-weight:700>for</span> idx, agent <span style=font-weight:700>in</span> enumerate(threads):
+</span></span><span style=display:flex><span>    spacing = 1.0 * self.rampup / self.num_threads
+</span></span><span style=display:flex><span>    <span style=font-weight:700>if</span> idx &gt; 0:
+</span></span><span style=display:flex><span>        time.sleep(spacing)
+</span></span><span style=display:flex><span>    agent.start()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=font-weight:700>for</span> agent <span style=font-weight:700>in</span> threads:
+</span></span><span style=display:flex><span>    agent.join()
+</span></span></code></pre></div><p>其中，<code>rampup</code>的功能是在第二个循环中实现的，首先计算每个进程的平均启动时间，然后等待足够的时间后再启动一个新的进程即可。</p><h3 id=测试进程实现>测试进程实现
+<a class=heading-link href=#%e6%b5%8b%e8%af%95%e8%bf%9b%e7%a8%8b%e5%ae%9e%e7%8e%b0><i class="fa fa-link" aria-hidden=true></i></a></h3><p>测试进程的部分其实很简单，其中真正的请求部分只有三行：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>connect = urllib2.urlopen(url)
+</span></span><span style=display:flex><span>content = connect.read()
+</span></span><span style=display:flex><span>resp_data = len(content)
+</span></span></code></pre></div><p>通过修改这个部分的代码，可以实现对API的请求测试，也可以实现各种复杂的测试计划。</p><p>整个测试进程的框架如下：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>elapsed_time = 0
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=font-weight:700>while</span> elapsed_time &lt; self.run_time:
+</span></span><span style=display:flex><span>    error = <span style=font-style:italic>&#39;&#39;</span>
+</span></span><span style=display:flex><span>    start = time.time()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=font-weight:700>try</span>:
+</span></span><span style=display:flex><span>        <span style=font-style:italic># 测试部分代码</span>
+</span></span><span style=display:flex><span>    <span style=font-weight:700>except</span> <span style=font-weight:700>Exception</span>, e:
+</span></span><span style=display:flex><span>        error = str(e)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    run_time = time.time() - start
+</span></span><span style=display:flex><span>    elapsed_time = time.time() - UNION_START_TIME
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=font-style:italic># 测试结果field统计，然后将结果放到Queue中</span>
+</span></span><span style=display:flex><span>    Queue.put(field)
+</span></span></code></pre></div><h3 id=测试结果的统计>测试结果的统计
+<a class=heading-link href=#%e6%b5%8b%e8%af%95%e7%bb%93%e6%9e%9c%e7%9a%84%e7%bb%9f%e8%ae%a1><i class="fa fa-link" aria-hidden=true></i></a></h3><p>统计分两个部分进行。一个是从每个进程的角度分析，统计每个进程的平均响应时间和吞吐量。这个在每个进程完成所有测试之后统计即可，在设置了<code>rampup</code>参数时，这个统计可以看出测试机器的性能对结果的影响，例如在进程较少时，平均响应时间较短，进程较多时，平均响应时间较长。</p><p>另外一个则是从时间分段的角度进行分析，统计不同阶段的响应时间及其分布情况，这个需要记录所有的测试结果之后，根据测试的时间分组统计。这个统计可以看出目标网站的性能情况，看出不同阶段，请求进程数不同时，目标网站的响应时间变化。</p><p>由于这部分代码零散的分布在测试的各个阶段，所以就不贴代码了。</p><p>如果目标网站的响应时间较长，而测试时间较短，可能出现某个时间成功响应次数为0的情况，这个时候统计函数会出错，所以需要给它们都加上一个特殊判断，这里采用装饰器的方法判断：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=font-weight:700>def</span> validator(func):
+</span></span><span style=display:flex><span>    <span style=font-weight:700>def</span> _func(*args, **kargs):
+</span></span><span style=display:flex><span>        <span style=font-weight:700>if</span> len(args[0]) == 0:
+</span></span><span style=display:flex><span>            <span style=font-weight:700>return</span> 0.0
+</span></span><span style=display:flex><span>        <span style=font-weight:700>return</span> func(*args, **kargs)
+</span></span><span style=display:flex><span>    <span style=font-weight:700>return</span> _func
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>@validator
+</span></span><span style=display:flex><span><span style=font-weight:700>def</span> minarg(seq):
+</span></span><span style=display:flex><span>    <span style=font-weight:700>return</span> min(seq)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>@validator
+</span></span><span style=display:flex><span><span style=font-weight:700>def</span> maxarg(seq):
+</span></span><span style=display:flex><span>    <span style=font-weight:700>return</span> max(seq)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>@validator
+</span></span><span style=display:flex><span><span style=font-weight:700>def</span> average(seq):
+</span></span><span style=display:flex><span>    avg = (float(sum(seq)) / len(seq))
+</span></span><span style=display:flex><span>    <span style=font-weight:700>return</span> avg
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>@validator
+</span></span><span style=display:flex><span><span style=font-weight:700>def</span> standard_dev(seq):
+</span></span><span style=display:flex><span>    avg = average(seq)
+</span></span><span style=display:flex><span>    sdsq = sum([(i - avg) ** 2 <span style=font-weight:700>for</span> i <span style=font-weight:700>in</span> seq])
+</span></span><span style=display:flex><span>    <span style=font-weight:700>try</span>:
+</span></span><span style=display:flex><span>        stdev = (sdsq / (len(seq) - 1)) ** .5
+</span></span><span style=display:flex><span>    <span style=font-weight:700>except</span> <span style=font-weight:700>ZeroDivisionError</span>:
+</span></span><span style=display:flex><span>        stdev = 0
+</span></span><span style=display:flex><span>    <span style=font-weight:700>return</span> stdev
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>@validator
+</span></span><span style=display:flex><span><span style=font-weight:700>def</span> percentile(seq, percentile):
+</span></span><span style=display:flex><span>    i = int(len(seq) * (percentile / 100.0))
+</span></span><span style=display:flex><span>    seq.sort()
+</span></span><span style=display:flex><span>    <span style=font-weight:700>return</span> seq[i]
+</span></span></code></pre></div><h3 id=测试报告生成>测试报告生成
+<a class=heading-link href=#%e6%b5%8b%e8%af%95%e6%8a%a5%e5%91%8a%e7%94%9f%e6%88%90><i class="fa fa-link" aria-hidden=true></i></a></h3><p>由于没有简单的重定向方法，新增加一个报告生成的方式需要大量重复代码，所以只完成了标准输出的方式。</p><p>报告分为三个部分：</p><ol><li>测试总体概览，包括测试的时间、参数等等；</li><li>时间分段的响应时间统计；</li><li>测试进程的响应时间统计；</li></ol><p>输出部分的代码如下：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>print <span style=font-style:italic>&#34;</span><span style=font-weight:700;font-style:italic>\n</span><span style=font-style:italic>===Summary===&#34;</span>
+</span></span><span style=display:flex><span>print <span style=font-style:italic>&#34;transactions: </span><span style=font-weight:700;font-style:italic>%d</span><span style=font-style:italic> hits&#34;</span> % (queue_reader.trans_count)
+</span></span><span style=display:flex><span>print <span style=font-style:italic>&#34;errors: </span><span style=font-weight:700;font-style:italic>%d</span><span style=font-style:italic>&#34;</span> % (queue_reader.error_count)
+</span></span><span style=display:flex><span>print <span style=font-style:italic>&#34;runtime: </span><span style=font-weight:700;font-style:italic>%d</span><span style=font-style:italic> secs&#34;</span> % (test_duration)
+</span></span><span style=display:flex><span>print <span style=font-style:italic>&#34;rampup: </span><span style=font-weight:700;font-style:italic>%d</span><span style=font-style:italic> secs&#34;</span> % (int(args.get(<span style=font-style:italic>&#39;r&#39;</span>)))
+</span></span><span style=display:flex><span>print <span style=font-style:italic>&#34;time-series interval: </span><span style=font-weight:700;font-style:italic>%0.3f</span><span style=font-style:italic> secs&#34;</span> % (interval_time)
+</span></span><span style=display:flex><span>print <span style=font-style:italic>&#34;&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>print <span style=font-style:italic>&#34;test start: </span><span style=font-weight:700;font-style:italic>%s</span><span style=font-style:italic>&#34;</span> % (datetime.fromtimestamp(test_start_timestamp).strftime(<span style=font-style:italic>&#34;%Y-%m-</span><span style=font-weight:700;font-style:italic>%d</span><span style=font-style:italic> %H:%M:%S&#34;</span>))
+</span></span><span style=display:flex><span>print <span style=font-style:italic>&#34;test finish: </span><span style=font-weight:700;font-style:italic>%s</span><span style=font-style:italic>&#34;</span> % (datetime.fromtimestamp(test_end_timestamp).strftime(<span style=font-style:italic>&#34;%Y-%m-</span><span style=font-weight:700;font-style:italic>%d</span><span style=font-style:italic> %H:%M:%S&#34;</span>))
+</span></span><span style=display:flex><span>print <span style=font-style:italic>&#34;</span><span style=font-weight:700;font-style:italic>\n</span><span style=font-style:italic>===All Transactions===&#34;</span>
+</span></span><span style=display:flex><span>print <span style=font-style:italic>&#34;Response Time Summary (secs):&#34;</span>
+</span></span><span style=display:flex><span>print <span style=font-style:italic>&#34;</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-style:italic>&#34;</span> % (<span style=font-style:italic>&#34;count&#34;</span>, <span style=font-style:italic>&#34;avg&#34;</span>, <span style=font-style:italic>&#34;min&#34;</span>, <span style=font-style:italic>&#34;50pct&#34;</span>, <span style=font-style:italic>&#34;80pct&#34;</span>, <span style=font-style:italic>&#34;90pct&#34;</span>, <span style=font-style:italic>&#34;max&#34;</span>, <span style=font-style:italic>&#34;stdev&#34;</span>)
+</span></span><span style=display:flex><span>print <span style=font-style:italic>&#34;</span><span style=font-weight:700;font-style:italic>%7d</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-weight:700;font-style:italic>\n</span><span style=font-style:italic>&#34;</span> % (len(all_run_time), average(all_run_time), minarg(all_run_time), percentile(all_run_time, 50),\
+</span></span><span style=display:flex><span> percentile(all_run_time, 80), percentile(all_run_time, 90), maxarg(all_run_time), standard_dev(all_run_time))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>print <span style=font-style:italic>&#34;Interval Details (secs):&#34;</span>
+</span></span><span style=display:flex><span>print <span style=font-style:italic>&#34;</span><span style=font-weight:700;font-style:italic>%8s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7s</span><span style=font-style:italic>&#34;</span> % (<span style=font-style:italic>&#34;interval&#34;</span>, <span style=font-style:italic>&#34;count&#34;</span>, <span style=font-style:italic>&#34;avg&#34;</span>, <span style=font-style:italic>&#34;min&#34;</span>, <span style=font-style:italic>&#34;50pct&#34;</span>, <span style=font-style:italic>&#34;80pct&#34;</span>, <span style=font-style:italic>&#34;90pct&#34;</span>, <span style=font-style:italic>&#34;max&#34;</span>, <span style=font-style:italic>&#34;stdev&#34;</span>)
+</span></span><span style=display:flex><span><span style=font-weight:700>for</span> interval_num <span style=font-weight:700>in</span> range(interval):
+</span></span><span style=display:flex><span>    interval_list = interval_run_time[interval_num]
+</span></span><span style=display:flex><span>    print <span style=font-style:italic>&#34;</span><span style=font-weight:700;font-style:italic>%8d</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7d</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-weight:700;font-style:italic>%7.3f</span><span style=font-style:italic>&#34;</span> % (interval_num, len(interval_list), average(interval_list), minarg(interval_list), percentile(interval_list, 50),\
+</span></span><span style=display:flex><span> percentile(interval_list, 80), percentile(interval_list, 90), maxarg(interval_list), standard_dev(interval_list))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>print <span style=font-style:italic>&#34;</span><span style=font-weight:700;font-style:italic>\n</span><span style=font-style:italic>===Agent Details===&#34;</span>
+</span></span><span style=display:flex><span>print <span style=font-style:italic>&#34;Agent</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-style:italic>Starttime</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-style:italic>Requests</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-style:italic>Errors</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-style:italic>Bytes received</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-style:italic>Avg Response Time(secs)</span><span style=font-weight:700;font-style:italic>\t</span><span style=font-style:italic>Avg throughput(req/sec)&#34;</span>
+</span></span><span style=display:flex><span><span style=font-weight:700>for</span> agent_detail <span style=font-weight:700>in</span> ag.details:
+</span></span><span style=display:flex><span>    print agent_detail 
+</span></span></code></pre></div><h2 id=性能优化和提速>性能优化和提速
+<a class=heading-link href=#%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96%e5%92%8c%e6%8f%90%e9%80%9f><i class="fa fa-link" aria-hidden=true></i></a></h2><p><code>Python</code>本身的效率不是很高，这一点有可能会对测试结果产生影响。另外，由于默认的<code>Python</code>解释器存在<code>GIL</code>的问题，在多线程的情况下会出现严重的性能问题。所以需要一些方法来提高整个测试程序的运行速度。</p><p>需要注意的是，默认的测试代码比较简单，对计算能力要求不高，属于<code>IO密集型</code>的任务，任务的瓶颈在于网速，所以要求不高时，默认的<code>Python</code>完全能够胜任。</p><h3 id=采用pypy提速>采用PyPy提速
+<a class=heading-link href=#%e9%87%87%e7%94%a8pypy%e6%8f%90%e9%80%9f><i class="fa fa-link" aria-hidden=true></i></a></h3><p><code>PyPy</code>是一个独立的解析器， 通过即时编译(JIT,Just-in-time)代码避免逐行解释执行来提升运行速度。由于我们的项目采用纯<code>Python</code>编写实现，所以可以简单的通过替换使用<code>PyPy</code>的解释器来达到提速的效果。</p><p>首先下载最新版本的<code>PyPy</code>：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>wget https://bitbucket.org/pypy/pypy/downloads/pypy2-v5.3.1-linux64.tar.bz2
+</span></span></code></pre></div><p>解压后，用新的解释器来执行程序即可。</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>/path/to/pypy/bin/pypy main.py -h
+</span></span></code></pre></div><p>但是这样仍然存在<code>GIL</code>的问题，可以通过使用<code>pypy-stm</code>版本来解决这个问题，安装和使用的方法与普通版的一样。</p><h3 id=不同版本的解释器测试结果比较>不同版本的解释器测试结果比较
+<a class=heading-link href=#%e4%b8%8d%e5%90%8c%e7%89%88%e6%9c%ac%e7%9a%84%e8%a7%a3%e9%87%8a%e5%99%a8%e6%b5%8b%e8%af%95%e7%bb%93%e6%9e%9c%e6%af%94%e8%be%83><i class="fa fa-link" aria-hidden=true></i></a></h3><p>测试目标网站还是<code>www.baidu.com</code>。测试参数为20个并发进程，持续30秒，无启动时间。统计分为10段。测试使用的命令如下：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ python main.py -a 20 -d 30 -i 10 -u http://www.baidu.com
+</span></span><span style=display:flex><span>$ pypy-stm/bin/pypy-stm main.py  -a 20 -d 30 -i 10 -u http://www.baidu.com
+</span></span><span style=display:flex><span>$ pypy/bin/pypy main.py  -a 10 -d 30 -i 10 -u http://www.baidu.com
+</span></span></code></pre></div><p>在测试时间内，三个版本分别完成的请求数为1938，2033，1828次。</p><p>三个版本相差不多，而且由于测试时间较短，而新建进程开销较大，所以<code>pypy</code>的速度甚至慢于原版<code>Python</code>，而<code>pypy-stm</code>版本速度最快。</p><h2 id=存在的问题>存在的问题
+<a class=heading-link href=#%e5%ad%98%e5%9c%a8%e7%9a%84%e9%97%ae%e9%a2%98><i class="fa fa-link" aria-hidden=true></i></a></h2><p>这个程序在我的<code>Macbook pro</code>上的结果比较奇怪，当进程数增加时，平均响应时间会显著减少，多次测试和分析之后发现应该是性能原因导致的，但是系统资源并没有被完全利用。而同样的代码在阿里云的<code>Ubuntu</code>服务器上运行正常，猜测是由于系统的多进程API差异导致的。目前没有发现解决方法。</p></div><footer></footer></article></section></div><footer class=footer><section class=container>©
 2016 -
 2022
 无生
 ·
-Powered by <a href=https://gohugo.io/>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/>Coder</a>.
-</section>
-</footer>
-</main>
-<script src=/js/coder.min.39a51230dce2ac866c049b52573e38bf60666af4bc63c1bdf203b9b2d95b1cd6.js integrity="sha256-OaUSMNzirIZsBJtSVz44v2BmavS8Y8G98gO5stlbHNY="></script>
-</body>
-</html>
+Powered by <a href=https://gohugo.io/>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/>Coder</a>.</section></footer></main><script src=/js/coder.min.8fb86376a16e684af472a329aef502dbebcfab65ce264e9750d144912947c602.js integrity="sha256-j7hjdqFuaEr0cqMprvUC2+vPq2XOJk6XUNFEkSlHxgI="></script></body></html>
