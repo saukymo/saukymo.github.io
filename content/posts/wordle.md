@@ -233,7 +233,7 @@ def dfs(current: int, availables: Set[str]):
 
 这里大坑主要是在上面dfs过程的第一步，这里枚举所有的guess时，枚举的范围是 full_set 还是当前可行解。
 
-一开始，我想当然的觉得是当前可行解，但是发现，wordle的Hard模式其实就是限制了猜测必须是个可行解。然而这会导致猜测效率的降低。这也是为什么[wordle-rs](https://github.com/petertseng/wordle-rs)会强调他的代码只考虑了2315可能的结果，但是考虑了12972种可能的guess.
+一开始，我想当然的觉得是当前可行解，但是发现，~~wordle的Hard模式其实就是限制了猜测必须是个可行解~~只猜可行解会导致猜测效率的降低，即使是Hard模式，也需要把可行解之外的合法猜测单词考虑进来。这也是为什么[wordle-rs](https://github.com/petertseng/wordle-rs)会强调他的代码只考虑了2315可能的结果，但是考虑了12972种可能的guess.
 
 这里举一个反例，假如我们猜测一个2位数，目前已知十位数是1，那么还剩10~19十种可能
 
