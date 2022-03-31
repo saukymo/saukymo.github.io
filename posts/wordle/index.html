@@ -28,7 +28,9 @@ class Checker:  # 根据 target 计算当前 guess 的结果  def check(self, ta
 <time datetime=2022-03-16T14:48:07+08:00>March 16, 2022</time></span>
 <span class=reading-time><i class="fa fa-clock-o" aria-hidden=true></i>
 2-minute read</span></div><div class=tags><i class="fa fa-tag" aria-hidden=true></i>
-<span class=tag><a href=/tags/python/>Python</a></span></div></div></header><div><h3 id=起因>起因
+<span class=tag><a href=/tags/python/>Python</a></span>
+<span class=separator>•</span>
+<span class=tag><a href=/tags/wordle/>Wordle</a></span></div></div></header><div><h3 id=起因>起因
 <a class=heading-link href=#%e8%b5%b7%e5%9b%a0><i class="fa fa-link" aria-hidden=true></i></a></h3><p>在B站上看了3b1b的<a href=https://www.bilibili.com/video/BV1zZ4y1k7Jw>科普视频</a>，介绍了wordle游戏中的一些信息论原理。在视频里，作者实现了一个solver，并且直观地介绍了它的原理。不过在视频的结尾提到了通过多探索一步，提升了solver的效果。当时看到这里我就在想，难道这个方法并不是最优解？很快就能发现，视频中的每一步guess，都是基于当前的最优值，所以这只是一个简单的贪心算法，很可能不是最优的。当然，视频的主要目的还是直观的介绍信息熵等概念，解法是不是最优并不重要。</p><p>后来，我在评论中看到了一个<a href=https://freshman.dev/wordle/#/leaderboard>Leader Board</a>, 里面给出了最优解，并且提供了一些解法自己的介绍链接. 然后通过这个名单，我才发现这个Wordle这个游戏还有Hard模式，然后Hard模式的平均猜测次数‘理所当然地’比普通模式的多。然而，后面发现，这里其实提示了一个非常大的坑，这个坑会导致普通模式错过最优解，具体关于这个坑的介绍在本文的最后面。</p><h3 id=游戏介绍>游戏介绍
 <a class=heading-link href=#%e6%b8%b8%e6%88%8f%e4%bb%8b%e7%bb%8d><i class="fa fa-link" aria-hidden=true></i></a></h3><p>Wordle 的游戏规则很简单，玩家每次猜测一个包含5个字母的单词，然后游戏会反馈一个结果，这个结果也包含5位，每个位置有三种颜色，绿色表示该字母正确且位置正确，黄色表示字母正确但是位置不对，灰色表示答案不包含这个字母，最后要求玩家在5次内猜到出这个单词。</p><p>思考了一下这个玩法，很容易联想到以前玩过的小游戏猜数字，每次猜测一个四位数字，游戏返回结果<code>XAXB</code>，A代表有几个位置数字和位置都正确，B代表猜对了数字，但是位置不对。</p><p>比较这两个游戏，有三个地方是明显的区别：</p><ol><li>结果的pattern不一样</li><li>猜测的字符wordle可以重复，猜数字不能</li><li>wordle要求猜测的5个字符是一个valid的单词，而猜数字没有限制</li></ol><p>但是这些区别都不本质，我们可以很容易地把这两个游戏抽象成一个游戏。</p><ol><li>首先，定义一个游戏猜测的全集，对于wordle来说，是5个字母的单词表，对于猜数字来说，是所有的4位数字。</li><li>玩家给出一个猜测，游戏根据规则的不同会反馈不同的pattern，事实上这可以看做将当前所有可能的结果，根据pattern过滤出符合反馈的，缩小下一轮的猜测范围。</li><li>最后不断重复上一个步骤，直到pattern满足胜利条件。</li></ol><p>需要注意的是，按照这种模式，给出新的猜测仅与当前可能的结果有关，与之前的猜测和反馈都没有关系。
 所以基于这种交互，我们可以定义两个类 <code>Checker</code> 和 <code>Solver</code> :</p><p><code>Checker</code> 相当于游戏的裁判，每一轮的结果以及游戏是否结束都是<code>Checker</code>说了算.
