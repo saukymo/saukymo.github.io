@@ -1,7 +1,7 @@
 ---
 title: "Wordle"
 date: 2022-03-16 14:48:07
-tags: [Python]
+tags: [Python, Wordle]
 math: true
 ---
 
