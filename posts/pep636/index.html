@@ -1,0 +1,169 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=content-language content="en"><meta name=color-scheme content="light dark"><meta name=author content="无生"><meta name=description content="原文请参考PEP 636: Structural Pattern Matching: Tutorial
+摘要    这个PEP是PEP 634引入的模式匹配的教程。
+PEP 622 提出的模式匹配新语法经过了社区和理事会的详细讨论，讨论中一个常见的问题就是如何通俗易懂地解释(和学习)这个新功能。这个PEP就试图提供这样一份学习文档，使得开发者可以通过这个阅读此文档来学习模式匹配。
+可以把这个PEP当做是PEP 634(模式匹配的技术说明)和PEP 635(支持模式匹配的动机，基本原理和设计思路)的一份补充材料。
+对于更想快速了解模式匹配而不是教程的读者，请参考附录A。
+教程    我们通过实现一个文字冒险游戏来作为这个教程的一个例子。文字冒险游戏是交互式小说的一种形式，用户通过输入文字指令来和虚拟世界交互，并且收到文字形式的反馈，以此来了解在虚拟世界里发生了什么。文字指令通常是自然语言的一种简单形式，例如： get sword, attack dragon, go north, enter shop 或者 buy cheese。
+匹配序列    程序的主循环需要接收用户的输入并且分割成一个一个的单词，比如一个这样的字符串的列表：
+command = input(&#34;What are you doing next? &#34;) # 分析command.split()的结果 下一步就是处理这些单词。我们的大部分指令都包含两个单词：一个动作和一个对象。所以你可能会想这样做：
+[action, obj] = command.split() ... # 处理 action, obj 问题在于这行代码缺少了一些东西：如果用户输入多于或者少于两个单词怎么办？为了避免这个问题，我们要么需要检查单词列表的长度，要么捕获上面这行指令产生的ValueError。
+或者，你也可以使用模式匹配指令：
+match command.split():  case [action, obj]:  ... # 处理 action, obj 匹配指令评估了主对象（match关键字后面的值），并且检查了它的模式(case后面的代码)。模式可以做两件不同的事情："><meta name=keywords content="blog,developer,personal"><meta name=twitter:card content="summary"><meta name=twitter:title content="PEP 636: Structural Pattern Matching: Tutorial"><meta name=twitter:description content="原文请参考PEP 636: Structural Pattern Matching: Tutorial
+摘要    这个PEP是PEP 634引入的模式匹配的教程。
+PEP 622 提出的模式匹配新语法经过了社区和理事会的详细讨论，讨论中一个常见的问题就是如何通俗易懂地解释(和学习)这个新功能。这个PEP就试图提供这样一份学习文档，使得开发者可以通过这个阅读此文档来学习模式匹配。
+可以把这个PEP当做是PEP 634(模式匹配的技术说明)和PEP 635(支持模式匹配的动机，基本原理和设计思路)的一份补充材料。
+对于更想快速了解模式匹配而不是教程的读者，请参考附录A。
+教程    我们通过实现一个文字冒险游戏来作为这个教程的一个例子。文字冒险游戏是交互式小说的一种形式，用户通过输入文字指令来和虚拟世界交互，并且收到文字形式的反馈，以此来了解在虚拟世界里发生了什么。文字指令通常是自然语言的一种简单形式，例如： get sword, attack dragon, go north, enter shop 或者 buy cheese。
+匹配序列    程序的主循环需要接收用户的输入并且分割成一个一个的单词，比如一个这样的字符串的列表：
+command = input(&#34;What are you doing next? &#34;) # 分析command.split()的结果 下一步就是处理这些单词。我们的大部分指令都包含两个单词：一个动作和一个对象。所以你可能会想这样做：
+[action, obj] = command.split() ... # 处理 action, obj 问题在于这行代码缺少了一些东西：如果用户输入多于或者少于两个单词怎么办？为了避免这个问题，我们要么需要检查单词列表的长度，要么捕获上面这行指令产生的ValueError。
+或者，你也可以使用模式匹配指令：
+match command.split():  case [action, obj]:  ... # 处理 action, obj 匹配指令评估了主对象（match关键字后面的值），并且检查了它的模式(case后面的代码)。模式可以做两件不同的事情："><meta property="og:title" content="PEP 636: Structural Pattern Matching: Tutorial"><meta property="og:description" content="原文请参考PEP 636: Structural Pattern Matching: Tutorial
+摘要    这个PEP是PEP 634引入的模式匹配的教程。
+PEP 622 提出的模式匹配新语法经过了社区和理事会的详细讨论，讨论中一个常见的问题就是如何通俗易懂地解释(和学习)这个新功能。这个PEP就试图提供这样一份学习文档，使得开发者可以通过这个阅读此文档来学习模式匹配。
+可以把这个PEP当做是PEP 634(模式匹配的技术说明)和PEP 635(支持模式匹配的动机，基本原理和设计思路)的一份补充材料。
+对于更想快速了解模式匹配而不是教程的读者，请参考附录A。
+教程    我们通过实现一个文字冒险游戏来作为这个教程的一个例子。文字冒险游戏是交互式小说的一种形式，用户通过输入文字指令来和虚拟世界交互，并且收到文字形式的反馈，以此来了解在虚拟世界里发生了什么。文字指令通常是自然语言的一种简单形式，例如： get sword, attack dragon, go north, enter shop 或者 buy cheese。
+匹配序列    程序的主循环需要接收用户的输入并且分割成一个一个的单词，比如一个这样的字符串的列表：
+command = input(&#34;What are you doing next? &#34;) # 分析command.split()的结果 下一步就是处理这些单词。我们的大部分指令都包含两个单词：一个动作和一个对象。所以你可能会想这样做：
+[action, obj] = command.split() ... # 处理 action, obj 问题在于这行代码缺少了一些东西：如果用户输入多于或者少于两个单词怎么办？为了避免这个问题，我们要么需要检查单词列表的长度，要么捕获上面这行指令产生的ValueError。
+或者，你也可以使用模式匹配指令：
+match command.split():  case [action, obj]:  ... # 处理 action, obj 匹配指令评估了主对象（match关键字后面的值），并且检查了它的模式(case后面的代码)。模式可以做两件不同的事情："><meta property="og:type" content="article"><meta property="og:url" content="https://blog.mkdef.com/posts/pep636/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-04-01T11:50:52+08:00"><meta property="article:modified_time" content="2022-04-01T11:50:52+08:00"><title>PEP 636: Structural Pattern Matching: Tutorial · Coder</title><link rel=canonical href=https://blog.mkdef.com/posts/pep636/><link rel=preload href="/fonts/forkawesome-webfont.woff2?v=1.2.0" as=font type=font/woff2 crossorigin><link rel=stylesheet href=/css/coder.min.d9fddbffe6f27e69985dc5fe0471cdb0e57fbf4775714bc3d847accb08f4a1f6.css integrity="sha256-2f3b/+byfmmYXcX+BHHNsOV/v0d1cUvD2Eesywj0ofY=" crossorigin=anonymous media=screen><link rel=stylesheet href=/css/coder-dark.min.002ee2378e14c7a68f1f0a53d9694ed252090987c4e768023fac694a4fc5f793.css integrity="sha256-AC7iN44Ux6aPHwpT2WlO0lIJCYfE52gCP6xpSk/F95M=" crossorigin=anonymous media=screen><link rel=icon type=image/png href=/images/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/images/favicon-16x16.png sizes=16x16><link rel=apple-touch-icon href=/images/apple-touch-icon.png><link rel=apple-touch-icon sizes=180x180 href=/images/apple-touch-icon.png><meta name=generator content="Hugo 0.96.0"></head><body class="preload-transitions colorscheme-auto"><div class=float-container><a id=dark-mode-toggle class=colorscheme-toggle><i class="fa fa-adjust fa-fw" aria-hidden=true></i></a></div><main class=wrapper><nav class=navigation><section class=container><a class=navigation-title href=/>Coder</a>
+<input type=checkbox id=menu-toggle>
+<label class="menu-button float-right" for=menu-toggle><i class="fa fa-bars fa-fw" aria-hidden=true></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=/posts/>Blog</a></li><li class=navigation-item><a class=navigation-link href=/about/>About</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title><a class=title-link href=https://blog.mkdef.com/posts/pep636/>PEP 636: Structural Pattern Matching: Tutorial</a></h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fa fa-calendar" aria-hidden=true></i>
+<time datetime=2022-04-01T11:50:52+08:00>April 1, 2022</time></span>
+<span class=reading-time><i class="fa fa-clock-o" aria-hidden=true></i>
+3-minute read</span></div><div class=tags><i class="fa fa-tag" aria-hidden=true></i>
+<span class=tag><a href=/tags/python/>Python</a></span>
+<span class=separator>•</span>
+<span class=tag><a href=/tags/pep/>PEP</a></span></div></div></header><div><p>原文请参考<a href=https://peps.python.org/pep-0636/>PEP 636: Structural Pattern Matching: Tutorial</a></p><h3 id=摘要>摘要
+<a class=heading-link href=#%e6%91%98%e8%a6%81><i class="fa fa-link" aria-hidden=true></i></a></h3><p>这个PEP是<a href=https://peps.python.org/pep-0634/>PEP 634</a>引入的模式匹配的教程。</p><p><a href=https://peps.python.org/pep-0622/>PEP 622</a> 提出的模式匹配新语法经过了社区和理事会的详细讨论，讨论中一个常见的问题就是如何通俗易懂地解释(和学习)这个新功能。这个PEP就试图提供这样一份学习文档，使得开发者可以通过这个阅读此文档来学习模式匹配。</p><p>可以把这个PEP当做是<a href=https://peps.python.org/pep-0634/>PEP 634</a>(模式匹配的技术说明)和<a href=https://peps.python.org/pep-0635/>PEP 635</a>(支持模式匹配的动机，基本原理和设计思路)的一份补充材料。</p><p>对于更想快速了解模式匹配而不是教程的读者，请参考附录A。</p><h3 id=教程>教程
+<a class=heading-link href=#%e6%95%99%e7%a8%8b><i class="fa fa-link" aria-hidden=true></i></a></h3><p>我们通过实现一个文字冒险游戏来作为这个教程的一个例子。文字冒险游戏是交互式小说的一种形式，用户通过输入文字指令来和虚拟世界交互，并且收到文字形式的反馈，以此来了解在虚拟世界里发生了什么。文字指令通常是自然语言的一种简单形式，例如： <code>get sword</code>, <code>attack dragon</code>, <code>go north</code>, <code>enter shop</code> 或者 <code>buy cheese</code>。</p><h4 id=匹配序列>匹配序列
+<a class=heading-link href=#%e5%8c%b9%e9%85%8d%e5%ba%8f%e5%88%97><i class="fa fa-link" aria-hidden=true></i></a></h4><p>程序的主循环需要接收用户的输入并且分割成一个一个的单词，比如一个这样的字符串的列表：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>command = input(<span style=font-style:italic>&#34;What are you doing next? &#34;</span>)
+</span></span><span style=display:flex><span><span style=font-style:italic># 分析command.split()的结果</span>
+</span></span></code></pre></div><p>下一步就是处理这些单词。我们的大部分指令都包含两个单词：一个动作和一个对象。所以你可能会想这样做：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>[action, obj] = command.split()
+</span></span><span style=display:flex><span>... <span style=font-style:italic># 处理 action, obj</span>
+</span></span></code></pre></div><p>问题在于这行代码缺少了一些东西：如果用户输入多于或者少于两个单词怎么办？为了避免这个问题，我们要么需要检查单词列表的长度，要么捕获上面这行指令产生的<code>ValueError</code>。</p><p>或者，你也可以使用模式匹配指令：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>match command.split():
+</span></span><span style=display:flex><span>    case [action, obj]:
+</span></span><span style=display:flex><span>        ... <span style=font-style:italic># 处理 action, obj</span>
+</span></span></code></pre></div><p>匹配指令评估了<strong>主对象</strong>（<code>match</code>关键字后面的值），并且检查了它的<strong>模式</strong>(<code>case</code>后面的代码)。模式可以做两件不同的事情：</p><ul><li>验证主对象有特定的结构。在这个例子里，模式<code>[action, obj]</code>能匹配上任何刚好含有两个元素的序列。这个步骤叫做<strong>匹配</strong>。</li><li>它还会把模式里的变量名和主对象里的成员元素绑定起来。在这个例子里，如果这个列表含有两个元素，那么它会绑定<code>action=subject[0]</code> 和 <code>obj = subject[1]</code>。</li></ul><p>如果这里匹配上了的话，分支块里的指令就会按照绑定好的变量执行。如果这里没有匹配上，什么都不会发生并且接下来会执行<code>match</code>后面的指令。</p><p>请注意，通过类似的方法去解包赋值的时候，你可以通过括号，大括号，或者逗号分隔，他们都是相同的意思。即你可以写<code>case action, obj</code> 或者 <code>case (action, obj)</code>，都是一样的含义。所有的写法都会匹配任意的序列（比如列表或者元组）。</p><h4 id=匹配多种模式>匹配多种模式
+<a class=heading-link href=#%e5%8c%b9%e9%85%8d%e5%a4%9a%e7%a7%8d%e6%a8%a1%e5%bc%8f><i class="fa fa-link" aria-hidden=true></i></a></h4><p>即使大多数命令都是动作/对象的形式，你可能也想支持不同长度的用户命令。比如，你可能想加入单个动词，没有对象的命令，例如<code>look</code>或者<code>quit</code>。一个匹配指令可以(并且更像是)支持一个以上的分支:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>match command.split():
+</span></span><span style=display:flex><span>    case [action]:
+</span></span><span style=display:flex><span>        ... <span style=font-style:italic># 处理单个动词的动作</span>
+</span></span><span style=display:flex><span>    case [action, obj]:
+</span></span><span style=display:flex><span>        ... <span style=font-style:italic># 处理 action, obj</span>
+</span></span></code></pre></div><p>匹配命令会从上到下检查模式。如果一个模式不能匹配上主对象，就会尝试下一个模式。但是，一但找到<em>第一个</em>匹配上的模式，分支主体代码就会被执行，并且后面所有的情况都会被忽略。它的工作方式非常像<code>if/elif/elif/...</code>指令。</p><h4 id=匹配特定值>匹配特定值
+<a class=heading-link href=#%e5%8c%b9%e9%85%8d%e7%89%b9%e5%ae%9a%e5%80%bc><i class="fa fa-link" aria-hidden=true></i></a></h4><p>你的代码现在仍然需要查看特定的动作并且根据特定的动作执行不同的逻辑(例如，<code>quit</code>, <code>attack</code>或者<code>buy</code>)。你可以通过使用一连串的<code>if/elif/elif/...</code>来做到，或者使用字典存储所有的函数，但这里我们将会通过使用模式匹配来完成这个任务。除了变量，你也可以在模式里使用字面值(比如 <code>"quit"</code>, <code>42</code>或者<code>None</code>)。你可以这么写：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>match command.split():
+</span></span><span style=display:flex><span>    case [<span style=font-style:italic>&#34;quit&#34;</span>]:
+</span></span><span style=display:flex><span>        print(<span style=font-style:italic>&#34;Goodbye!&#34;</span>)
+</span></span><span style=display:flex><span>        quit_game()
+</span></span><span style=display:flex><span>    case [<span style=font-style:italic>&#34;look&#34;</span>]:
+</span></span><span style=display:flex><span>        current_room.describe()
+</span></span><span style=display:flex><span>    case [<span style=font-style:italic>&#34;get&#34;</span>, obj]:
+</span></span><span style=display:flex><span>        character.get(obj, current_room)
+</span></span><span style=display:flex><span>    case [<span style=font-style:italic>&#34;go&#34;</span>, direction]:
+</span></span><span style=display:flex><span>        current_room = current_room.neighbor(direction)
+</span></span><span style=display:flex><span>    <span style=font-style:italic># 这里写剩下的命令</span>
+</span></span></code></pre></div><p>一个像<code>["get", obj]</code>的模式会匹配一个只含2个元素的序列，并且这个序列还满足，第一个元素的值是<code>"get"</code>. 同时，它也会绑定<code>obj = subject[1]</code>。</p><p>在go这个情况中，我们能看出可以在不同的模式里使用不同的变量名。</p><p>除了<code>True</code>, <code>False</code> 和 <code>None</code> 之外的字面值，都是用<code>==</code>来比较是否相等，前面三种使用<code>is</code>运算符。</p><h4 id=匹配多个值>匹配多个值
+<a class=heading-link href=#%e5%8c%b9%e9%85%8d%e5%a4%9a%e4%b8%aa%e5%80%bc><i class="fa fa-link" aria-hidden=true></i></a></h4><p>玩家有时候可能会扔下很多物品，这时候他会用命令<code>drop key</code>, <code>drop sword</code>, <code>drop chesse</code>。 这个接口可能会显得笨重，所以你会想要支持在一条命令里扔多个物品，比如<code>drop key sword cheese</code>。 在这个例子里，你不会提前知道命令里有多少个单词，但是你可以在模式中用和赋值同样的方式，通过扩展版的解包来实现。</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>match command.split():
+</span></span><span style=display:flex><span>    case [<span style=font-style:italic>&#34;drop&#34;</span>, *objects]:
+</span></span><span style=display:flex><span>        <span style=font-weight:700>for</span> obj <span style=font-weight:700>in</span> objects:
+</span></span><span style=display:flex><span>            character.drop(obj, current_room)
+</span></span><span style=display:flex><span>    <span style=font-style:italic># 剩下的命令写在这里</span>
+</span></span></code></pre></div><p>这个会匹配所有第一个元素是"drop"的序列。所有剩下的元素都会被放到一个<code>list</code>对象中，这个列表同时也会被绑定到<code>objects</code>变量。</p><p>这个语法和序列解包有相似的限制： 在序列里，你不能有多个含有星号的变量名。</p><h4 id=添加通配符>添加通配符
+<a class=heading-link href=#%e6%b7%bb%e5%8a%a0%e9%80%9a%e9%85%8d%e7%ac%a6><i class="fa fa-link" aria-hidden=true></i></a></h4><p>如果所有的模式都没有匹配上，这个时候，你可能想打印一条错误消息： 这个命令无法识别。你可以用我们刚刚学到的特性，把<code>case [* ignored_words]</code> 作为你最后一个模式。但是还有更简单的方法：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>match command.split():
+</span></span><span style=display:flex><span>    case [<span style=font-style:italic>&#34;quit&#34;</span>]: ... <span style=font-style:italic># 为了简单省略代码</span>
+</span></span><span style=display:flex><span>    case [<span style=font-style:italic>&#34;go&#34;</span>, direction]: ...
+</span></span><span style=display:flex><span>    case [<span style=font-style:italic>&#34;drop&#34;</span>, *objects]: ...
+</span></span><span style=display:flex><span>    ... <span style=font-style:italic># 其他情况</span>
+</span></span><span style=display:flex><span>    case _:
+</span></span><span style=display:flex><span>        print(<span style=font-style:italic>f</span><span style=font-style:italic>&#34;Sorry, I couldn&#39;t understand </span><span style=font-weight:700;font-style:italic>{</span>command<span style=font-weight:700;font-style:italic>!r}</span><span style=font-style:italic>&#34;</span>)
+</span></span></code></pre></div><p>这个特别的写作_（被称为通配符）的模式总能被匹配上，但是它不会绑定任何变量。</p><p>请注意，他会匹配任何对象，不仅仅是序列。所以，只有把它作为最后一个模式时才有意义(为了防止这个错误，Python会制止你在前面的模式中使用它)。</p><h4 id=组合模式>组合模式
+<a class=heading-link href=#%e7%bb%84%e5%90%88%e6%a8%a1%e5%bc%8f><i class="fa fa-link" aria-hidden=true></i></a></h4><p>现在是个好的机会让我们先放下这些例子，来弄明白之前你用的这些模式是怎样被构建的。模式可以和模式之间相互嵌套，而且我们在上面的例子里也隐式地做过这样的操作。</p><p>我们见过了一些"简单的"模式(简单在这里意思是他们不包含其他的模式)：</p><ul><li>捕获模式 （独立的变量名，例如<code>direction</code>, <code>action</code>, <code>objects</code>)。我们没有单独讨论过这些模式，但是把他们当做了其他模式的一部分。</li><li>字面值模式 (字符串字面值，数字字面值，<code>True</code>, <code>False</code> 和 <code>None</code>)。</li><li>通配符模式<code>_</code></li></ul><p>目前为止，我们唯一试过的非简单模式的是序列模式。序列模式中的每一个元素实际上可以是任何其他模式。这意味着，你可以写这样的模式：<code>["first", (left, right), _, *rest]</code>。这个模式会匹配一个有至少三个元素序列的主对象，它的第一个元素是<code>"first"</code>且第二个元素是一个包含两个元素的序列模式。这个模式同样会绑定<code>left=subject[1][0]</code>, <code>right=subject[1][1]</code>和 <code>rest = subject[3:]</code>。</p><h4 id=或模式>或模式
+<a class=heading-link href=#%e6%88%96%e6%a8%a1%e5%bc%8f><i class="fa fa-link" aria-hidden=true></i></a></h4><p>回到我们的冒险游戏例子，你可能会发现你想要一些模式有相同的结果。比如，你可能想要命令 <code>north</code> 和 <code>go north</code> 有同样的效果。你可能还会想给任意<code>X</code>别名: <code>get X</code>, <code>pick up X</code> and <code>pick X up</code>.</p><p>模式中我们可以用<code>|</code>符号把他们绑定在一起作为可选项。例如，你可以这样写：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>match command.split():
+</span></span><span style=display:flex><span>    ... <span style=font-style:italic># 其他情况</span>
+</span></span><span style=display:flex><span>    case [<span style=font-style:italic>&#34;north&#34;</span>] | [<span style=font-style:italic>&#34;go&#34;</span>, <span style=font-style:italic>&#34;north&#34;</span>]:
+</span></span><span style=display:flex><span>        current_room = current_room.neighbor(<span style=font-style:italic>&#34;north&#34;</span>)
+</span></span><span style=display:flex><span>    case [<span style=font-style:italic>&#34;get&#34;</span>, obj] | [<span style=font-style:italic>&#34;pick&#34;</span>, <span style=font-style:italic>&#34;up&#34;</span>, obj] | [<span style=font-style:italic>&#34;pick&#34;</span>, obj, <span style=font-style:italic>&#34;up&#34;</span>]:
+</span></span><span style=display:flex><span>        ... <span style=font-style:italic># 捡起指定物品的代码</span>
+</span></span></code></pre></div><p>这种被称作<strong>或模式</strong>并且会产出预期的结果。模式会从左到右挨个尝试。这会引出一个问题，如果有多个选项匹配的时候，绑定是怎么样的。在写或模式的时候，一个很重要的限制时，所有的选项都应该绑定同样的变量。所以一个模式<code>[1, x] | [2, y]</code>是不允许的。因为这会导致成功匹配之后，不清楚绑定上了哪个变量。 <code>[1, x] | [2, x]</code> 则很完美并且成功之后总是绑定<code>x</code>。</p><h4 id=捕获匹配的子模式>捕获匹配的子模式
+<a class=heading-link href=#%e6%8d%95%e8%8e%b7%e5%8c%b9%e9%85%8d%e7%9a%84%e5%ad%90%e6%a8%a1%e5%bc%8f><i class="fa fa-link" aria-hidden=true></i></a></h4><p>我们第一版"go"命令写的是<code>["go", direction]</code>模式。我们最新实现的一版改动里用的是模式<code>["north"] | ["go", "north]</code>，这种方法既有优点也有缺点。后面的这个版本支持别名，但是方向是硬编码的。这让我们不得不独立实现每一个方向：north/south/east/west。这让我们的代码重复，但是我们能更好的验证用户的输入，如果用户输入的是<code>""go figure!</code>而不是方向的时候，我们不会匹配到这个分支的逻辑。</p><p>我们可以这样写，从而同时获得两种好处(为了简洁，我会忽略别名版本):</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>match command.split():
+</span></span><span style=display:flex><span>    case [<span style=font-style:italic>&#34;go&#34;</span>, (<span style=font-style:italic>&#34;north&#34;</span> | <span style=font-style:italic>&#34;south&#34;</span> | <span style=font-style:italic>&#34;east&#34;</span> | <span style=font-style:italic>&#34;west&#34;</span>)]:
+</span></span><span style=display:flex><span>        current_room = current_room.neighbor(...)
+</span></span><span style=display:flex><span>        <span style=font-style:italic># 我们怎么能知道去了哪个方向呢？</span>
+</span></span></code></pre></div><p>这个代码是一个单分支的并且它验证了”go“后面的单词真的是一个方向。但是让玩家在周围移动的代码需要知道哪个方向才是用户选择的方向，而这种写法并做不到。我们需要的是一个像或模式一样工作的模式但是同时还能捕获变量。我们可以通过<strong>as模式</strong>做到：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>match command.split():
+</span></span><span style=display:flex><span>    case [<span style=font-style:italic>&#34;go&#34;</span>, (<span style=font-style:italic>&#34;north&#34;</span> | <span style=font-style:italic>&#34;south&#34;</span> | <span style=font-style:italic>&#34;east&#34;</span> | <span style=font-style:italic>&#34;west&#34;</span>) <span style=font-weight:700>as</span> direction]:
+</span></span><span style=display:flex><span>        current_room = current_room.neighbor(direction)
+</span></span></code></pre></div><p>as模式会匹配它左边的任何模式，并且把匹配到的值和变量名绑定。</p><h4 id=在模式中添加条件>在模式中添加条件
+<a class=heading-link href=#%e5%9c%a8%e6%a8%a1%e5%bc%8f%e4%b8%ad%e6%b7%bb%e5%8a%a0%e6%9d%a1%e4%bb%b6><i class="fa fa-link" aria-hidden=true></i></a></h4><p>目前我们看到的这些模式，能够做强大的数据过滤。但有时，你也许会想要布尔表达式的完整功能。比方说你只想要"go"命令只在一个有限的集合中生效，比如通往离开当前房间的出口方向。我们可以给我们的分支加上<strong>看守</strong>。看守由一个<code>if</code>关键字和之后一个表达式组成:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>match command.split():
+</span></span><span style=display:flex><span>    case [<span style=font-style:italic>&#34;go&#34;</span>, direction] <span style=font-weight:700>if</span> direction <span style=font-weight:700>in</span> current_room.exits:
+</span></span><span style=display:flex><span>        current_room = current_room.neighbor(direction)
+</span></span><span style=display:flex><span>    case [<span style=font-style:italic>&#34;go&#34;</span>, _]:
+</span></span><span style=display:flex><span>        print(<span style=font-style:italic>&#34;Sorry, you can&#39;t go that way&#34;</span>)
+</span></span></code></pre></div><p>看守不是模式的一部分，而是分支的一部分。它会在模式成功匹配，并且所有的模式变量都绑定之后（这也是为什么上面的代码能在条件里使用<code>direction</code>变量）检查。如果模式匹配成功并且条件为真，分支的主体才会照常执行。如果模式匹配了但是条件为假，匹配指令会继续检查下一个分支，就像这个模式没有被成功匹配（可能会有一些副作用：比如有一些变量已经被绑定）。</p><h4 id=增加一个界面匹配对象>增加一个界面：匹配对象
+<a class=heading-link href=#%e5%a2%9e%e5%8a%a0%e4%b8%80%e4%b8%aa%e7%95%8c%e9%9d%a2%e5%8c%b9%e9%85%8d%e5%af%b9%e8%b1%a1><i class="fa fa-link" aria-hidden=true></i></a></h4><p>你的冒险已经成功了，现在你被要求实现一个图形界面。你选择的界面库支持你写一个事件循环，在循环里你可以通过<code>event.get()</code>得到一个事件对象。 最后的对象可能根据用户的行为有不同的类型和属性，例如：</p><ul><li>当用户按下一个键的时候会产生一个<code>KeyPress</code>对象。里面会有一个<code>key_name</code>属性来记录用户按下的键，还有一些和修改相关的属性。</li><li>当用户点击鼠标的时候，会产生一个<code>Click</code>对象。里面会有一个<code>position</code>来记录鼠标点击的坐标。</li><li>当用户点了游戏窗口的关闭按钮时，会产生一个<code>Quit</code>对象。</li></ul><p>相比使用多个<code>isinstance()</code>检查，你可以使用模式来识别不同类型的对象，并且还可以把模式应用到它的属性里：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>match event.get():
+</span></span><span style=display:flex><span>    case Click(position=(x, y)):
+</span></span><span style=display:flex><span>        handle_click_at(x, y)
+</span></span><span style=display:flex><span>    case KeyPress(key_name=<span style=font-style:italic>&#34;Q&#34;</span>) | Quit():
+</span></span><span style=display:flex><span>        game.quit()
+</span></span><span style=display:flex><span>    case KeyPress(key_name=<span style=font-style:italic>&#34;up arrow&#34;</span>):
+</span></span><span style=display:flex><span>        game.go_north()
+</span></span><span style=display:flex><span>    ...
+</span></span><span style=display:flex><span>    case KeyPress():
+</span></span><span style=display:flex><span>        <span style=font-weight:700>pass</span> <span style=font-style:italic># 忽略其他的按键</span>
+</span></span><span style=display:flex><span>    case other_event:
+</span></span><span style=display:flex><span>        <span style=font-weight:700>raise</span> <span style=font-weight:700>ValueError</span>(<span style=font-style:italic>f</span><span style=font-style:italic>&#34;Unrecognized event: </span><span style=font-weight:700;font-style:italic>{</span>other_event<span style=font-weight:700;font-style:italic>}</span><span style=font-style:italic>&#34;</span>)
+</span></span></code></pre></div><p>像<code>Click(position=(x, y))</code>这样的模式只有在事件是<code>Click</code>类别的子类时才会匹配。它也会要求事件有能匹配<code>(x, y)</code>模式的<code>position</code>属性。如果匹配上了，局部变量<code>x</code>和<code>y</code>也会有预期的值。</p><p>像<code>KeyPress()</code>这样没有参数的模式会匹配任何是<code>KeyPress</code>类的实例。只有你在模式里声明的属性会被匹配，其他的属性都会被忽略。</p><h4 id=匹配位置属性>匹配位置属性
+<a class=heading-link href=#%e5%8c%b9%e9%85%8d%e4%bd%8d%e7%bd%ae%e5%b1%9e%e6%80%a7><i class="fa fa-link" aria-hidden=true></i></a></h4><p>前面一个小节描述了如何在匹配对象的时候，匹配命名属性。 对于某些对象来说，通过位置来匹配参数会更加方便(尤其是如果只有少量的属性，并且有"标准"的顺序时)。 如果你用的是命名元组或者数据类时，你也可以使用构建对象时使用的顺序。例如，如果上面的界面框架是这样定义这些类的：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=font-weight:700>from</span> <span style=font-weight:700>dataclasses</span> <span style=font-weight:700>import</span> dataclass
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>@dataclass
+</span></span><span style=display:flex><span><span style=font-weight:700>class</span> <span style=font-weight:700>Click</span>:
+</span></span><span style=display:flex><span>    position: tuple
+</span></span><span style=display:flex><span>    button: Button
+</span></span></code></pre></div><p>那么你可以重写上面的匹配指令</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>match event.get():
+</span></span><span style=display:flex><span>    case Click((x, y)):
+</span></span><span style=display:flex><span>        handle_click_at(x, y)
+</span></span></code></pre></div><p><code>(x, y)</code>模式会自动匹配上<code>position</code>属性，因为模式中的第一个参数对应的就是你在数据类中定义的第一个属性。</p><p>其他的类没有这样的顺序，所以你必须在模式里显式地使用名字来匹配属性。然而，我们也可以通过手动声明属性的顺序来支持位置匹配，比如也可以这样定义：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=font-weight:700>class</span> <span style=font-weight:700>Click</span>:
+</span></span><span style=display:flex><span>    __match_args__ = (<span style=font-style:italic>&#34;position&#34;</span>, <span style=font-style:italic>&#34;button&#34;</span>)
+</span></span><span style=display:flex><span>    <span style=font-weight:700>def</span> __init__(self, pos, btn):
+</span></span><span style=display:flex><span>        self.position = pos
+</span></span><span style=display:flex><span>        self.button = btn
+</span></span><span style=display:flex><span>        ...
+</span></span></code></pre></div><p>这个特别的<code>__match_args__ </code>给你的属性定义了一个显式的顺序，从而可以在模式里使用<code>case Click((x, y))</code>。</p><h4 id=匹配常数和枚举值>匹配常数和枚举值
+<a class=heading-link href=#%e5%8c%b9%e9%85%8d%e5%b8%b8%e6%95%b0%e5%92%8c%e6%9e%9a%e4%b8%be%e5%80%bc><i class="fa fa-link" aria-hidden=true></i></a></h4><p>上面的模式把鼠标按键都同样处理，但是你只想接收左键的点击并且忽略其他键。同时，你注意到<code>button</code>属性是<code>Button</code>类型，并且这个<code>Button</code>类型是通过<code>enum.Enum</code>来构建的。所以，你可以像这样来匹配枚举值：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>match event.get():
+</span></span><span style=display:flex><span>    case Click((x, y), button=Button.LEFT):  <span style=font-style:italic># 点击了鼠标左键</span>
+</span></span><span style=display:flex><span>        handle_click_at(x, y)
+</span></span><span style=display:flex><span>    case Click():
+</span></span><span style=display:flex><span>        <span style=font-weight:700>pass</span>  <span style=font-style:italic># 忽略其他点击</span>
+</span></span></code></pre></div><p>这个可以用于所有的用点访问的名字（比如<code>math.pi</code>)。不过，一个不符合要求的名字(即，单纯的没有点的变量名)会被看成是一个捕获模式。所以我们需要总是在模式中使用符合要求的常数来避免这种歧义。</p><h4 id=上云映射>上云：映射
+<a class=heading-link href=#%e4%b8%8a%e4%ba%91%e6%98%a0%e5%b0%84><i class="fa fa-link" aria-hidden=true></i></a></h4><p>你决定给你的游戏做一个在线版本。你所有的逻辑都在服务器上，同时客户端的图形界面会通过JSON信息跟服务器通信。通过<code>json</code>模块，这些信息会被映射成Python字典，列表和其他内建对象。</p><p>我们的客户端会接收一个字典的列表(从JSON解析而来),里面包含一系列采取的动作，每个元素都是这些例子中的一个。</p><ul><li><code>{"text": "The shop keeper says 'Ah! We have Camembert, yes sir'", "color": "blue"}</code></li><li>如果客户端需要暂停一下, <code>{"sleep": 3}</code></li><li>播放一段音频 <code>{"sound": "filename.ogg", "format": "ogg"}</code></li></ul><p>目前为止，我们的模式都是处理的序列，但是这里也有一些模式需要基于键来匹配映射。这种情况下，你可以这样写：</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=font-weight:700>for</span> action <span style=font-weight:700>in</span> actions:
+</span></span><span style=display:flex><span>    match action:
+</span></span><span style=display:flex><span>        case {<span style=font-style:italic>&#34;text&#34;</span>: message, <span style=font-style:italic>&#34;color&#34;</span>: c}:
+</span></span><span style=display:flex><span>            ui.set_text_color(c)
+</span></span><span style=display:flex><span>            ui.display(message)
+</span></span><span style=display:flex><span>        case {<span style=font-style:italic>&#34;sleep&#34;</span>: duration}:
+</span></span><span style=display:flex><span>            ui.wait(duration)
+</span></span><span style=display:flex><span>        case {<span style=font-style:italic>&#34;sound&#34;</span>: url, <span style=font-style:italic>&#34;format&#34;</span>: <span style=font-style:italic>&#34;ogg&#34;</span>}:
+</span></span><span style=display:flex><span>            ui.play(url)
+</span></span><span style=display:flex><span>        case {<span style=font-style:italic>&#34;sound&#34;</span>: _, <span style=font-style:italic>&#34;format&#34;</span>: _}:
+</span></span><span style=display:flex><span>            warning(<span style=font-style:italic>&#34;Unsupported audio format&#34;</span>)
+</span></span></code></pre></div><p>映射模式里的键必须是字面值，但是映射值可以为任何模式。因为在序列模式里，所有的子模式必须像普通的模式那样去匹配。</p><p>你可以在映射模式里用 <code>**rest</code>来捕获主对象里额外的键。注意，如果你省略这一步，额外的键会在匹配时被忽略。即，对于消息<code> {"text": "foo", "color": "red", "style": "bold"}</code>会匹配上面的第一个模式。</p><h4 id=匹配内置类>匹配内置类
+<a class=heading-link href=#%e5%8c%b9%e9%85%8d%e5%86%85%e7%bd%ae%e7%b1%bb><i class="fa fa-link" aria-hidden=true></i></a></h4><p>上面的代码可以加上一些校验。因为这些消息来源于外部，这些字段的类型可能会出错，从而导致一些bug或者安全隐患。</p><p>任何类都是一个可行的匹配目标，也包括一些内置的类比如<code>bool</code>, <code>str</code> 或者 <code>int</code>。 这让我们能够把上面的代码和类模式结合在一起。所以，相比于写<code>{"text": message, "color": c}</code> 我们可以用<code> {"text": str() as message, "color": str() as c}</code>来保证<code>message</code>和<code>c</code>都是字符串。对于很多的内置类(参考<a href=https://peps.python.org/pep-0634/>PEP 634</a>里有完整的列表), 你也可以使用位置参数来简化,例如使用<code>str(c)</code>而不是<code>str() as c</code>。 完整的重写版本就像这样:</p><div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=font-weight:700>for</span> action <span style=font-weight:700>in</span> actions:
+</span></span><span style=display:flex><span>    match action:
+</span></span><span style=display:flex><span>        case {<span style=font-style:italic>&#34;text&#34;</span>: str(message), <span style=font-style:italic>&#34;color&#34;</span>: str(c)}:
+</span></span><span style=display:flex><span>            ui.set_text_color(c)
+</span></span><span style=display:flex><span>            ui.display(message)
+</span></span><span style=display:flex><span>        case {<span style=font-style:italic>&#34;sleep&#34;</span>: float(duration)}:
+</span></span><span style=display:flex><span>            ui.wait(duration)
+</span></span><span style=display:flex><span>        case {<span style=font-style:italic>&#34;sound&#34;</span>: str(url), <span style=font-style:italic>&#34;format&#34;</span>: <span style=font-style:italic>&#34;ogg&#34;</span>}:
+</span></span><span style=display:flex><span>            ui.play(url)
+</span></span><span style=display:flex><span>        case {<span style=font-style:italic>&#34;sound&#34;</span>: _, <span style=font-style:italic>&#34;format&#34;</span>: _}:
+</span></span><span style=display:flex><span>            warning(<span style=font-style:italic>&#34;Unsupported audio format&#34;</span>)
+</span></span></code></pre></div><h4 id=附录a---简介httpspepspythonorgpep-0636appendix-a-quick-intro><a href=https://peps.python.org/pep-0636/#appendix-a-quick-intro>附录A - 简介</a>
+<a class=heading-link href=#%e9%99%84%e5%bd%95a---%e7%ae%80%e4%bb%8bhttpspepspythonorgpep-0636appendix-a-quick-intro><i class="fa fa-link" aria-hidden=true></i></a></h4><p>略</p><h4 id=版权信息httpspepspythonorgpep-0636copyright><a href=https://peps.python.org/pep-0636/#copyright>版权信息</a>
+<a class=heading-link href=#%e7%89%88%e6%9d%83%e4%bf%a1%e6%81%afhttpspepspythonorgpep-0636copyright><i class="fa fa-link" aria-hidden=true></i></a></h4><p>略</p></div><footer></footer></article></section></div><footer class=footer><section class=container>©
+2016 -
+2022
+无生
+·
+Powered by <a href=https://gohugo.io/>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/>Coder</a>.</section></footer></main><script src=/js/coder.min.8fb86376a16e684af472a329aef502dbebcfab65ce264e9750d144912947c602.js integrity="sha256-j7hjdqFuaEr0cqMprvUC2+vPq2XOJk6XUNFEkSlHxgI="></script></body></html>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>PEP on Coder</title><link>https://blog.mkdef.com/tags/pep/</link><description>Recent content in PEP on Coder</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 01 Apr 2022 11:50:52 +0800</lastBuildDate><atom:link href="https://blog.mkdef.com/tags/pep/index.xml" rel="self" type="application/rss+xml"/><item><title>PEP 636: Structural Pattern Matching: Tutorial</title><link>https://blog.mkdef.com/posts/pep636/</link><pubDate>Fri, 01 Apr 2022 11:50:52 +0800</pubDate><guid>https://blog.mkdef.com/posts/pep636/</guid><description>原文请参考PEP 636: Structural Pattern Matching: Tutorial
+摘要 这个PEP是PEP 634引入的模式匹配的教程。
+PEP 622 提出的模式匹配新语法经过了社区和理事会的详细讨论，讨论中一个常见的问题就是如何通俗易懂地解释(和学习)这个新功能。这个PEP就试图提供这样一份学习文档，使得开发者可以通过这个阅读此文档来学习模式匹配。
+可以把这个PEP当做是PEP 634(模式匹配的技术说明)和PEP 635(支持模式匹配的动机，基本原理和设计思路)的一份补充材料。
+对于更想快速了解模式匹配而不是教程的读者，请参考附录A。
+教程 我们通过实现一个文字冒险游戏来作为这个教程的一个例子。文字冒险游戏是交互式小说的一种形式，用户通过输入文字指令来和虚拟世界交互，并且收到文字形式的反馈，以此来了解在虚拟世界里发生了什么。文字指令通常是自然语言的一种简单形式，例如： get sword, attack dragon, go north, enter shop 或者 buy cheese。
+匹配序列 程序的主循环需要接收用户的输入并且分割成一个一个的单词，比如一个这样的字符串的列表：
+command = input(&amp;#34;What are you doing next? &amp;#34;) # 分析command.split()的结果 下一步就是处理这些单词。我们的大部分指令都包含两个单词：一个动作和一个对象。所以你可能会想这样做：
+[action, obj] = command.split() ... # 处理 action, obj 问题在于这行代码缺少了一些东西：如果用户输入多于或者少于两个单词怎么办？为了避免这个问题，我们要么需要检查单词列表的长度，要么捕获上面这行指令产生的ValueError。
+或者，你也可以使用模式匹配指令：
+match command.split(): case [action, obj]: ... # 处理 action, obj 匹配指令评估了主对象（match关键字后面的值），并且检查了它的模式(case后面的代码)。模式可以做两件不同的事情：</description></item></channel></rss>
